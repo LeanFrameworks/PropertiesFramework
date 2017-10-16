@@ -1,0 +1,26 @@
+### IntelliJ files
+
+*.iml
+*.ipr
+*.iws
+.idea
+
+### Eclipse files
+
+.metadata
+.classpath
+.settings
+
+### Package files
+
+*.war
+.ear
+
+### Generated files
+
+target
+*.class
+
+### Mac OS files
+
+.DS_Store
