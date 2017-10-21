@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/leanframeworks/PropertiesFramework.svg?branch=master)](https://travis-ci.org/leanframeworks/PropertiesFramework)
+[![Build Status](https://travis-ci.org/LeanFrameworks/PropertiesFramework.svg?branch=master)](https://travis-ci.org/LeanFrameworks/PropertiesFramework)
 
 # PropertiesFramework
 
