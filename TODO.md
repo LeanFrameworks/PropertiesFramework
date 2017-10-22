@@ -30,6 +30,7 @@ properties): always on the same thread, always on EDT, never on EDT, only called
 
 # Ideas for the long term
 
+* Inject Swing components in Presenter (just like @FXML for JavaFX)
 * Thread-safety
 * Multi-threading
 * Property binding flow logging
