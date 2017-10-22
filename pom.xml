@@ -47,7 +47,7 @@
 
         <dependsmavenplugin.version>1.4.0</dependsmavenplugin.version>
         <failsafeplugin.version>2.14.1</failsafeplugin.version>
-        <java.compiler.version>1.6</java.compiler.version>
+        <java.compiler.version>1.8</java.compiler.version>
         <mavenbundleplugin.version>3.3.0</mavenbundleplugin.version>
         <mavencompilerplugin.version>3.6.1</mavencompilerplugin.version>
         <mavengpgplugin.version>1.6</mavengpgplugin.version>
