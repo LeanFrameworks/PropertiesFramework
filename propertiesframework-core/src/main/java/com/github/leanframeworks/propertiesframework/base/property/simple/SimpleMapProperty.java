@@ -43,7 +43,7 @@ import java.util.Set;
  * @param <K> Type of keys maintained by this map property and the proxied map.
  * @param <V> Type mapped values.
  */
-public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty<K, V, V> implements Map<K, V> {
+public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty<K, V> implements Map<K, V> {
 
     /**
      * Logger for this class.
@@ -53,7 +53,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     /**
      * Proxied map.
      */
-    private final Map<K, V> internal = new HashMap<K, V>();
+    private final Map<K, V> internal = new HashMap<>();
 
     /**
      * Read-only version of the proxied map.
@@ -61,7 +61,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     private final Map<K, V> unmodifiable = Collections.unmodifiableMap(internal);
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public SimpleMapProperty() {
         super();
@@ -155,15 +155,15 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
         if (alreadyExists) {
             // Changed existing entry
             if (!ValueUtils.areEqual(oldValue, value)) {
-                Map<K, V> oldValues = new HashMap<K, V>();
+                Map<K, V> oldValues = new HashMap<>();
                 oldValues.put(key, oldValue);
-                Map<K, V> newValues = new HashMap<K, V>();
+                Map<K, V> newValues = new HashMap<>();
                 newValues.put(key, value);
                 doNotifyListenersOfChangedValues(oldValues, newValues);
             }
         } else {
             // Added new entry
-            Map<K, V> added = new HashMap<K, V>();
+            Map<K, V> added = new HashMap<>();
             added.put(key, value);
             doNotifyListenersOfAddedValues(added);
         }
@@ -176,9 +176,9 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      */
     @Override
     public void putAll(Map<? extends K, ? extends V> entries) {
-        Map<K, V> newAddedValues = new HashMap<K, V>();
-        Map<K, V> changedOldValues = new HashMap<K, V>();
-        Map<K, V> changedNewValues = new HashMap<K, V>();
+        Map<K, V> newAddedValues = new HashMap<>();
+        Map<K, V> changedOldValues = new HashMap<>();
+        Map<K, V> changedNewValues = new HashMap<>();
 
         for (Entry<? extends K, ? extends V> entry : entries.entrySet()) {
             boolean alreadyExists = internal.containsKey(entry.getKey());
@@ -218,7 +218,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
             previousValue = internal.remove(key);
 
             try {
-                Map<K, V> removed = new HashMap<K, V>();
+                Map<K, V> removed = new HashMap<>();
                 removed.put((K) key, previousValue);
                 doNotifyListenersOfRemovedValues(removed);
             } catch (ClassCastException e) {
@@ -236,7 +236,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
     @Override
     public void clear() {
         if (!internal.isEmpty()) {
-            Map<K, V> removed = new HashMap<K, V>(internal);
+            Map<K, V> removed = new HashMap<>(internal);
             internal.clear();
             doNotifyListenersOfRemovedValues(removed);
         }
@@ -246,7 +246,6 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      * Gets a set containing all keys in the read-only version of the proxied map.
      *
      * @return Key set that cannot be used to modify the proxied map.
-     *
      * @see Map#keySet()
      */
     @Override
@@ -258,7 +257,6 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      * Gets a collection containing all values in the read-only version of the proxied map.
      *
      * @return Value collection that cannot be used to modified the proxied map.
-     *
      * @see Map#values()
      */
     @Override
@@ -270,7 +268,6 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      * Gets a set containing all entries in the read-only version of the proxied map.
      *
      * @return Entry set that cannot be use to modified the proxied map.
-     *
      * @see Map#entrySet()
      */
     @Override

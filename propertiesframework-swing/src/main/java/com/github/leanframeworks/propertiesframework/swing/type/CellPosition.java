@@ -25,6 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.type;
 
+import javax.annotation.Generated;
+
 /**
  * Entity representing the position of a cell in a table.
  * <p>
@@ -75,9 +77,7 @@ public class CellPosition {
         return column;
     }
 
-    /**
-     * Generated.
-     */
+    @Generated("intellij")
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -99,13 +99,20 @@ public class CellPosition {
         return true;
     }
 
-    /**
-     * Generated.
-     */
+    @Generated("intellij")
     @Override
     public int hashCode() {
         int result = row;
         result = 31 * result + column;
         return result;
+    }
+
+    @Generated("intellij")
+    @Override
+    public String toString() {
+        return "CellPosition{" +
+                "row=" + row +
+                ", column=" + column +
+                '}';
     }
 }

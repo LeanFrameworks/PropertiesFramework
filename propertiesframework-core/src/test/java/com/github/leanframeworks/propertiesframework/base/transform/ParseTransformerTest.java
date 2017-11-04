@@ -46,7 +46,7 @@ public class ParseTransformerTest {
 
     @Test
     public void testDefaultParsing() {
-        Transformer<String, Number> transformer = new ParseTransformer<Number>(new DecimalFormat(), false);
+        Transformer<String, Number> transformer = new ParseTransformer<>(new DecimalFormat(), false);
 
         assertEquals(1.23, transformer.transform("1.23"));
         assertEquals(45.6, transformer.transform("45.6invalid"));
@@ -57,7 +57,7 @@ public class ParseTransformerTest {
 
     @Test
     public void testStrictParsing() {
-        Transformer<String, Number> transformer = new ParseTransformer<Number>(new DecimalFormat(), true);
+        Transformer<String, Number> transformer = new ParseTransformer<>(new DecimalFormat(), true);
 
         assertEquals(1.23, transformer.transform("1.23"));
         assertEquals(null, transformer.transform("4.56invalid"));

@@ -34,7 +34,6 @@ package com.github.leanframeworks.propertiesframework.api.property;
  * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
  * @param <W> Type of data that can be written to this property.
- *
  * @see ReadableProperty
  */
 public interface WritableProperty<W> {

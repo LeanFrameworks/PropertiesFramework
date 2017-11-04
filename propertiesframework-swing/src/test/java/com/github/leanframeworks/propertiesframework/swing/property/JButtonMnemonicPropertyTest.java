@@ -50,7 +50,7 @@ public class JButtonMnemonicPropertyTest {
     @Test
     public void testInitialValueFromButton() {
         JButton button = new JButton();
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
 
         assertEquals(KeyEvent.VK_UNDEFINED, button.getMnemonic());
         assertEquals(Integer.valueOf(KeyEvent.VK_UNDEFINED), mnemonicProperty.getValue());
@@ -61,7 +61,7 @@ public class JButtonMnemonicPropertyTest {
     public void testNullFromProperty() {
         JButton button = new JButton();
         button.setMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 
@@ -79,7 +79,7 @@ public class JButtonMnemonicPropertyTest {
     public void testNonNullFromProperty() {
         JButton button = new JButton();
         button.setMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 
@@ -97,7 +97,7 @@ public class JButtonMnemonicPropertyTest {
     public void testNoMnemonicFromComponent() {
         JButton button = new JButton();
         button.setMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 
@@ -115,7 +115,7 @@ public class JButtonMnemonicPropertyTest {
     public void testNonNullFromComponent() {
         JButton button = new JButton();
         button.setMnemonic(MNEMONIC1);
-        ReadableWritableProperty<Integer, Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
+        ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         mnemonicProperty.addValueChangeListener(listenerMock);
 

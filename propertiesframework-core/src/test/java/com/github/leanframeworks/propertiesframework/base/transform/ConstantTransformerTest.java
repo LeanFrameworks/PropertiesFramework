@@ -39,7 +39,7 @@ public class ConstantTransformerTest {
 
     @Test
     public void testNonNullOutput() {
-        Transformer<Object, Integer> transformer = new ConstantTransformer<Object, Integer>(54);
+        Transformer<Object, Integer> transformer = new ConstantTransformer<>(54);
 
         assertEquals(Integer.valueOf(54), transformer.transform(null));
         assertEquals(Integer.valueOf(54), transformer.transform(new Object()));
@@ -49,8 +49,7 @@ public class ConstantTransformerTest {
 
     @Test
     public void testNullOutput() {
-        Transformer<Object, String> transformer = new ConstantTransformer<Object,
-                String>(new SimpleStringProperty(null));
+        Transformer<Object, String> transformer = new ConstantTransformer<>(new SimpleStringProperty(null));
 
         assertNull(transformer.transform(null));
         assertNull(transformer.transform(new Object()));
@@ -60,7 +59,7 @@ public class ConstantTransformerTest {
 
     @Test
     public void testOutputChange() {
-        ConstantTransformer<Object, Double> transformer = new ConstantTransformer<Object, Double>();
+        ConstantTransformer<Double> transformer = new ConstantTransformer<>();
 
         assertNull(transformer.transform(null));
         assertNull(transformer.transform(new Object()));

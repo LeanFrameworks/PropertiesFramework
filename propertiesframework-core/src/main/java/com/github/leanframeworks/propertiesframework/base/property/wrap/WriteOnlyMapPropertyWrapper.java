@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.WritableMapProperty;
 
 import java.util.Map;
@@ -39,12 +40,12 @@ import java.util.Map;
  * @param <K> Type of keys maintained by this map property.
  * @param <W> Type of values that can be written to this map property.
  */
-public class WriteOnlyMapPropertyWrapper<K, W> implements WritableMapProperty<K, W> {
+public class WriteOnlyMapPropertyWrapper<K, W> implements WritableMapProperty<K, W>, Disposable {
 
     /**
      * Wrapped map property.
      */
-    private final WritableMapProperty<K, W> wrappedMapProperty;
+    private WritableMapProperty<K, W> wrappedMapProperty;
 
     /**
      * Constructor specifying the map property to be wrapped, typically a map property that is both readable and
@@ -54,6 +55,17 @@ public class WriteOnlyMapPropertyWrapper<K, W> implements WritableMapProperty<K,
      */
     public WriteOnlyMapPropertyWrapper(WritableMapProperty<K, W> wrappedMapProperty) {
         this.wrappedMapProperty = wrappedMapProperty;
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedMapProperty instanceof Disposable) {
+            ((Disposable) wrappedMapProperty).dispose();
+        }
+        wrappedMapProperty = null;
     }
 
     /**

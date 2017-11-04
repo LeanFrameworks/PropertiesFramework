@@ -50,7 +50,7 @@ public class JLabelIconPropertyTest {
     @Test
     public void testNullFromProperty() {
         JLabel label = new JLabel(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JLabelIconProperty(label);
+        ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 
@@ -67,7 +67,7 @@ public class JLabelIconPropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JLabel label = new JLabel(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JLabelIconProperty(label);
+        ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 
@@ -84,7 +84,7 @@ public class JLabelIconPropertyTest {
     @Test
     public void testNullFromComponent() {
         JLabel label = new JLabel(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JLabelIconProperty(label);
+        ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 
@@ -101,7 +101,7 @@ public class JLabelIconPropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JLabel label = new JLabel(ICON1);
-        ReadableWritableProperty<Icon, Icon> iconProperty = new JLabelIconProperty(label);
+        ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
         iconProperty.addValueChangeListener(listenerMock);
 

@@ -33,21 +33,17 @@ import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
  * Note that if the input data and the specified value are both null or both NaN, they will be considered equal.
  * Everything is considered bigger than null.
  *
- * @param <I> Type of number handled by this transformer.<br>
- *            It is not strictly required for the internal logic of the transformer, but it helps in reducing
- *            compilation warnings and/or errors.
- *
  * @see Transformer
  */
-public class NumberGreaterThanOrEqualToTransformer<I extends Number> implements Transformer<I, Boolean> {
+public class NumberGreaterThanOrEqualToTransformer implements Transformer<Number, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private I minimumValue = null;
+    private Number minimumValue = null;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public NumberGreaterThanOrEqualToTransformer() {
         // Nothing to be done
@@ -58,7 +54,7 @@ public class NumberGreaterThanOrEqualToTransformer<I extends Number> implements 
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public NumberGreaterThanOrEqualToTransformer(I minimumValue) {
+    public NumberGreaterThanOrEqualToTransformer(Number minimumValue) {
         setMinimumValue(minimumValue);
     }
 
@@ -76,7 +72,7 @@ public class NumberGreaterThanOrEqualToTransformer<I extends Number> implements 
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public void setMinimumValue(I minimumValue) {
+    public void setMinimumValue(Number minimumValue) {
         this.minimumValue = minimumValue;
     }
 
@@ -85,7 +81,7 @@ public class NumberGreaterThanOrEqualToTransformer<I extends Number> implements 
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean transform(I input) {
+    public Boolean transform(Number input) {
         boolean valid;
 
         if ((input == null) && (minimumValue == null)) {

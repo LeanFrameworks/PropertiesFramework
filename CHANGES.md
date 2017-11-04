@@ -1,3 +1,23 @@
+# Version 1.0.0
+
+* Made better use of generics (with `extends` and `super`)
+* Simplified `ReadableWritable*Property` interfaces, now using the same type for read and write
+* Removed deprecated `Transformer`, `Aggregator` and `CollectionElementTransformer` from `base` module
+* Renamed `read()` methods of the `Binder` to `from()`
+* Renamed `write()` methods of the `Binder` to `to()`
+* Renamed `SimpleBond` to `SimpleBinding`
+* Changed `ReadableWritableProperty<R, W>` to `ReadableWritableProperty<V>`
+* Changed `ReadableWritableSetProperty<R, W>` to `ReadableWritableSetProperty<V>`
+* Changed `ReadableWritableListProperty<R, W>` to `ReadableWritableListProperty<V>`
+* Changed `ReadableWritableMapProperty<K, R, W>` to `ReadableWritableMapProperty<K, V>`
+* TODO Move inhibition implementation to separate AbstractInihibitableReadableProperty
+* TODO DeepDisposable interface
+* TODO Functional interface for Set/List/MapValueChangeListener
+
+## Migration from version 0.0.1
+
+TODO
+
 # Version 0.0.1
 
 * Extraction from the ValidationFramework 3.4.1

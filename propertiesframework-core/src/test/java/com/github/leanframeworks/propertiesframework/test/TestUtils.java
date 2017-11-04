@@ -48,11 +48,10 @@ public final class TestUtils {
      *
      * @param ref Set to compare to.
      * @param <T> Type of items in the set.
-     *
      * @return Set to be used when verifying mocks.
      */
     public static <T> Set<T> matches(Set<T> ref) {
-        return argThat(new SetMatcher<T>(ref));
+        return argThat(new SetMatcher<>(ref));
     }
 
     /**
@@ -60,11 +59,10 @@ public final class TestUtils {
      *
      * @param ref List to compare to.
      * @param <T> Type of items in the list.
-     *
      * @return List to be used when verifying mocks.
      */
     public static <T> List<T> matches(List<T> ref) {
-        return argThat(new ListMatcher<T>(ref));
+        return argThat(new ListMatcher<>(ref));
     }
 
     /**
@@ -73,7 +71,6 @@ public final class TestUtils {
      * @param first  First list to compare the elements of.
      * @param second Second list to compare the elements of.
      * @param <T>    Type of items in the lists.
-     *
      * @return True if both lists contain the same elements and in the same order, false otherwise.
      */
     public static <T> boolean haveEqualElements(List<T> first, List<T> second) {
@@ -98,7 +95,6 @@ public final class TestUtils {
      * @param first  First set to compare the elements of.
      * @param second Second set to compare the elements of.
      * @param <T>    Type of items in the sets.
-     *
      * @return True if both sets contain the same elements, false otherwise.
      */
     public static <T> boolean haveEqualElements(Set<T> first, Set<T> second) {

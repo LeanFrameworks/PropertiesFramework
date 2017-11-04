@@ -35,7 +35,7 @@ import com.github.leanframeworks.propertiesframework.base.transform.AndBooleanAg
 import com.github.leanframeworks.propertiesframework.base.transform.ToStringTransformer;
 import org.junit.Test;
 
-import static com.github.leanframeworks.propertiesframework.base.binding.Binder.read;
+import static com.github.leanframeworks.propertiesframework.base.binding.Binder.from;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
@@ -49,9 +49,9 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlave() {
-        SimpleProperty<Integer> master = new SimpleProperty<Integer>(5);
-        SimpleProperty<Integer> slave = new SimpleProperty<Integer>(0);
-        read(master).write(slave);
+        SimpleProperty<Integer> master = new SimpleProperty<>(5);
+        SimpleProperty<Integer> slave = new SimpleProperty<>(0);
+        from(master).to(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
         assertEquals(master.getValue(), slave.getValue());
@@ -64,9 +64,9 @@ public class BinderTest {
 
     @Test
     public void testMasterToSlaveWithTransformation() {
-        SimpleProperty<Integer> master = new SimpleProperty<Integer>(5);
-        SimpleProperty<String> slave = new SimpleProperty<String>("0");
-        read(master).transform(new ToStringTransformer<Integer>()).write(slave);
+        SimpleProperty<Integer> master = new SimpleProperty<>(5);
+        SimpleProperty<String> slave = new SimpleProperty<>("0");
+        from(master).transform(new ToStringTransformer()).to(slave);
 
         assertEquals(Integer.valueOf(5), master.getValue());
         assertEquals("5", slave.getValue());
@@ -83,7 +83,7 @@ public class BinderTest {
         SimpleBooleanProperty master2 = new SimpleBooleanProperty(false);
         SimpleBooleanProperty master3 = new SimpleBooleanProperty(false);
         SimpleBooleanProperty slave = new SimpleBooleanProperty();
-        read(master1, master2, master3).transform(new AndBooleanAggregator()).write(slave);
+        from(master1, master2, master3).transform(new AndBooleanAggregator()).to(slave);
 
         assertEquals(false, slave.getValue());
 
@@ -99,8 +99,8 @@ public class BinderTest {
         SimpleIntegerProperty second = new SimpleIntegerProperty(4);
 
         // The following should not result in an StackOverflowError
-        read(first).write(second);
-        read(second).write(first);
+        from(first).to(second);
+        from(second).to(first);
 
         first.setValue(12);
         assertEquals(Integer.valueOf(12), second.getValue());
@@ -112,13 +112,13 @@ public class BinderTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testEventsFireWithOneSlave() {
-        ReadableWritableProperty<String, String> master = new SimpleStringProperty("New value");
-        ReadableWritableProperty<String, String> slave = new SimpleStringProperty("Initial value");
+        ReadableWritableProperty<String> master = new SimpleStringProperty("New value");
+        ReadableWritableProperty<String> slave = new SimpleStringProperty("Initial value");
 
         ValueChangeListener<String> slaveListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         slave.addValueChangeListener(slaveListenerMock);
 
-        read(master).write(slave);
+        from(master).to(slave);
 
         // Check exactly one event fired
         verify(slaveListenerMock).valueChanged(slave, "Initial value", "New value");
@@ -128,16 +128,16 @@ public class BinderTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testEventsFiredWithSeveralSaves() {
-        ReadableWritableProperty<String, String> master = new SimpleStringProperty("New value");
-        ReadableWritableProperty<String, String> slave1 = new SimpleStringProperty("Initial value 1");
-        ReadableWritableProperty<String, String> slave2 = new SimpleStringProperty("Initial value 2");
+        ReadableWritableProperty<String> master = new SimpleStringProperty("New value");
+        ReadableWritableProperty<String> slave1 = new SimpleStringProperty("Initial value 1");
+        ReadableWritableProperty<String> slave2 = new SimpleStringProperty("Initial value 2");
 
         ValueChangeListener<String> slave1ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         slave1.addValueChangeListener(slave1ListenerMock);
         ValueChangeListener<String> slave2ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         slave2.addValueChangeListener(slave2ListenerMock);
 
-        read(master).write(slave1, slave2);
+        from(master).to(slave1, slave2);
 
         // Check exactly one event fired for each slave
         verify(slave1ListenerMock).valueChanged(slave1, "Initial value 1", "New value");

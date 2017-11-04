@@ -31,16 +31,14 @@ import java.util.Collection;
 
 /**
  * Transformer getting a collection as input and returning its size as output.
- *
- * @param <I> Type of collection to get the size from.
  */
-public class GetCollectionSizeTransformer<I extends Collection<?>> implements Transformer<I, Integer> {
+public class GetCollectionSizeTransformer implements Transformer<Collection<?>, Integer> {
 
     /**
      * @see Transformer#transform(Object)
      */
     @Override
-    public Integer transform(I input) {
+    public Integer transform(Collection<?> input) {
         return input.size();
     }
 }

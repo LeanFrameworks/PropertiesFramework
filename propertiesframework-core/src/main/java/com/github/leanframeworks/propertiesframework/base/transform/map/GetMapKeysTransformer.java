@@ -33,15 +33,15 @@ import java.util.Map;
 /**
  * Transformer getting a map as input and returning its keys as output.
  *
- * @param <I> Type of map to get the keys from.
+ * @param <K> Type of map keys.
  */
-public class GetMapKeysTransformer<I extends Map<K, ?>, K> implements Transformer<I, Collection<K>> {
+public class GetMapKeysTransformer<K> implements Transformer<Map<K, ?>, Collection<K>> {
 
     /**
      * @see Transformer#transform(Object)
      */
     @Override
-    public Collection<K> transform(I input) {
+    public Collection<K> transform(Map<K, ?> input) {
         return input.keySet();
     }
 }

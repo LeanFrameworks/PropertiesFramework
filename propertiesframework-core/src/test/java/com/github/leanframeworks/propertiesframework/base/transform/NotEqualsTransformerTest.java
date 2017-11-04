@@ -38,31 +38,31 @@ public class NotEqualsTransformerTest {
 
     @Test
     public void testNull() {
-        Transformer<Object, Boolean> transformer = new NotEqualsTransformer<Object>(null);
+        Transformer<Object, Boolean> transformer = new NotEqualsTransformer(null);
         assertFalse(transformer.transform(null));
         assertTrue(transformer.transform(new Object()));
     }
 
     @Test
     public void testFloatNaN() {
-        Transformer<Float, Boolean> transformer = new NotEqualsTransformer<Float>(Float.NaN);
+        Transformer<Object, Boolean> transformer = new NotEqualsTransformer(Float.NaN);
         assertFalse(transformer.transform(Float.NaN));
         assertTrue(transformer.transform(0.5f));
     }
 
     @Test
     public void testDoubleNaN() {
-        Transformer<Double, Boolean> transformer = new NotEqualsTransformer<Double>(Double.NaN);
+        Transformer<Object, Boolean> transformer = new NotEqualsTransformer(Double.NaN);
         assertFalse(transformer.transform(Double.NaN));
         assertTrue(transformer.transform(0.5));
     }
 
     @Test
     public void testFloatAndDoubleNaN() {
-        Transformer<Object, Boolean> transformer = new NotEqualsTransformer<Object>(Double.NaN);
+        Transformer<Object, Boolean> transformer = new NotEqualsTransformer(Double.NaN);
         assertFalse(transformer.transform(Float.NaN));
 
-        transformer = new NotEqualsTransformer<Object>(Float.NaN);
+        transformer = new NotEqualsTransformer(Float.NaN);
         assertFalse(transformer.transform(Double.NaN));
     }
 
@@ -72,7 +72,7 @@ public class NotEqualsTransformerTest {
         String value1 = "Test";
         String value2 = "test";
 
-        Transformer<String, Boolean> transformer = new NotEqualsTransformer<String>(ref);
+        Transformer<Object, Boolean> transformer = new NotEqualsTransformer(ref);
         assertFalse(transformer.transform(value1));
         assertTrue(transformer.transform(value2));
     }

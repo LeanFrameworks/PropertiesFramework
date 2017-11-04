@@ -20,7 +20,7 @@ public class OrBooleanAggregatorTest {
         Aggregator<Boolean, Boolean> transformer = new OrBooleanAggregator();
 
         // All true
-        List<Boolean> booleans = new ArrayList<Boolean>();
+        List<Boolean> booleans = new ArrayList<>();
         booleans.add(true);
         booleans.add(true);
         booleans.add(true);
@@ -61,7 +61,7 @@ public class OrBooleanAggregatorTest {
 
     @Test
     public void testNullElement() {
-        List<Boolean> booleans = new ArrayList<Boolean>();
+        List<Boolean> booleans = new ArrayList<>();
         booleans.add(false);
         booleans.add(false);
         booleans.add(null);

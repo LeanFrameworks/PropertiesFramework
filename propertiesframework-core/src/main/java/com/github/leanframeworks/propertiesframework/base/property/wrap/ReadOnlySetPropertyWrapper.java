@@ -31,6 +31,7 @@ import com.github.leanframeworks.propertiesframework.api.property.SetValueChange
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableSetProperty;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -43,7 +44,107 @@ import java.util.Set;
  *
  * @param <R> Type of data that can be read from the wrapped set property.
  */
-public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R> implements Disposable {
+public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R> {
+
+    /**
+     * Listener to changes on the wrapped property.
+     */
+    private final SetValueChangeListener<? super R> changeAdapter = new SetValueChangeForwarder();
+
+    /**
+     * Wrapped set property.
+     */
+    private ReadableSetProperty<? extends R> wrappedSetProperty;
+
+    /**
+     * Constructor specifying the set property to be wrapped, typically a set property that is both readable and
+     * writable.
+     * <p>
+     * The wrapped set property will be disposed whenever this set property is disposed.
+     *
+     * @param wrappedSetProperty Set property to be wrapped.
+     */
+    public ReadOnlySetPropertyWrapper(ReadableSetProperty<? extends R> wrappedSetProperty) {
+        super();
+        this.wrappedSetProperty = wrappedSetProperty;
+        this.wrappedSetProperty.addValueChangeListener(changeAdapter);
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (wrappedSetProperty != null) {
+            wrappedSetProperty.removeValueChangeListener(changeAdapter);
+            if (wrappedSetProperty instanceof Disposable) {
+                ((Disposable) wrappedSetProperty).dispose();
+            }
+            wrappedSetProperty = null;
+        }
+    }
+
+    /**
+     * @see ReadableSetProperty#size()
+     */
+    @Override
+    public int size() {
+        int size;
+        if (wrappedSetProperty == null) {
+            size = 0;
+        } else {
+            size = wrappedSetProperty.size();
+        }
+        return size;
+    }
+
+    /**
+     * @see ReadableSetProperty#isEmpty()
+     */
+    @Override
+    public boolean isEmpty() {
+        return (wrappedSetProperty == null) || wrappedSetProperty.isEmpty();
+    }
+
+    /**
+     * @see ReadableSetProperty#contains(Object)
+     */
+    @Override
+    public boolean contains(Object item) {
+        return (wrappedSetProperty != null) && wrappedSetProperty.contains(item);
+    }
+
+    /**
+     * @see ReadableSetProperty#containsAll(Collection)
+     */
+    @Override
+    public boolean containsAll(Collection<?> items) {
+        return (wrappedSetProperty != null) && wrappedSetProperty.containsAll(items);
+    }
+
+    /**
+     * @see ReadableSetProperty#asUnmodifiableSet()
+     */
+    @Override
+    public Set<R> asUnmodifiableSet() {
+        Set<R> unmodifiable;
+        if (wrappedSetProperty == null) {
+            unmodifiable = Collections.emptySet();
+        } else {
+            // Safe to cast
+            unmodifiable = (Set<R>) wrappedSetProperty.asUnmodifiableSet();
+        }
+        return unmodifiable;
+    }
+
+    /**
+     * @see ReadableSetProperty#iterator()
+     */
+    @Override
+    public Iterator<R> iterator() {
+        return asUnmodifiableSet().iterator();
+    }
 
     /**
      * Entity responsible for forwarding the change events from the wrapped set property to the listeners of the
@@ -55,7 +156,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
          * @see SetValueChangeListener#valuesAdded(ReadableSetProperty, Set)
          */
         @Override
-        public void valuesAdded(ReadableSetProperty<R> setProperty, Set<R> newValues) {
+        public void valuesAdded(ReadableSetProperty<? extends R> setProperty, Set<? extends R> newValues) {
             doNotifyListenersOfAddedValues(newValues);
         }
 
@@ -63,85 +164,8 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
          * @see SetValueChangeListener#valuesRemoved(ReadableSetProperty, Set)
          */
         @Override
-        public void valuesRemoved(ReadableSetProperty<R> setProperty, Set<R> oldValues) {
+        public void valuesRemoved(ReadableSetProperty<? extends R> setProperty, Set<? extends R> oldValues) {
             doNotifyListenersOfRemovedValues(oldValues);
         }
-    }
-
-    /**
-     * Wrapped set property.
-     */
-    private final ReadableSetProperty<R> wrappedSetProperty;
-
-    /**
-     * Listener to changes on the wrapped property.
-     */
-    private final SetValueChangeListener<R> changeAdapter = new SetValueChangeForwarder();
-
-    /**
-     * Constructor specifying the set property to be wrapped, typically a set property that is both readable and
-     * writable.
-     *
-     * @param wrappedSetProperty Set property to be wrapped.
-     */
-    public ReadOnlySetPropertyWrapper(ReadableSetProperty<R> wrappedSetProperty) {
-        this.wrappedSetProperty = wrappedSetProperty;
-        this.wrappedSetProperty.addValueChangeListener(changeAdapter);
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        wrappedSetProperty.removeValueChangeListener(changeAdapter);
-    }
-
-    /**
-     * @see ReadableSetProperty#size()
-     */
-    @Override
-    public int size() {
-        return wrappedSetProperty.size();
-    }
-
-    /**
-     * @see ReadableSetProperty#isEmpty()
-     */
-    @Override
-    public boolean isEmpty() {
-        return wrappedSetProperty.isEmpty();
-    }
-
-    /**
-     * @see ReadableSetProperty#contains(Object)
-     */
-    @Override
-    public boolean contains(Object item) {
-        return wrappedSetProperty.contains(item);
-    }
-
-    /**
-     * @see ReadableSetProperty#containsAll(Collection)
-     */
-    @Override
-    public boolean containsAll(Collection<?> items) {
-        return wrappedSetProperty.containsAll(items);
-    }
-
-    /**
-     * @see ReadableSetProperty#asUnmodifiableSet()
-     */
-    @Override
-    public Set<R> asUnmodifiableSet() {
-        return wrappedSetProperty.asUnmodifiableSet();
-    }
-
-    /**
-     * @see ReadableSetProperty#iterator()
-     */
-    @Override
-    public Iterator<R> iterator() {
-        return asUnmodifiableSet().iterator();
     }
 }

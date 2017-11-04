@@ -33,15 +33,15 @@ import java.util.Map;
 /**
  * Transformer getting a map as input and returning its values as output.
  *
- * @param <I> Type of map to get the values from.
+ * @param <V> Type of map values.
  */
-public class GetMapValuesTransformer<I extends Map<?, V>, V> implements Transformer<I, Collection<V>> {
+public class GetMapValuesTransformer<V> implements Transformer<Map<?, V>, Collection<V>> {
 
     /**
      * @see Transformer#transform(Object)
      */
     @Override
-    public Collection<V> transform(I input) {
+    public Collection<V> transform(Map<?, V> input) {
         return input.values();
     }
 }

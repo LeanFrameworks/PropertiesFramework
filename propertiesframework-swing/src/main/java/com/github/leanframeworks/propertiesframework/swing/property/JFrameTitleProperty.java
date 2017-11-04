@@ -64,6 +64,9 @@ public class JFrameTitleProperty extends AbstractComponentProperty<JFrame, Strin
         component.setTitle(value);
     }
 
+    /**
+     * @see AbstractComponentProperty#setValue(Object)
+     */
     @Override
     public void setValue(String value) {
         String effectiveValue = value;

@@ -26,8 +26,8 @@
 package com.github.leanframeworks.propertiesframework.swing.property;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
-import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
 import com.github.leanframeworks.propertiesframework.api.property.WritableProperty;
+import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 
 import javax.swing.JFormattedTextField;
@@ -35,16 +35,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class ValueProperty extends AbstractReadableProperty<Object> implements
-        WritableProperty<Object>, Disposable {
-
-    private class PropertyChangeAdapter implements PropertyChangeListener {
-
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            setValue(formattedTextField.getValue());
-        }
-
-    }
+                                                                    WritableProperty<Object>, Disposable {
 
     private final JFormattedTextField formattedTextField;
 
@@ -93,5 +84,14 @@ public class ValueProperty extends AbstractReadableProperty<Object> implements
 
             settingValue = false;
         }
+    }
+
+    private class PropertyChangeAdapter implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            setValue(formattedTextField.getValue());
+        }
+
     }
 }

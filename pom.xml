@@ -71,7 +71,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Validation Framework -->
+            <!-- PropertiesFramework -->
 
             <dependency>
                 <groupId>com.github.leanframeworks</groupId>

@@ -31,23 +31,21 @@ import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 /**
  * Transformer returning {@link Boolean#TRUE} when the input differs a specified reference value.
  *
- * @param <T> Type of input.
- *
  * @see EqualsTransformer
  */
-public class NotEqualsTransformer<T> implements Transformer<T, Boolean> {
+public class NotEqualsTransformer implements Transformer<Object, Boolean> {
 
     /**
      * Reference value to be compared to.
      */
-    private final T reference;
+    private final Object reference;
 
     /**
      * Constructor specifying the value to be compared to.
      *
      * @param reference Reference value to be compared to.
      */
-    public NotEqualsTransformer(T reference) {
+    public NotEqualsTransformer(Object reference) {
         this.reference = reference;
     }
 
@@ -55,7 +53,7 @@ public class NotEqualsTransformer<T> implements Transformer<T, Boolean> {
      * @see Transformer#transform(Object)
      */
     @Override
-    public Boolean transform(T input) {
+    public Boolean transform(Object input) {
         return !ValueUtils.areEqual(input, reference);
     }
 }

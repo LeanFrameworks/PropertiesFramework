@@ -31,6 +31,7 @@ import com.github.leanframeworks.propertiesframework.api.property.ReadableListPr
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableListProperty;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,7 +44,121 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from the wrapped list property.
  */
-public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty<R> implements Disposable {
+public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty<R> {
+
+    /**
+     * Listener to changes on the wrapped property.
+     */
+    private final ListValueChangeListener<? super R> changeAdapter = new ListValueChangeForwarder();
+
+    /**
+     * Wrapped list property.
+     */
+    private ReadableListProperty<? extends R> wrappedListProperty;
+
+    /**
+     * Constructor specifying the list property to be wrapped, typically a list property that is both readable and
+     * writable.
+     * <p>
+     * The wrapped list property will be disposed whenever this list property is disposed.
+     *
+     * @param wrappedListProperty List property to be wrapped.
+     */
+    public ReadOnlyListPropertyWrapper(ReadableListProperty<? extends R> wrappedListProperty) {
+        super();
+        this.wrappedListProperty = wrappedListProperty;
+        this.wrappedListProperty.addValueChangeListener(changeAdapter);
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (wrappedListProperty != null) {
+            wrappedListProperty.removeValueChangeListener(changeAdapter);
+            if (wrappedListProperty instanceof Disposable) {
+                ((Disposable) wrappedListProperty).dispose();
+            }
+            wrappedListProperty = null;
+        }
+    }
+
+    /**
+     * @see ReadableListProperty#size()
+     */
+    @Override
+    public int size() {
+        int size;
+        if (wrappedListProperty == null) {
+            size = 0;
+        } else {
+            size = wrappedListProperty.size();
+        }
+        return size;
+    }
+
+    /**
+     * @see ReadableListProperty#isEmpty()
+     */
+    @Override
+    public boolean isEmpty() {
+        return (wrappedListProperty == null) || wrappedListProperty.isEmpty();
+    }
+
+    /**
+     * @see ReadableListProperty#get(int)
+     */
+    @Override
+    public R get(int index) {
+        R value;
+        if (wrappedListProperty == null) {
+            value = null;
+        } else {
+            value = wrappedListProperty.get(index);
+        }
+        return value;
+    }
+
+    /**
+     * @see ReadableListProperty#contains(Object)
+     */
+    @Override
+    public boolean contains(Object item) {
+        return (wrappedListProperty != null) && wrappedListProperty.contains(item);
+    }
+
+    /**
+     * @see ReadableListProperty#containsAll(Collection)
+     */
+    @Override
+    public boolean containsAll(Collection<?> items) {
+        return (wrappedListProperty != null) && wrappedListProperty.containsAll(items);
+    }
+
+    /**
+     * @see ReadableListProperty#asUnmodifiableList()
+     */
+    @Override
+    public List<R> asUnmodifiableList() {
+        List<R> unmodifiable;
+        if (wrappedListProperty == null) {
+            unmodifiable = Collections.emptyList();
+        } else {
+            // Safe to cast
+            unmodifiable = (List<R>) wrappedListProperty.asUnmodifiableList();
+        }
+        return unmodifiable;
+    }
+
+    /**
+     * @see ReadableListProperty#iterator()
+     */
+    @Override
+    public Iterator<R> iterator() {
+        return asUnmodifiableList().iterator();
+    }
 
     /**
      * Entity responsible for forwarding the change events from the wrapped list property to the listeners of the
@@ -55,7 +170,9 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListValueChangeListener#valuesAdded(ReadableListProperty, int, List)
          */
         @Override
-        public void valuesAdded(ReadableListProperty<R> listProperty, int startIndex, List<R> newValues) {
+        public void valuesAdded(ReadableListProperty<? extends R> listProperty,
+                                int startIndex,
+                                List<? extends R> newValues) {
             doNotifyListenersOfAddedValues(startIndex, newValues);
         }
 
@@ -63,8 +180,10 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListValueChangeListener#valuesChanged(ReadableListProperty, int, List, List)
          */
         @Override
-        public void valuesChanged(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues, List<R>
-                newValues) {
+        public void valuesChanged(ReadableListProperty<? extends R> listProperty,
+                                  int startIndex,
+                                  List<? extends R> oldValues,
+                                  List<? extends R> newValues) {
             doNotifyListenersOfChangedValues(startIndex, oldValues, newValues);
         }
 
@@ -72,93 +191,10 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListValueChangeListener#valuesRemoved(ReadableListProperty, int, List)
          */
         @Override
-        public void valuesRemoved(ReadableListProperty<R> listProperty, int startIndex, List<R> oldValues) {
+        public void valuesRemoved(ReadableListProperty<? extends R> listProperty,
+                                  int startIndex,
+                                  List<? extends R> oldValues) {
             doNotifyListenersOfRemovedValues(startIndex, oldValues);
         }
-    }
-
-    /**
-     * Wrapped list property.
-     */
-    private final ReadableListProperty<R> wrappedListProperty;
-
-    /**
-     * Listener to changes on the wrapped property.
-     */
-    private final ListValueChangeListener<R> changeAdapter = new ListValueChangeForwarder();
-
-    /**
-     * Constructor specifying the list property to be wrapped, typically a list property that is both readable and
-     * writable.
-     *
-     * @param wrappedListProperty List property to be wrapped.
-     */
-    public ReadOnlyListPropertyWrapper(ReadableListProperty<R> wrappedListProperty) {
-        this.wrappedListProperty = wrappedListProperty;
-        this.wrappedListProperty.addValueChangeListener(changeAdapter);
-    }
-
-    /**
-     * @see Disposable#dispose()
-     */
-    @Override
-    public void dispose() {
-        wrappedListProperty.removeValueChangeListener(changeAdapter);
-    }
-
-    /**
-     * @see ReadableListProperty#size()
-     */
-    @Override
-    public int size() {
-        return wrappedListProperty.size();
-    }
-
-    /**
-     * @see ReadableListProperty#isEmpty()
-     */
-    @Override
-    public boolean isEmpty() {
-        return wrappedListProperty.isEmpty();
-    }
-
-    /**
-     * @see ReadableListProperty#get(int)
-     */
-    @Override
-    public R get(int index) {
-        return wrappedListProperty.get(index);
-    }
-
-    /**
-     * @see ReadableListProperty#contains(Object)
-     */
-    @Override
-    public boolean contains(Object item) {
-        return wrappedListProperty.contains(item);
-    }
-
-    /**
-     * @see ReadableListProperty#containsAll(Collection)
-     */
-    @Override
-    public boolean containsAll(Collection<?> items) {
-        return wrappedListProperty.containsAll(items);
-    }
-
-    /**
-     * @see ReadableListProperty#asUnmodifiableList()
-     */
-    @Override
-    public List<R> asUnmodifiableList() {
-        return wrappedListProperty.asUnmodifiableList();
-    }
-
-    /**
-     * @see ReadableListProperty#iterator()
-     */
-    @Override
-    public Iterator<R> iterator() {
-        return asUnmodifiableList().iterator();
     }
 }

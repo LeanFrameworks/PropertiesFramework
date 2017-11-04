@@ -32,11 +32,10 @@ import com.github.leanframeworks.propertiesframework.api.property.ReadableWritab
  * Abstract implementation of a {@link ReadableWritableMapProperty}.
  *
  * @param <K> Type of keys maintained by this map property.
- * @param <R> Type of mapped values that can be read from this map property.
- * @param <W> Type of values that can be written to this map property.
+ * @param <V> Type of mapped values that can be read from and written to this map property.
  */
-public abstract class AbstractReadableWritableMapProperty<K, R, W> extends AbstractReadableMapProperty<K, R>
-        implements ReadableWritableMapProperty<K, R, W> {
+public abstract class AbstractReadableWritableMapProperty<K, V> extends AbstractReadableMapProperty<K, V>
+        implements ReadableWritableMapProperty<K, V> {
 
     /**
      * {@inheritDoc}
@@ -52,7 +51,7 @@ public abstract class AbstractReadableWritableMapProperty<K, R, W> extends Abstr
      *
      * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty(MapValueChangeListener[])
      */
-    public AbstractReadableWritableMapProperty(MapValueChangeListener<K, R>... listeners) {
+    public AbstractReadableWritableMapProperty(MapValueChangeListener<? super K, ? super V>... listeners) {
         super(listeners);
     }
 }

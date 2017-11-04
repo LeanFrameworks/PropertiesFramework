@@ -41,18 +41,6 @@ import java.beans.PropertyChangeListener;
  */
 public class AncestorProperty extends AbstractReadableProperty<Container> implements Disposable {
 
-    private class PropertyChangeAdapter implements PropertyChangeListener {
-
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            if (evt.getNewValue() instanceof Container) {
-                setValue((Container) evt.getNewValue());
-            } else {
-                setValue(null);
-            }
-        }
-    }
-
     private final Component component;
 
     private final PropertyChangeAdapter propertyChangeAdapter = new PropertyChangeAdapter();
@@ -86,6 +74,18 @@ public class AncestorProperty extends AbstractReadableProperty<Container> implem
             Container oldValue = this.value;
             this.value = value;
             maybeNotifyListeners(oldValue, value);
+        }
+    }
+
+    private class PropertyChangeAdapter implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getNewValue() instanceof Container) {
+                setValue((Container) evt.getNewValue());
+            } else {
+                setValue(null);
+            }
         }
     }
 }

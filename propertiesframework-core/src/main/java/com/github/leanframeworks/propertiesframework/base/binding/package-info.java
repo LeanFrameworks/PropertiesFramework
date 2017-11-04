@@ -24,6 +24,6 @@
  */
 
 /**
- * This package contains the base implementation of property binders and the resulting bonds.
+ * This package contains the base implementation of property binders and the resulting bindings.
  */
 package com.github.leanframeworks.propertiesframework.base.binding;

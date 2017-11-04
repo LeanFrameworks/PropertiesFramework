@@ -38,7 +38,7 @@ import com.github.leanframeworks.propertiesframework.base.property.AbstractReada
  *
  * @param <T> Type of data that can be read from and written to this property.
  */
-public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
+public class SimpleProperty<T> extends AbstractReadableWritableProperty<T> {
 
     /**
      * Property value.
@@ -46,7 +46,7 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
     private T value = null;
 
     /**
-     * Default constructor using null as the initial property value.
+     * Constructor using null as the initial property value.
      */
     public SimpleProperty() {
         this(null);
@@ -58,6 +58,7 @@ public class SimpleProperty<T> extends AbstractReadableWritableProperty<T, T> {
      * @param value Initial property value.
      */
     public SimpleProperty(T value) {
+        super();
         this.value = value;
     }
 

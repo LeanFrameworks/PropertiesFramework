@@ -45,7 +45,7 @@ public class ToListTransformer<E, I extends Collection<E>> implements Transforme
         } else if (input instanceof ArrayList<?>) {
             list = (ArrayList<E>) input;
         } else {
-            list = new ArrayList<E>(input);
+            list = new ArrayList<>(input);
         }
 
         return list;

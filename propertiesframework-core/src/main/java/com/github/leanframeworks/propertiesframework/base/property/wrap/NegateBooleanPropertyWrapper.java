@@ -26,7 +26,6 @@
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
 import com.github.leanframeworks.propertiesframework.base.transform.NegateBooleanTransformer;
@@ -36,28 +35,7 @@ import com.github.leanframeworks.propertiesframework.base.transform.NegateBoolea
  *
  * @see NegateBooleanTransformer
  */
-public class NegateBooleanPropertyWrapper extends AbstractReadableProperty<Boolean> {
-
-    /**
-     * Listener to changes of the value of the wrapped property.
-     */
-    private class ValueChangeAdapter implements ValueChangeListener<Boolean> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<Boolean> property, Boolean oldValue, Boolean newValue) {
-            Boolean transformedOldValue = transformer.transform(oldValue);
-            Boolean transformedNewValue = transformer.transform(newValue);
-            maybeNotifyListeners(transformedOldValue, transformedNewValue);
-        }
-    }
-
-    /**
-     * Wrapped property whose value is to be negated.
-     */
-    private final ReadableProperty<Boolean> wrappedProperty;
+public class NegateBooleanPropertyWrapper extends AbstractReadablePropertyWrapper<Boolean> {
 
     /**
      * Transformer used to negate the boolean property.
@@ -68,26 +46,39 @@ public class NegateBooleanPropertyWrapper extends AbstractReadableProperty<Boole
      * Constructor specifying the property to be wrapped and negated.
      * <p>
      * The value representing the negation of a null value will be a null value.
+     * <p>
+     * Finally, the wrapped property will be disposed whenever this property is disposed.
      *
      * @param wrappedProperty Property to be wrapped and negated.
      */
     public NegateBooleanPropertyWrapper(ReadableProperty<Boolean> wrappedProperty) {
-        this.wrappedProperty = wrappedProperty;
-        this.wrappedProperty.addValueChangeListener(new ValueChangeAdapter());
-        this.transformer = new NegateBooleanTransformer();
+        this(wrappedProperty, null);
     }
 
     /**
      * Constructor specifying the property be wrapped and negated, and the value representing the negation of a null
      * value.
+     * <p>
+     * The wrapped property will be disposed whenever this property is disposed.
      *
      * @param wrappedProperty Property to be wrapped and negated.
      * @param nullNegation    Value representing the negation of a null value.
      */
     public NegateBooleanPropertyWrapper(ReadableProperty<Boolean> wrappedProperty, Boolean nullNegation) {
-        this.wrappedProperty = wrappedProperty;
-        this.wrappedProperty.addValueChangeListener(new ValueChangeAdapter());
+        super(wrappedProperty);
         this.transformer = new NegateBooleanTransformer(nullNegation);
+    }
+
+    /**
+     * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     */
+    @Override
+    protected void wrappedPropertyValueChanged(ReadableProperty<? extends Boolean> property,
+                                               Boolean oldValue,
+                                               Boolean newValue) {
+        Boolean transformedOldValue = transformer.transform(oldValue);
+        Boolean transformedNewValue = transformer.transform(newValue);
+        maybeNotifyListeners(transformedOldValue, transformedNewValue);
     }
 
     /**
@@ -95,6 +86,15 @@ public class NegateBooleanPropertyWrapper extends AbstractReadableProperty<Boole
      */
     @Override
     public Boolean getValue() {
-        return transformer.transform(wrappedProperty.getValue());
+        Boolean result;
+
+        if (wrappedProperty == null) {
+            result = null;
+        } else {
+            result = transformer.transform(wrappedProperty.getValue());
+        }
+
+        return result;
     }
 }
+

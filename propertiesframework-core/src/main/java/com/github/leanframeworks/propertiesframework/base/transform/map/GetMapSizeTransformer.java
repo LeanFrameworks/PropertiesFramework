@@ -31,16 +31,14 @@ import java.util.Map;
 
 /**
  * Transformer getting a map as input and returning its size as output.
- *
- * @param <I> Type of map to get the size from.
  */
-public class GetMapSizeTransformer<I extends Map<?, ?>> implements Transformer<I, Integer> {
+public class GetMapSizeTransformer implements Transformer<Map<?, ?>, Integer> {
 
     /**
      * @see Transformer#transform(Object)
      */
     @Override
-    public Integer transform(I input) {
+    public Integer transform(Map<?, ?> input) {
         return input.size();
     }
 }

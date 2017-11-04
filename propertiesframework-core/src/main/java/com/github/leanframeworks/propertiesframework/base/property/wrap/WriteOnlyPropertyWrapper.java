@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.WritableProperty;
 
 /**
@@ -36,12 +37,12 @@ import com.github.leanframeworks.propertiesframework.api.property.WritableProper
  *
  * @param <W> Type of data that can be written to the wrapped property.
  */
-public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W> {
+public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W>, Disposable {
 
     /**
      * Wrapped property.
      */
-    private final WritableProperty<W> wrappedProperty;
+    private WritableProperty<W> wrappedProperty;
 
     /**
      * Constructor specifying the property to be wrapped, typically a property that is both readable and writable.
@@ -53,10 +54,23 @@ public class WriteOnlyPropertyWrapper<W> implements WritableProperty<W> {
     }
 
     /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedProperty instanceof Disposable) {
+            ((Disposable) wrappedProperty).dispose();
+        }
+        wrappedProperty = null;
+    }
+
+    /**
      * @see WritableProperty#setValue(Object)
      */
     @Override
     public void setValue(W value) {
-        wrappedProperty.setValue(value);
+        if (wrappedProperty != null) {
+            wrappedProperty.setValue(value);
+        }
     }
 }

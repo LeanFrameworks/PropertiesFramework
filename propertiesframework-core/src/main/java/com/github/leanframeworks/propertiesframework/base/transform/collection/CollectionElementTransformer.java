@@ -51,14 +51,14 @@ public class CollectionElementTransformer<I, O> implements Transformer<Collectio
      * Transformer to be used to transform each element of the collection given in {@link #transform(Collection)}
      * method.
      */
-    private final Transformer<I, O> elementTransformer;
+    private final Transformer<? super I, O> elementTransformer;
 
     /**
      * Default constructor using the {@link CastTransformer} to transform each element of the collection given in {@link
      * #transform(Collection)} method.
      */
     public CollectionElementTransformer() {
-        this(new CastTransformer<I, O>());
+        this(new CastTransformer<>());
     }
 
     /**
@@ -68,7 +68,7 @@ public class CollectionElementTransformer<I, O> implements Transformer<Collectio
      * @param elementTransformer Transformer to be used to transform each element of the collection given in {@link
      *                           #transform(Collection)} method.
      */
-    public CollectionElementTransformer(Transformer<I, O> elementTransformer) {
+    public CollectionElementTransformer(Transformer<? super I, O> elementTransformer) {
         this.elementTransformer = elementTransformer;
     }
 
@@ -80,7 +80,7 @@ public class CollectionElementTransformer<I, O> implements Transformer<Collectio
         List<O> transformedCollection = null;
 
         if (input != null) {
-            transformedCollection = new ArrayList<O>();
+            transformedCollection = new ArrayList<>();
             for (I element : input) {
                 transformedCollection.add(elementTransformer.transform(element));
             }

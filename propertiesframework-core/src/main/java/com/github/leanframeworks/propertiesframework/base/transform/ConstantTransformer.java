@@ -32,15 +32,14 @@ import com.github.leanframeworks.propertiesframework.base.property.simple.Simple
 /**
  * Transformer always returning the specific value.
  *
- * @param <I> Type of the input object to be transformed.
  * @param <O> Type of the output object after transformation.
  */
-public class ConstantTransformer<I, O> implements Transformer<I, O> {
+public class ConstantTransformer<O> implements Transformer<Object, O> {
 
     /**
      * Property holding the constant output value.
      */
-    private final ReadableWritableProperty<O, O> outputProperty;
+    private final ReadableWritableProperty<O> outputProperty;
 
     /**
      * Default constructor using null as the output constant.
@@ -48,28 +47,26 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
      * @see #getOutputProperty()
      */
     public ConstantTransformer() {
-        this(new SimpleProperty<O>(null));
+        this(new SimpleProperty<>(null));
     }
 
     /**
      * Constructor specifying the constant output value.
      *
      * @param output Constant output value.
-     *
      * @see #getOutputProperty()
      */
     public ConstantTransformer(O output) {
-        this(new SimpleProperty<O>(output));
+        this(new SimpleProperty<>(output));
     }
 
     /**
      * Constructor specifying a property holding the constant output value.
      *
      * @param outputProperty Property holding the constant output value.
-     *
      * @see #getOutputProperty()
      */
-    public ConstantTransformer(ReadableWritableProperty<O, O> outputProperty) {
+    public ConstantTransformer(ReadableWritableProperty<O> outputProperty) {
         this.outputProperty = outputProperty;
     }
 
@@ -78,7 +75,7 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
      *
      * @return Property holding the constant output value.
      */
-    public ReadableWritableProperty<O, O> getOutputProperty() {
+    public ReadableWritableProperty<O> getOutputProperty() {
         return outputProperty;
     }
 
@@ -86,7 +83,7 @@ public class ConstantTransformer<I, O> implements Transformer<I, O> {
      * @see Transformer#transform(Object)
      */
     @Override
-    public O transform(I input) {
+    public O transform(Object input) {
         return outputProperty.getValue();
     }
 }

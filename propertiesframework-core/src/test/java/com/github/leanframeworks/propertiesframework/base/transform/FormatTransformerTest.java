@@ -46,7 +46,7 @@ public class FormatTransformerTest {
 
     @Test
     public void testNull() {
-        Transformer<Object, String> transformer = new FormatTransformer<Object>(new DecimalFormat("00.00"));
+        Transformer<Object, String> transformer = new FormatTransformer(new DecimalFormat("00.00"));
 
         assertEquals(null, transformer.transform(null));
         assertEquals(null, transformer.transform(new Object()));
@@ -54,7 +54,7 @@ public class FormatTransformerTest {
 
     @Test
     public void testNonNull() {
-        Transformer<Object, String> transformer = new FormatTransformer<Object>(new DecimalFormat("00.00"));
+        Transformer<Object, String> transformer = new FormatTransformer(new DecimalFormat("00.00"));
 
         assertEquals("03.10", transformer.transform(3.1));
         assertEquals("123.56", transformer.transform(123.555));

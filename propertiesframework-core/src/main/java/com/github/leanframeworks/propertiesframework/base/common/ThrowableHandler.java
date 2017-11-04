@@ -23,37 +23,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.leanframeworks.propertiesframework.base.transform;
-
-import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
+package com.github.leanframeworks.propertiesframework.base.common;
 
 /**
- * @deprecated Use {@link com.github.leanframeworks.propertiesframework.base.transform.collection.CollectionElementTransformer}
- * instead.
+ * Throwable handler, typically used for unchecked exception (runtime exceptions and errors).
+ *
+ * @param <T> Type of throwable to be handled.
  */
-@Deprecated
-public class CollectionElementTransformer<I, O> extends com.github.leanframeworks.propertiesframework.base.transform.collection
-                                                                .CollectionElementTransformer<I, O> {
+public interface ThrowableHandler<T extends Throwable> {
 
     /**
-     * {@inheritDoc}
+     * Handles the specified exception or error.
      *
-     * @deprecated Use {@link com.github.leanframeworks.propertiesframework.base.transform.collection
-     * .CollectionElementTransformer#CollectionElementTransformer()} instead.
+     * @param throwable Throwable to be handled.
      */
-    @Deprecated
-    public CollectionElementTransformer() {
-        super();
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @deprecated Use {@link com.github.leanframeworks.propertiesframework.base.transform.collection
-     * .CollectionElementTransformer#CollectionElementTransformer(Transformer)} instead.
-     */
-    @Deprecated
-    public CollectionElementTransformer(Transformer<I, O> elementTransformer) {
-        super(elementTransformer);
-    }
+    void handleThrowable(T throwable);
 }

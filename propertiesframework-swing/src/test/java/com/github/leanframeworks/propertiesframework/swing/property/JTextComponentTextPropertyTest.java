@@ -39,6 +39,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see JTextComponentTextProperty
@@ -49,7 +50,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromPropertyWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -68,7 +69,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromComponentWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -87,7 +88,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromPropertyWithInitialText() throws BadLocationException {
         JTextComponent component = new JTextField("initial text");
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -106,7 +107,7 @@ public class JTextComponentTextPropertyTest {
     @Test
     public void testNonNullFromComponentWithInitialText() throws BadLocationException {
         JTextComponent component = new JTextField("initial text");
-        ReadableWritableProperty<String, String> property = new JTextComponentTextProperty(component);
+        ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -119,5 +120,31 @@ public class JTextComponentTextPropertyTest {
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, "", "new text");
         verify(listenerMock, times(2)).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+    }
+
+    @Test
+    public void testDispose() {
+        JTextComponent component = new JTextField("initial text");
+        JTextComponentTextProperty property = new JTextComponentTextProperty(component);
+        ValueChangeListener<String> listener = mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        component.setText("new text");
+        component.setText("another one");
+
+        property.dispose();
+
+        component.setText("yet another text");
+        component.setText("");
+
+        property.dispose();
+        property.dispose();
+        property.dispose();
+
+        verify(listener).valueChanged(property, "initial text", "");
+        verify(listener).valueChanged(property, "", "new text");
+        verify(listener).valueChanged(property, "new text", "");
+        verify(listener).valueChanged(property, "", "another one");
+        verifyNoMoreInteractions(listener);
     }
 }

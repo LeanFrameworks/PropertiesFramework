@@ -32,12 +32,10 @@ package com.github.leanframeworks.propertiesframework.api.property;
  * the PropertiesFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
  * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
- * @param <R> Type of data that can be read from this property.
- * @param <W> Type of data that can be written to this property.
- *
+ * @param <V> Type of data that can be read from and written to this property.
  * @see ReadableProperty
  * @see WritableProperty
  */
-public interface ReadableWritableProperty<R, W> extends ReadableProperty<R>, WritableProperty<W> {
+public interface ReadableWritableProperty<V> extends ReadableProperty<V>, WritableProperty<V> {
     // Nothing more to be done
 }

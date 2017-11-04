@@ -46,7 +46,7 @@ public class JButtonTextPropertyTest {
     @Test
     public void testNullFromProperty() {
         JButton button = new JButton("Text");
-        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
+        ReadableWritableProperty<String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
@@ -63,7 +63,7 @@ public class JButtonTextPropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JButton button = new JButton("Text");
-        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
+        ReadableWritableProperty<String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
@@ -80,7 +80,7 @@ public class JButtonTextPropertyTest {
     @Test
     public void testNullFromComponent() {
         JButton button = new JButton("Text");
-        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
+        ReadableWritableProperty<String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 
@@ -97,7 +97,7 @@ public class JButtonTextPropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JButton button = new JButton("Text");
-        ReadableWritableProperty<String, String> textProperty = new JButtonTextProperty(button);
+        ReadableWritableProperty<String> textProperty = new JButtonTextProperty(button);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         textProperty.addValueChangeListener(listenerMock);
 

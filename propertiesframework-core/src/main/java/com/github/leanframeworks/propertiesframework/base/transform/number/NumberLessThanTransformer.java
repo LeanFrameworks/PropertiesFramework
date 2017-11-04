@@ -33,21 +33,17 @@ import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
  * Note that if the input data and the specified value are both null or both NaN, they will be considered equal.
  * Everything is considered bigger than null.
  *
- * @param <I> Type of number handled by this transformer.<br>
- *            It is not strictly required for the internal logic of the transformer, but it helps in reducing
- *            compilation warnings and/or errors.
- *
  * @see Transformer
  */
-public class NumberLessThanTransformer<I extends Number> implements Transformer<I, Boolean> {
+public class NumberLessThanTransformer implements Transformer<Number, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private I maximumValue = null;
+    private Number maximumValue = null;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public NumberLessThanTransformer() {
         // Nothing to be done
@@ -58,7 +54,7 @@ public class NumberLessThanTransformer<I extends Number> implements Transformer<
      *
      * @param maximumValue Value to which the data is to be compared.
      */
-    public NumberLessThanTransformer(I maximumValue) {
+    public NumberLessThanTransformer(Number maximumValue) {
         setMaximumValue(maximumValue);
     }
 
@@ -67,7 +63,7 @@ public class NumberLessThanTransformer<I extends Number> implements Transformer<
      *
      * @return Value to which the data is compared.
      */
-    public Number getMaximumValue() {
+    public java.lang.Number getMaximumValue() {
         return maximumValue;
     }
 
@@ -76,7 +72,7 @@ public class NumberLessThanTransformer<I extends Number> implements Transformer<
      *
      * @param maximumValue Value to which the data is to be compared.
      */
-    public void setMaximumValue(I maximumValue) {
+    public void setMaximumValue(Number maximumValue) {
         this.maximumValue = maximumValue;
     }
 
@@ -85,7 +81,7 @@ public class NumberLessThanTransformer<I extends Number> implements Transformer<
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean transform(I input) {
+    public Boolean transform(Number input) {
         boolean valid;
 
         if ((input == null) && (maximumValue == null)) {

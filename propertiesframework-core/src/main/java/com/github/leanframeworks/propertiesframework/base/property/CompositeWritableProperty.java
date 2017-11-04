@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.WritableProperty;
 
 import java.util.ArrayList;
@@ -38,12 +39,12 @@ import java.util.Collections;
  *
  * @param <W> Type of data that can be set on the sub-properties.
  */
-public class CompositeWritableProperty<W> implements WritableProperty<W> {
+public class CompositeWritableProperty<W> implements WritableProperty<W>, Disposable {
 
     /**
      * Sub-properties.
      */
-    private final Collection<WritableProperty<W>> properties = new ArrayList<WritableProperty<W>>();
+    private final Collection<WritableProperty<? super W>> properties = new ArrayList<>();
 
     /**
      * Last value set.
@@ -72,7 +73,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      *
      * @param properties Sub-properties to be added.
      */
-    public CompositeWritableProperty(Collection<WritableProperty<W>> properties) {
+    public CompositeWritableProperty(Collection<WritableProperty<? super W>> properties) {
         super();
         this.properties.addAll(properties);
         setValue(value);
@@ -95,7 +96,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      *
      * @param properties Sub-properties to be added.
      */
-    public CompositeWritableProperty(WritableProperty<W>... properties) {
+    public CompositeWritableProperty(WritableProperty<? super W>... properties) {
         super();
         Collections.addAll(this.properties, properties);
         setValue(value);
@@ -107,10 +108,23 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      * @param value      Initial value.
      * @param properties Sub-properties to be added.
      */
-    public CompositeWritableProperty(W value, WritableProperty<W>... properties) {
+    public CompositeWritableProperty(W value, WritableProperty<? super W>... properties) {
         super();
         Collections.addAll(this.properties, properties);
         setValue(value);
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for (WritableProperty<? super W> property : properties) {
+            if (property instanceof Disposable) {
+                ((Disposable) property).dispose();
+            }
+        }
+        properties.clear();
     }
 
     /**
@@ -118,8 +132,8 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      *
      * @return Collection containing all sub-properties.
      */
-    public Collection<WritableProperty<W>> getProperties() {
-        return new ArrayList<WritableProperty<W>>(properties);
+    public Collection<WritableProperty<? super W>> getProperties() {
+        return new ArrayList<>(properties);
     }
 
     /**
@@ -127,7 +141,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      *
      * @param property Sub-property to be added.
      */
-    public void addProperty(WritableProperty<W> property) {
+    public void addProperty(WritableProperty<? super W> property) {
         properties.add(property);
         setValue(value);
     }
@@ -137,7 +151,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
      *
      * @param property Sub-property to be removed.
      */
-    public void removeProperty(WritableProperty<W> property) {
+    public void removeProperty(WritableProperty<? super W> property) {
         properties.remove(property);
     }
 
@@ -157,7 +171,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W> {
     public void setValue(W value) {
         this.value = value;
 
-        for (WritableProperty<W> property : properties) {
+        for (WritableProperty<? super W> property : properties) {
             property.setValue(value);
         }
     }

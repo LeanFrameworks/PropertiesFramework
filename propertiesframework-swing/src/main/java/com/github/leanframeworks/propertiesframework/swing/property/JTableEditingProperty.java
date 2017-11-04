@@ -35,7 +35,7 @@ import java.beans.PropertyChangeListener;
 /**
  * Read-only property stating whether a specified table is in the editing state or not.
  */
-public class JTableEditingProperty extends AbstractReadableProperty<Boolean> implements Disposable {
+public class JTableEditingProperty extends AbstractReadableProperty<Boolean> {
 
     /**
      * Name of the bean property to be used to track changes of the editor in the table.
@@ -52,7 +52,7 @@ public class JTableEditingProperty extends AbstractReadableProperty<Boolean> imp
     /**
      * Table subject to edition.
      */
-    private final JTable table;
+    private JTable table;
 
     /**
      * Current value of the
@@ -76,7 +76,11 @@ public class JTableEditingProperty extends AbstractReadableProperty<Boolean> imp
      */
     @Override
     public void dispose() {
-        table.removePropertyChangeListener(EDITING_BEAN_PROPERTY_NAME, editingBeanPropertyAdapter);
+        super.dispose();
+        if (table != null) {
+            table.removePropertyChangeListener(EDITING_BEAN_PROPERTY_NAME, editingBeanPropertyAdapter);
+            table = null;
+        }
     }
 
     /**

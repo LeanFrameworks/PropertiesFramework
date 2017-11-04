@@ -41,12 +41,12 @@ import java.util.ListIterator;
  *
  * @param <T> Type of values handled by this list property and the proxied list.
  */
-public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<T, T> implements List<T> {
+public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<T> implements List<T> {
 
     /**
      * Proxied list.
      */
-    private final List<T> internal = new ArrayList<T>();
+    private final List<T> internal = new ArrayList<>();
 
     /**
      * Read-only version of the proxied list.
@@ -54,7 +54,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     private final List<T> unmodifiable = Collections.unmodifiableList(internal);
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public SimpleListProperty() {
         super();
@@ -150,8 +150,8 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
         boolean added = internal.add(item);
 
         if (added) {
-            doNotifyListenersOfAddedValues(internal.size() - 1, Collections.unmodifiableList(Collections.singletonList
-                    (item)));
+            doNotifyListenersOfAddedValues(internal.size() - 1,
+                    Collections.unmodifiableList(Collections.singletonList(item)));
         }
 
         return added;
@@ -233,7 +233,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      */
     @Override
     public boolean retainAll(Collection<?> items) {
-        Collection<T> toBeRemoved = new ArrayList<T>();
+        Collection<T> toBeRemoved = new ArrayList<>();
 
         for (T item : internal) {
             if (!items.contains(item)) {
@@ -251,7 +251,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
     @Override
     public void clear() {
         if (!internal.isEmpty()) {
-            List<T> removed = new ArrayList<T>(internal);
+            List<T> removed = new ArrayList<>(internal);
             internal.clear();
             doNotifyListenersOfRemovedValues(0, removed);
         }

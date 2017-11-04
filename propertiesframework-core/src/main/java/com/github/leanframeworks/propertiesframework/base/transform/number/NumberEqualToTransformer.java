@@ -32,21 +32,17 @@ import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
  * <p>
  * Note that if the input number and the specified value are both null, or both NaN, they will be considered equal.
  *
- * @param <I> Type of number handled by this transformer.<br>
- *            It is not strictly required for the internal logic of the transformer, but it helps in reducing
- *            compilation warnings and/or errors.
- *
  * @see Transformer
  */
-public class NumberEqualToTransformer<I extends Number> implements Transformer<I, Boolean> {
+public class NumberEqualToTransformer implements Transformer<Number, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private I exactValue = null;
+    private Number exactValue = null;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public NumberEqualToTransformer() {
         // Nothing to be done
@@ -57,7 +53,7 @@ public class NumberEqualToTransformer<I extends Number> implements Transformer<I
      *
      * @param exactValue Value to which the data is to be compared.
      */
-    public NumberEqualToTransformer(I exactValue) {
+    public NumberEqualToTransformer(Number exactValue) {
         setExactValue(exactValue);
     }
 
@@ -66,7 +62,7 @@ public class NumberEqualToTransformer<I extends Number> implements Transformer<I
      *
      * @return Value to which the data is compared.
      */
-    public I getExactValue() {
+    public Number getExactValue() {
         return exactValue;
     }
 
@@ -75,7 +71,7 @@ public class NumberEqualToTransformer<I extends Number> implements Transformer<I
      *
      * @param exactValue Value to which the data is to be compared.
      */
-    public void setExactValue(I exactValue) {
+    public void setExactValue(Number exactValue) {
         this.exactValue = exactValue;
     }
 
@@ -84,7 +80,7 @@ public class NumberEqualToTransformer<I extends Number> implements Transformer<I
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean transform(I input) {
+    public Boolean transform(Number input) {
         boolean valid;
 
         if ((input == null) && (exactValue == null)) {

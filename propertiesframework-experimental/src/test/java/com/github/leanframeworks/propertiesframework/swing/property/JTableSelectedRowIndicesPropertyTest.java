@@ -57,9 +57,27 @@ public class JTableSelectedRowIndicesPropertyTest {
 
     private ListSelectionModel selectionModel;
 
-    private ReadableWritableProperty<List<Integer>, List<Integer>> property;
+    private ReadableWritableProperty<List<Integer>> property;
 
     private ValueChangeListener<List<Integer>> listenerMock;
+
+    private static <T> boolean haveEqualElements(Collection<T> first, Collection<T> second) {
+        boolean match = false;
+
+        // First, check size
+        if (first.size() == second.size()) {
+
+            // Then, check each element
+            match = true;
+            List<T> firstList = new ArrayList<>(first);
+            List<T> secondList = new ArrayList<>(second);
+            for (int i = 0; (i < first.size()) && match; i++) {
+                match = firstList.get(i).equals(secondList.get(i));
+            }
+        }
+
+        return match;
+    }
 
     private void assertListEquals(List<Integer> expected, List<Integer> actual) {
         assertEquals(expected.size(), actual.size());
@@ -91,7 +109,7 @@ public class JTableSelectedRowIndicesPropertyTest {
         property = new JTableSelectedRowIndicesProperty(table);
         listenerMock = (ValueChangeListener<List<Integer>>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
-        property.addValueChangeListener(new PrintStreamValueChangeAdapter<List<Integer>>("SELECTION"));
+        property.addValueChangeListener(new PrintStreamValueChangeAdapter<>("SELECTION"));
     }
 
     @Test
@@ -116,21 +134,13 @@ public class JTableSelectedRowIndicesPropertyTest {
 
         // Check fired events
         verify(listenerMock).valueChanged(eq(property), //
-                argThat(new CollectionMatcher<Integer>(Collections.<Integer>emptyList())), //
-                argThat(new CollectionMatcher<Integer>(Arrays.asList(0, 1))));
+                argThat(new CollectionMatcher<>(Collections.emptyList())), //
+                argThat(new CollectionMatcher<>(Arrays.asList(0, 1))));
 //        verify(listenerMock).valueChanged(property, 2, 3);
 //        verify(listenerMock).valueChanged(property, 3, 2);
 //        verify(listenerMock).valueChanged(property, 2, 1);
 //        verify(listenerMock).valueChanged(property, 1, 0);
 //        verify(listenerMock, times(5)).valueChanged(any(JTableSelectedRowIndicesProperty.class), anyInt(), anyInt());
-    }
-
-    private void verifyPropertyValue() {
-        int[] selectedRows = table.getSelectedRows();
-        assertEquals(selectedRows.length, property.getValue().size());
-        for (int i = 0; i < selectedRows.length; i++) {
-            assertEquals(Integer.valueOf(selectedRows[i]), property.getValue().get(i));
-        }
     }
 
 //    @Test
@@ -169,13 +179,21 @@ public class JTableSelectedRowIndicesPropertyTest {
 //        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowIndicesProperty.class), anyInt(), anyInt());
 //    }
 
+    private void verifyPropertyValue() {
+        int[] selectedRows = table.getSelectedRows();
+        assertEquals(selectedRows.length, property.getValue().size());
+        for (int i = 0; i < selectedRows.length; i++) {
+            assertEquals(Integer.valueOf(selectedRows[i]), property.getValue().get(i));
+        }
+    }
+
     private static class CollectionMatcher<T> extends ArgumentMatcher<List<T>> {
 
         private final List<T> refElements;
 
         public CollectionMatcher(List<T> refElements) {
             super();
-            this.refElements = new ArrayList<T>(refElements);
+            this.refElements = new ArrayList<>(refElements);
         }
 
         @SuppressWarnings("unchecked")
@@ -190,26 +208,9 @@ public class JTableSelectedRowIndicesPropertyTest {
             return match;
         }
 
+        @Override
         public void describeTo(Description description) {
             // Do nothing
         }
-    }
-
-    private static <T> boolean haveEqualElements(Collection<T> first, Collection<T> second) {
-        boolean match = false;
-
-        // First, check size
-        if (first.size() == second.size()) {
-
-            // Then, check each element
-            match = true;
-            List<T> firstList = new ArrayList<T>(first);
-            List<T> secondList = new ArrayList<T>(second);
-            for (int i = 0; (i < first.size()) && match; i++) {
-                match = firstList.get(i).equals(secondList.get(i));
-            }
-        }
-
-        return match;
     }
 }

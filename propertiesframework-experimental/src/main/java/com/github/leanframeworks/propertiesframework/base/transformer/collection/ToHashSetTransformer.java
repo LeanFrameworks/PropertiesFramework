@@ -44,7 +44,7 @@ public class ToHashSetTransformer<E> implements Transformer<Collection<E>, HashS
         } else if (input instanceof HashSet<?>) {
             set = (HashSet<E>) input;
         } else {
-            set = new HashSet<E>(input);
+            set = new HashSet<>(input);
         }
 
         return set;

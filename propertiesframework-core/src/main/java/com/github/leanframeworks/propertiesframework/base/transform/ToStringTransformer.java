@@ -29,11 +29,8 @@ import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 
 /**
  * Transformer using the {@link Object#toString()} method of the given objects.
- *
- * @param <I> Type of input to be transformed.<br>
- *            It is needed only to avoid compilation warnings.
  */
-public class ToStringTransformer<I> implements Transformer<I, String> {
+public class ToStringTransformer implements Transformer<Object, String> {
 
     /**
      * Default value to be returned in case null is passed to the {@link #transform(Object)} method.
@@ -67,7 +64,7 @@ public class ToStringTransformer<I> implements Transformer<I, String> {
      * @see Transformer#transform(Object)
      */
     @Override
-    public String transform(I input) {
+    public String transform(Object input) {
         String str;
 
         if (input == null) {

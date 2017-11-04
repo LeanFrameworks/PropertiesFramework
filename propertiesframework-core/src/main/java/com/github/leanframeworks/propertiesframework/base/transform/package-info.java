@@ -24,7 +24,7 @@
  */
 
 /**
- * This package contains core implementations of interface {@link com.github.leanframeworks.propertiesframework.api.transform
- * .Transformer}.
+ * This package contains core implementations of interface {@link
+ * com.github.leanframeworks.propertiesframework.api.transform.Transformer}.
  */
 package com.github.leanframeworks.propertiesframework.base.transform;

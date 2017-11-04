@@ -49,7 +49,7 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testDefaultConstructor() {
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -61,12 +61,12 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testConstructorWithItems() {
-        Set<Integer> ref = new HashSet<Integer>();
+        Set<Integer> ref = new HashSet<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(ref);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(ref);
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -80,7 +80,7 @@ public class SimpleSetPropertyTest {
     public void testConstructorWithListeners() {
         SetValueChangeListener<Integer> listener1 = mock(SetValueChangeListener.class);
         SetValueChangeListener<Integer> listener2 = mock(SetValueChangeListener.class);
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(listener1, listener2);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(listener1, listener2);
 
         property.add(4);
 
@@ -92,14 +92,14 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testConstructorWithItemsAndListeners() {
-        Set<Integer> ref = new HashSet<Integer>();
+        Set<Integer> ref = new HashSet<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
 
         SetValueChangeListener<Integer> listener1 = mock(SetValueChangeListener.class);
         SetValueChangeListener<Integer> listener2 = mock(SetValueChangeListener.class);
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(ref, listener1, listener2);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(ref, listener1, listener2);
 
         assertTrue(haveEqualElements(ref, property));
         assertTrue(haveEqualElements(ref, property.asUnmodifiableSet()));
@@ -114,7 +114,7 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testSize() {
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         assertEquals(0, property.size());
 
         property.add(1);
@@ -130,7 +130,7 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testIsEmpty() {
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         assertTrue(property.isEmpty());
 
         property.add(1);
@@ -146,7 +146,7 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testAdd() {
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -159,7 +159,7 @@ public class SimpleSetPropertyTest {
         Set<Integer> refFirst = Collections.singleton(1);
         Set<Integer> refSecond = Collections.singleton(3);
         Set<Integer> refThird = Collections.singleton(2);
-        Set<Integer> refAll = new HashSet<Integer>();
+        Set<Integer> refAll = new HashSet<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
@@ -173,11 +173,11 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testAddAll() {
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
-        Set<Integer> ref = new HashSet<Integer>();
+        Set<Integer> ref = new HashSet<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
@@ -192,12 +192,12 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testRemove() {
-        Set<Integer> refAll = new HashSet<Integer>();
+        Set<Integer> refAll = new HashSet<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(refAll);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(refAll);
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -214,12 +214,12 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testRemoveAll() {
-        Set<Integer> refAll = new HashSet<Integer>();
+        Set<Integer> refAll = new HashSet<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(refAll);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(refAll);
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -232,26 +232,26 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testRetainAll() {
-        Set<Integer> initial = new HashSet<Integer>();
+        Set<Integer> initial = new HashSet<>();
         initial.add(1);
         initial.add(2);
         initial.add(3);
         initial.add(4);
         initial.add(5);
         initial.add(6);
-        Set<Integer> retained = new HashSet<Integer>();
+        Set<Integer> retained = new HashSet<>();
         retained.add(1);
         retained.add(2);
         retained.add(3);
         retained.add(11);
         retained.add(12);
         retained.add(13);
-        Set<Integer> removed = new HashSet<Integer>();
+        Set<Integer> removed = new HashSet<>();
         removed.add(4);
         removed.add(5);
         removed.add(6);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(initial);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(initial);
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -264,12 +264,12 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testClear() {
-        Set<Integer> refAll = new HashSet<Integer>();
+        Set<Integer> refAll = new HashSet<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>(refAll);
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>(refAll);
         SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -282,7 +282,7 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testContains() {
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
 
         assertFalse(property.contains(1));
         assertFalse(property.contains(2));
@@ -311,19 +311,19 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testContainsAll() {
-        Set<Integer> refSmall = new HashSet<Integer>();
+        Set<Integer> refSmall = new HashSet<>();
         refSmall.add(1);
         refSmall.add(2);
         refSmall.add(3);
 
-        Set<Integer> refBig = new HashSet<Integer>();
+        Set<Integer> refBig = new HashSet<>();
         refBig.add(1);
         refBig.add(2);
         refBig.add(3);
         refBig.add(4);
         refBig.add(5);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         assertFalse(property.containsAll(refSmall));
         assertFalse(property.containsAll(refBig));
 
@@ -354,12 +354,12 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testAsUnmodifiableSetAndIterator() {
-        Set<Integer> ref = new HashSet<Integer>();
+        Set<Integer> ref = new HashSet<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         Set<Integer> unmodifiable = property.asUnmodifiableSet();
 
         assertTrue(haveEqualElements(property, unmodifiable));
@@ -420,7 +420,7 @@ public class SimpleSetPropertyTest {
     public void testToArray() {
         Integer[] ref = new Integer[]{1, 2, 3};
 
-        SimpleSetProperty<Integer> property = new SimpleSetProperty<Integer>();
+        SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
         property.add(1);
         property.add(2);
         property.add(3);

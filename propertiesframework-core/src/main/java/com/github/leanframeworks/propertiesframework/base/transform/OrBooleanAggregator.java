@@ -103,11 +103,9 @@ public class OrBooleanAggregator implements Aggregator<Boolean, Boolean> {
                 }
 
                 // Ignore if null
-                if (result != null) {
-                    aggregation |= result;
-                    if (aggregation) {
-                        break;
-                    }
+                if ((result != null) && result) {
+                    aggregation = true;
+                    break;
                 }
             }
         }

@@ -33,21 +33,17 @@ import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
  * Note that if the input data and the specified value are both null or both NaN, they will be considered equal.
  * Everything is considered bigger than null.
  *
- * @param <I> Type of number handled by this transformer.<br>
- *            It is not strictly required for the internal logic of the transformer, but it helps in reducing
- *            compilation warnings and/or errors.
- *
  * @see Transformer
  */
-public class NumberGreaterThanTransformer<I extends Number> implements Transformer<I, Boolean> {
+public class NumberGreaterThanTransformer implements Transformer<Number, Boolean> {
 
     /**
      * Value to which the data is to be compared.
      */
-    private I minimumValue = null;
+    private Number minimumValue = null;
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public NumberGreaterThanTransformer() {
         // Nothing to be done
@@ -58,7 +54,7 @@ public class NumberGreaterThanTransformer<I extends Number> implements Transform
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public NumberGreaterThanTransformer(I minimumValue) {
+    public NumberGreaterThanTransformer(Number minimumValue) {
         setMinimumValue(minimumValue);
     }
 
@@ -67,7 +63,7 @@ public class NumberGreaterThanTransformer<I extends Number> implements Transform
      *
      * @return Value to which the data is compared.
      */
-    public Number getMinimumValue() {
+    public java.lang.Number getMinimumValue() {
         return minimumValue;
     }
 
@@ -76,7 +72,7 @@ public class NumberGreaterThanTransformer<I extends Number> implements Transform
      *
      * @param minimumValue Value to which the data is to be compared.
      */
-    public void setMinimumValue(I minimumValue) {
+    public void setMinimumValue(Number minimumValue) {
         this.minimumValue = minimumValue;
     }
 
@@ -85,7 +81,7 @@ public class NumberGreaterThanTransformer<I extends Number> implements Transform
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Boolean transform(I input) {
+    public Boolean transform(Number input) {
         boolean valid;
 
         if ((input == null) && (minimumValue == null)) {

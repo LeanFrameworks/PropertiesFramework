@@ -48,7 +48,7 @@ public class JComponentToolTipTextPropertyTest {
     public void testNullFromProperty() {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
-        ReadableWritableProperty<String, String> toolTipProperty = new JComponentToolTipTextProperty(component);
+        ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         toolTipProperty.addValueChangeListener(listenerMock);
 
@@ -66,7 +66,7 @@ public class JComponentToolTipTextPropertyTest {
     public void testNonNullFromProperty() {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
-        ReadableWritableProperty<String, String> toolTipProperty = new JComponentToolTipTextProperty(component);
+        ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         toolTipProperty.addValueChangeListener(listenerMock);
 
@@ -84,7 +84,7 @@ public class JComponentToolTipTextPropertyTest {
     public void testNullFromComponent() {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
-        ReadableWritableProperty<String, String> toolTipProperty = new JComponentToolTipTextProperty(component);
+        ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         toolTipProperty.addValueChangeListener(listenerMock);
 
@@ -102,7 +102,7 @@ public class JComponentToolTipTextPropertyTest {
     public void testNonNullFromComponent() {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
-        ReadableWritableProperty<String, String> toolTipProperty = new JComponentToolTipTextProperty(component);
+        ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         toolTipProperty.addValueChangeListener(listenerMock);
 

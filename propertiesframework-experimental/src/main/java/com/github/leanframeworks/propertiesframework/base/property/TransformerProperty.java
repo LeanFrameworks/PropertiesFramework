@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.WritableProperty;
 import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 
@@ -41,7 +42,7 @@ import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
  * @param <R> Type of data that can be read from this property.
  * @param <W> Type of data that can be written from this property.
  */
-public class TransformerProperty<R, W> extends AbstractReadableWritableProperty<R, W> {
+public class TransformerProperty<R, W> extends AbstractReadableProperty<R> implements WritableProperty<W> {
 
     /**
      * Transformer to be used to transform input values.

@@ -42,6 +42,7 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see ActionProperty
@@ -56,26 +57,26 @@ public class ActionPropertyTest {
     public void testInitialEnabledPropertyFromAction() {
         Action action = new TestAction();
         action.setEnabled(true);
-        ReadableProperty<Boolean> enabledProperty = new ActionProperty<Boolean>(action, "enabled");
+        ReadableProperty<Boolean> enabledProperty = new ActionProperty<>(action, "enabled");
         assertTrue(enabledProperty.getValue());
 
         action.setEnabled(false);
-        enabledProperty = new ActionProperty<Boolean>(action, "enabled");
+        enabledProperty = new ActionProperty<>(action, "enabled");
         assertFalse(enabledProperty.getValue());
     }
 
     @Test
     public void testInitialOtherPropertyFromAction() {
         Action action = new TestAction();
-        ReadableProperty<String> longDescriptionProperty = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        ReadableProperty<String> longDescriptionProperty = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         assertEquals(null, longDescriptionProperty.getValue());
 
         action.putValue(Action.LONG_DESCRIPTION, DESCRIPTION1);
-        longDescriptionProperty = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        longDescriptionProperty = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         assertEquals(DESCRIPTION1, longDescriptionProperty.getValue());
 
         action.putValue(Action.LONG_DESCRIPTION, DESCRIPTION2);
-        longDescriptionProperty = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        longDescriptionProperty = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         assertEquals(DESCRIPTION2, longDescriptionProperty.getValue());
     }
 
@@ -83,7 +84,7 @@ public class ActionPropertyTest {
     @Test
     public void testNonNullFromProperty() {
         Action action = new TestAction();
-        ReadableWritableProperty<String, String> property = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        ReadableWritableProperty<String> property = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -105,7 +106,7 @@ public class ActionPropertyTest {
     @Test
     public void testNonNullFromAction() {
         Action action = new TestAction();
-        ReadableWritableProperty<String, String> property = new ActionProperty<String>(action, Action.LONG_DESCRIPTION);
+        ReadableWritableProperty<String> property = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -120,6 +121,25 @@ public class ActionPropertyTest {
         verify(listenerMock).valueChanged(property, null, DESCRIPTION1);
         verify(listenerMock).valueChanged(property, DESCRIPTION1, DESCRIPTION2);
         verify(listenerMock, times(2)).valueChanged(any(ActionProperty.class), anyString(), anyString());
+    }
+
+    @Test
+    public void testDispose() {
+        Action action = new TestAction();
+        ActionProperty<String> property = new ActionProperty<>(action, Action.NAME);
+        ValueChangeListener<String> listener = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        property.setValue("First");
+        property.dispose();
+        property.setValue("Second");
+        property.setValue("Third");
+
+        property.dispose();
+        property.dispose();
+
+        verify(listener).valueChanged(property, null, "First");
+        verifyNoMoreInteractions(listener);
     }
 
     /**

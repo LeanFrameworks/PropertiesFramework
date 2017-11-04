@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.WritableSetProperty;
 
 import java.util.Collection;
@@ -38,12 +39,12 @@ import java.util.Collection;
  *
  * @param <W> Type of data that can be written to the wrapped set property.
  */
-public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
+public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W>, Disposable {
 
     /**
      * Wrapped set property.
      */
-    private final WritableSetProperty<W> wrappedSetProperty;
+    private WritableSetProperty<W> wrappedSetProperty;
 
     /**
      * Constructor specifying the set property to be wrapped, typically a set property that is both readable and
@@ -56,11 +57,28 @@ public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
     }
 
     /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedSetProperty instanceof Disposable) {
+            ((Disposable) wrappedSetProperty).dispose();
+        }
+        wrappedSetProperty = null;
+    }
+
+    /**
      * @see WritableSetProperty#add(Object)
      */
     @Override
     public boolean add(W item) {
-        return wrappedSetProperty.add(item);
+        boolean changed = false;
+
+        if (wrappedSetProperty != null) {
+            changed = wrappedSetProperty.add(item);
+        }
+
+        return changed;
     }
 
     /**
@@ -68,7 +86,13 @@ public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
      */
     @Override
     public boolean addAll(Collection<? extends W> items) {
-        return wrappedSetProperty.addAll(items);
+        boolean changed = false;
+
+        if (wrappedSetProperty != null) {
+            changed = wrappedSetProperty.addAll(items);
+        }
+
+        return changed;
     }
 
     /**
@@ -76,7 +100,13 @@ public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
      */
     @Override
     public boolean remove(Object item) {
-        return wrappedSetProperty.remove(item);
+        boolean changed = false;
+
+        if (wrappedSetProperty != null) {
+            changed = wrappedSetProperty.remove(item);
+        }
+
+        return changed;
     }
 
     /**
@@ -84,7 +114,13 @@ public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
      */
     @Override
     public boolean removeAll(Collection<?> items) {
-        return wrappedSetProperty.removeAll(items);
+        boolean changed = false;
+
+        if (wrappedSetProperty != null) {
+            changed = wrappedSetProperty.removeAll(items);
+        }
+
+        return changed;
     }
 
     /**
@@ -92,7 +128,13 @@ public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
      */
     @Override
     public boolean retainAll(Collection<?> items) {
-        return wrappedSetProperty.retainAll(items);
+        boolean changed = false;
+
+        if (wrappedSetProperty != null) {
+            changed = wrappedSetProperty.retainAll(items);
+        }
+
+        return changed;
     }
 
     /**
@@ -100,6 +142,8 @@ public class WriteOnlySetPropertyWrapper<W> implements WritableSetProperty<W> {
      */
     @Override
     public void clear() {
-        wrappedSetProperty.clear();
+        if (wrappedSetProperty != null) {
+            wrappedSetProperty.clear();
+        }
     }
 }

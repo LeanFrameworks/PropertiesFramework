@@ -35,33 +35,18 @@ import com.github.leanframeworks.propertiesframework.base.property.CompositeWrit
 import java.util.Collection;
 
 /**
- * Simple implementation of a bond between master properties and slave properties.
+ * Simple implementation of a binding between master properties and slave properties.
  * <p>
  * It is typically created using the {@link Binder}.
  *
  * @param <MO> Type of data that can be read from master properties.
  * @param <SI> Type of data that can be written to master properties.
- *
  * @see Binder
  * @see com.github.leanframeworks.propertiesframework.base.property.CompositeReadableProperty
  * @see CompositeWritableProperty
  * @see com.github.leanframeworks.propertiesframework.base.transform.ChainedTransformer
  */
-public class SimpleBond<MO, SI> implements Disposable {
-
-    /**
-     * Listener to master property changes and updating the slave property.
-     */
-    private class MasterAdapter implements ValueChangeListener<MO> {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<MO> property, MO oldValue, MO newValue) {
-            updateSlaves(newValue);
-        }
-    }
+public class SimpleBinding<MO, SI> implements Disposable {
 
     /**
      * Listener to master property changes and updating the slave property.
@@ -69,19 +54,19 @@ public class SimpleBond<MO, SI> implements Disposable {
     private final MasterAdapter masterAdapter = new MasterAdapter();
 
     /**
-     * Master (possibly composite) that is part of the bond.
+     * Master (possibly composite) that is part of the binding.
      */
-    private ReadableProperty<MO> master;
+    private ReadableProperty<? extends MO> master;
 
     /**
-     * Transformer (possible composite) to be part of the bond.
+     * Transformer (possible composite) to be part of the binding.
      */
-    private Transformer<MO, SI> transformer;
+    private Transformer<? super MO, ? extends SI> transformer;
 
     /**
-     * Slave (possibly composite) that is part of the bond.
+     * Slave (possibly composite) that is part of the binding.
      */
-    private WritableProperty<SI> slave;
+    private WritableProperty<? super SI> slave;
 
     /**
      * Constructor specifying the master property, the transformers and the slaves that are part of the binding.
@@ -89,13 +74,15 @@ public class SimpleBond<MO, SI> implements Disposable {
      * Note that the master property can be a composition of multiple properties, for instance, using the {@link
      * com.github.leanframeworks.propertiesframework.base.property.CompositeReadableProperty}.
      * <p>
-     * For type safety, it is highly advised to use the {@link Binder} to create the bond.
+     * For type safety, it is highly advised to use the {@link Binder} to create the binding.
      *
-     * @param master      Master (possibly composite) property to be part of the bond.
-     * @param transformer Transformer (possibly composite) to be part of the bond.
-     * @param slave       Slave (possibly composite) property to be part of the bond.
+     * @param master      Master (possibly composite) property to be part of the binding.
+     * @param transformer Transformer (possibly composite) to be part of the binding.
+     * @param slave       Slave (possibly composite) property to be part of the binding.
      */
-    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
+    public SimpleBinding(ReadableProperty<? extends MO> master,
+                         Transformer<? super MO, ? extends SI> transformer,
+                         WritableProperty<? super SI> slave) {
         init(master, transformer, slave);
     }
 
@@ -105,32 +92,35 @@ public class SimpleBond<MO, SI> implements Disposable {
      * Note that the master property can be a composition of multiple properties, for instance, using the {@link
      * com.github.leanframeworks.propertiesframework.base.property.CompositeReadableProperty}.
      * <p>
-     * For type safety, it is highly advised to use the {@link Binder} to create the bond.
+     * For type safety, it is highly advised to use the {@link Binder} to create the binding.
      *
-     * @param master      Master (possibly composite) property to be part of the bond.
-     * @param transformer Transformer (possible composite) to be part of the bond.
-     * @param slaves      Slave properties to be part of the bond.
+     * @param master      Master (possibly composite) property to be part of the binding.
+     * @param transformer Transformer (possible composite) to be part of the binding.
+     * @param slaves      Slave properties to be part of the binding.
      */
-    public SimpleBond(ReadableProperty<MO> master, Transformer<MO, SI> transformer,
-                      Collection<WritableProperty<SI>> slaves) {
-        // Initialize bond
-        CompositeWritableProperty<SI> compositeSlave = new CompositeWritableProperty<SI>();
+    public SimpleBinding(ReadableProperty<? extends MO> master,
+                         Transformer<? super MO, ? extends SI> transformer,
+                         Collection<WritableProperty<? super SI>> slaves) {
+        // Initialize binding
+        CompositeWritableProperty<SI> compositeSlave = new CompositeWritableProperty<>();
         init(master, transformer, compositeSlave);
 
         // Add slave properties only after initialization, otherwise they will first be set to null
-        for (WritableProperty<SI> wrappedSlave : slaves) {
+        for (WritableProperty<? super SI> wrappedSlave : slaves) {
             compositeSlave.addProperty(wrappedSlave);
         }
     }
 
     /**
-     * Initializes the bond.
+     * Initializes the binding.
      *
      * @param master      Master (possibly composite) property.
      * @param transformer Value transformer.
      * @param slave       Slave (possibly composite) property.
      */
-    private void init(ReadableProperty<MO> master, Transformer<MO, SI> transformer, WritableProperty<SI> slave) {
+    private void init(ReadableProperty<? extends MO> master,
+                      Transformer<? super MO, ? extends SI> transformer,
+                      WritableProperty<? super SI> slave) {
         this.master = master;
         this.transformer = transformer;
         this.slave = slave;
@@ -160,5 +150,19 @@ public class SimpleBond<MO, SI> implements Disposable {
     @Override
     public void dispose() {
         master.removeValueChangeListener(masterAdapter);
+    }
+
+    /**
+     * Listener to master property changes and updating the slave property.
+     */
+    private class MasterAdapter implements ValueChangeListener<MO> {
+
+        /**
+         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         */
+        @Override
+        public void valueChanged(ReadableProperty<? extends MO> property, MO oldValue, MO newValue) {
+            updateSlaves(newValue);
+        }
     }
 }

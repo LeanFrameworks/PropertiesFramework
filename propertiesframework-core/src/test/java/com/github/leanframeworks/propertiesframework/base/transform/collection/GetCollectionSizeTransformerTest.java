@@ -40,9 +40,9 @@ public class GetCollectionSizeTransformerTest {
 
     @Test
     public void testNonNull() {
-        Transformer<Collection<String>, Integer> transformer = new GetCollectionSizeTransformer<Collection<String>>();
+        Transformer<Collection<?>, Integer> transformer = new GetCollectionSizeTransformer();
 
-        Collection<String> collection = new ArrayList<String>();
+        Collection<String> collection = new ArrayList<>();
         assertEquals(Integer.valueOf(0), transformer.transform(collection));
 
         collection.add("One");

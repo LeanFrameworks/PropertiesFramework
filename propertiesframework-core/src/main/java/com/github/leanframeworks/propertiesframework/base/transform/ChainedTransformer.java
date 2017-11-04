@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.transform;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 
 import java.util.ArrayList;
@@ -36,22 +37,25 @@ import java.util.Collection;
  * @param <I> Type of input of the first transformer of the chain.
  * @param <O> Type of output of the last transformer of the chain.
  */
-public class ChainedTransformer<I, O> implements Transformer<I, O> {
+public class ChainedTransformer<I, O> implements Transformer<I, O>, Disposable {
 
     /**
      * Transformers that are part of the chain.
      */
-    private final Collection<Transformer<?, ?>> transformers = new ArrayList<Transformer<?, ?>>();
+    private final Collection<Transformer<?, ?>> transformers = new ArrayList<>();
 
     /**
      * Last transformer casting the output to the wanted type.
      */
-    private final Transformer<Object, O> lastTransformer = new CastTransformer<Object, O>();
+    private final Transformer<Object, O> lastTransformer = new CastTransformer<>();
 
     /**
-     * Constructor specifying the first transformer.
+     * Constructor.
+     * <p>
+     * By default, all chained transformers will be disposed upon {@link #dispose()}.
      *
      * @param transformer First transformer.
+     * @see #chain(Transformer)
      */
     public ChainedTransformer(Transformer<I, O> transformer) {
         if (transformer != null) {
@@ -67,7 +71,7 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
      * @return This.
      */
     @SuppressWarnings("unchecked")
-    public <TO> ChainedTransformer<I, TO> chain(Transformer<O, TO> transformer) {
+    public <TO> ChainedTransformer<I, TO> chain(Transformer<? super O, TO> transformer) {
         if (transformer != null) {
             transformers.add(transformer);
         }
@@ -89,5 +93,18 @@ public class ChainedTransformer<I, O> implements Transformer<I, O> {
         }
 
         return lastTransformer.transform(rawOutput);
+    }
+
+    /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        for (Transformer<?, ?> transformer : transformers) {
+            if (transformer instanceof Disposable) {
+                ((Disposable) transformer).dispose();
+            }
+        }
+        transformers.clear();
     }
 }

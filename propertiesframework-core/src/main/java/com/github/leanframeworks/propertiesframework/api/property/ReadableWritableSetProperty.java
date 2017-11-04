@@ -30,9 +30,8 @@ package com.github.leanframeworks.propertiesframework.api.property;
  * <p>
  * Note that most of the methods are based on the {@link java.util.Set} interface.
  *
- * @param <R> Type of values that can be read from this set property.
- * @param <W> Type of values that can be written to this set property.
+ * @param <V> Type of values that can be read from and written to this set property.
  */
-public interface ReadableWritableSetProperty<R, W> extends ReadableSetProperty<R>, WritableSetProperty<W> {
+public interface ReadableWritableSetProperty<V> extends ReadableSetProperty<V>, WritableSetProperty<V> {
     // Nothing more to be done
 }

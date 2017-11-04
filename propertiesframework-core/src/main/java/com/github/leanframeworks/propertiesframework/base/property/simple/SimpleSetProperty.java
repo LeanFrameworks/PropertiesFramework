@@ -39,12 +39,12 @@ import java.util.Set;
  *
  * @param <T> Type of values handled by this set property and the proxied set.
  */
-public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T, T> implements Set<T> {
+public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T> implements Set<T> {
 
     /**
      * Proxied set.
      */
-    private final Set<T> internal = new HashSet<T>();
+    private final Set<T> internal = new HashSet<>();
 
     /**
      * Read-only version of the proxied set.
@@ -134,7 +134,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean addAll(Collection<? extends T> items) {
-        Set<T> added = new HashSet<T>();
+        Set<T> added = new HashSet<>();
 
         for (T item : items) {
             if (internal.add(item)) {
@@ -170,7 +170,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean removeAll(Collection<?> items) {
-        Set<T> removed = new HashSet<T>();
+        Set<T> removed = new HashSet<>();
 
         for (Object item : items) {
             if (internal.remove(item)) {
@@ -191,7 +191,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
      */
     @Override
     public boolean retainAll(Collection<?> items) {
-        Set<T> toBeRemoved = new HashSet<T>();
+        Set<T> toBeRemoved = new HashSet<>();
 
         for (T item : internal) {
             if (!items.contains(item)) {
@@ -214,7 +214,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T,
     @Override
     public void clear() {
         if (!internal.isEmpty()) {
-            Set<T> removed = new HashSet<T>(internal);
+            Set<T> removed = new HashSet<>(internal);
             internal.clear();
             doNotifyListenersOfRemovedValues(removed);
         }

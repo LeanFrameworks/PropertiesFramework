@@ -16,3 +16,5 @@ expressions and method references, etc.). So the interface value change listener
 change.
 
 Version 1.1.0: Addition of a property injection mechanism.
+
+Version 2.0.0: Harmonize Dispose and DeepDispose interfaces

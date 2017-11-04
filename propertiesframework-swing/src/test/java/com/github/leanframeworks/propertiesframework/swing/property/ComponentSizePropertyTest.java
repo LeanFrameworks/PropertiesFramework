@@ -40,6 +40,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
  * @see ComponentSizeProperty
@@ -55,14 +56,14 @@ public class ComponentSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getSize());
         property.setValue(new Dimension(11, 12));
-        // Wait a little bit because the location may be applied asynchronously
+        // Wait a little bit
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -84,23 +85,56 @@ public class ComponentSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getSize());
-        component.setSize(new Dimension(13, 14));
-        // Wait a little bit because the location may be applied asynchronously
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        setSize(component, new Dimension(13, 14));
         assertEquals(new Dimension(13, 14), property.getValue());
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
         verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
+    }
+
+    @Test
+    public void testDispose() {
+        JFrame window = new JFrame();
+        Container contentPane = new JPanel(null);
+        window.setContentPane(contentPane);
+        Component component = new JLabel();
+        contentPane.add(component);
+
+        ComponentSizeProperty property = new ComponentSizeProperty(component);
+        ValueChangeListener<Dimension> listener = mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        setSize(component, new Dimension(13, 14));
+        setSize(component, new Dimension(15, 16));
+
+        property.dispose();
+
+        setSize(component, new Dimension(17, 18));
+        setSize(component, new Dimension(19, 20));
+
+        property.dispose();
+        property.dispose();
+
+        verify(listener).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
+        verify(listener).valueChanged(property, new Dimension(13, 14), new Dimension(15, 16));
+        verifyNoMoreInteractions(listener);
+    }
+
+    private void setSize(Component component, Dimension size) {
+        component.setSize(size);
+
+        // Wait a little bit
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -27,7 +27,6 @@ package com.github.leanframeworks.propertiesframework.base.binding;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
 import com.github.leanframeworks.propertiesframework.base.property.simple.SimpleBooleanProperty;
@@ -41,7 +40,7 @@ import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.github.leanframeworks.propertiesframework.base.binding.Binder.read;
+import static com.github.leanframeworks.propertiesframework.base.binding.Binder.from;
 
 /*
  * Object
@@ -153,40 +152,30 @@ public final class Bindings {
 
     public static ReadableProperty<Boolean> and(ReadableProperty<Boolean>... properties) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
-        Disposable bond = read(properties).transform(new AndBooleanAggregator()).write(result);
-        return new BoundProperty<Boolean>(result, bond);
+        Disposable binding = from(properties).transform(new AndBooleanAggregator()).to(result);
+        return new BoundProperty<>(result, binding);
     }
 
     public static ReadableProperty<Boolean> or(ReadableProperty<Boolean>... properties) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
-        read(properties).transform(new OrBooleanAggregator()).write(result);
-        return new ReadOnlyPropertyWrapper<Boolean>(result);
+        from(properties).transform(new OrBooleanAggregator()).to(result);
+        return new ReadOnlyPropertyWrapper<>(result);
     }
 
     public static ReadableProperty<Boolean> isEmpty(ReadableProperty<String> property) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
-        Disposable bond = read(property)
-                .transform(new Transformer<String, Boolean>() {
-                    @Override
-                    public Boolean transform(String input) {
-                        return (input == null) || input.isEmpty();
-                    }
-                })
-                .write(result);
-        return new BoundProperty<Boolean>(result, bond);
+        Disposable binding = from(property)
+                .transform(input -> (input == null) || input.isEmpty())
+                .to(result);
+        return new BoundProperty<>(result, binding);
     }
 
     public static ReadableProperty<Boolean> isNotEmpty(ReadableProperty<String> property) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
-        Disposable bond = read(property)
-                .transform(new Transformer<String, Boolean>() {
-                    @Override
-                    public Boolean transform(String input) {
-                        return (input != null) && !input.isEmpty();
-                    }
-                })
-                .write(result);
-        return new BoundProperty<Boolean>(result, bond);
+        Disposable binding = from(property)
+                .transform(input -> (input != null) && !input.isEmpty())
+                .to(result);
+        return new BoundProperty<>(result, binding);
     }
 
     public static ReadableProperty<Boolean> isTrue(ReadableProperty<Boolean> property) {
@@ -207,36 +196,24 @@ public final class Bindings {
 
     public static ReadableProperty<Boolean> isEqualTo(ReadableProperty<?> property, final Object refValue) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
-        // No cast should be needed in R4
-        Disposable bond = read((ReadableProperty<Object>) property)
-                .transform(new Transformer<Object, Boolean>() {
-                    @Override
-                    public Boolean transform(Object input) {
-                        return ValueUtils.areEqual(input, refValue);
-                    }
-                })
-                .write(result);
-        return new BoundProperty<Boolean>(result, bond);
+        Disposable binding = from(property)
+                .transform(input -> ValueUtils.areEqual(input, refValue))
+                .to(result);
+        return new BoundProperty<>(result, binding);
     }
 
     public static ReadableProperty<Boolean> isNotEqualTo(ReadableProperty<?> property, final Object refValue) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
-        // No cast should be needed in R4
-        Disposable bond = read((ReadableProperty<Object>) property)
-                .transform(new Transformer<Object, Boolean>() {
-                    @Override
-                    public Boolean transform(Object input) {
-                        return !ValueUtils.areEqual(input, refValue);
-                    }
-                })
-                .write(result);
-        return new BoundProperty<Boolean>(result, bond);
+        Disposable binding = from(property)
+                .transform(input -> !ValueUtils.areEqual(input, refValue))
+                .to(result);
+        return new BoundProperty<>(result, binding);
     }
 
     public static <I, O> ReadableProperty<O> transform(Transformer<I, O> transformer, ReadableProperty<I> property) {
-        SimpleProperty<O> result = new SimpleProperty<O>();
-        Disposable bond = read(property).transform(transformer).write(result);
-        return new BoundProperty<O>(result, bond);
+        SimpleProperty<O> result = new SimpleProperty<>();
+        Disposable binding = from(property).transform(transformer).to(result);
+        return new BoundProperty<>(result, binding);
     }
 
     public static class BoundProperty<R> extends AbstractReadableProperty<R> implements Disposable {
@@ -247,12 +224,7 @@ public final class Bindings {
 
         public BoundProperty(ReadableProperty<R> resultProperty, Disposable disposable) {
             this(resultProperty, Collections.singleton(disposable));
-            resultProperty.addValueChangeListener(new ValueChangeListener<R>() {
-                @Override
-                public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-                    maybeNotifyListeners(oldValue, newValue);
-                }
-            });
+            resultProperty.addValueChangeListener((p, o, n) -> maybeNotifyListeners(o, n));
         }
 
         public BoundProperty(ReadableProperty<R> resultProperty, Collection<Disposable> disposables) {

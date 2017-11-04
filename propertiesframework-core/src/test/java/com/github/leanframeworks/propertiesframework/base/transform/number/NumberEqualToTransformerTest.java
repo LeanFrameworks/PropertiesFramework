@@ -37,7 +37,7 @@ public class NumberEqualToTransformerTest {
 
     @Test
     public void testDouble0() {
-        Transformer<Double, Boolean> rule = new NumberEqualToTransformer<Double>(0.0);
+        Transformer<Number, Boolean> rule = new NumberEqualToTransformer(0.0);
 
         assertEquals(Boolean.TRUE, rule.transform(0.0));
         assertEquals(Boolean.FALSE, rule.transform(65.453));
@@ -48,7 +48,7 @@ public class NumberEqualToTransformerTest {
 
     @Test
     public void testDoubleNaN() {
-        Transformer<Double, Boolean> rule = new NumberEqualToTransformer<Double>(Double.NaN);
+        Transformer<Number, Boolean> rule = new NumberEqualToTransformer(Double.NaN);
 
         assertEquals(Boolean.FALSE, rule.transform(0.0));
         assertEquals(Boolean.FALSE, rule.transform(65.453));
@@ -59,7 +59,7 @@ public class NumberEqualToTransformerTest {
 
     @Test
     public void testDoubleNull() {
-        Transformer<Double, Boolean> rule = new NumberEqualToTransformer<Double>(null);
+        Transformer<Number, Boolean> rule = new NumberEqualToTransformer(null);
 
         assertEquals(Boolean.FALSE, rule.transform(0.0));
         assertEquals(Boolean.FALSE, rule.transform(65.453));

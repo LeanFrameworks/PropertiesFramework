@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
 import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
@@ -52,12 +53,12 @@ import java.util.List;
  *
  * @param <R> Type of data that can be read from this property.
  */
-public abstract class AbstractReadableProperty<R> implements ReadableProperty<R> {
+public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>, Disposable {
 
     /**
      * Writable properties to be updated.
      */
-    private final List<ValueChangeListener<R>> listeners = new ArrayList<ValueChangeListener<R>>();
+    private final List<ValueChangeListener<? super R>> listeners = new ArrayList<>();
 
     /**
      * Flag stating whether the inhibit the firing of value change events.
@@ -93,13 +94,27 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     private boolean notifyingListeners = false;
 
     /**
+     * Disposes this readable property by removing any references to any listener.
+     * <p>
+     * Sub-classes should call the dispose() method of their parent class.
+     * <p>
+     * Note that the listeners will not be disposed.
+     *
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        listeners.clear();
+    }
+
+    /**
      * Gets the registered value change listeners.
      * <p>
      * Note that the returned collection is not modifiable.
      *
      * @return Value change listeners.
      */
-    public Collection<ValueChangeListener<R>> getValueChangeListeners() {
+    public Collection<ValueChangeListener<? super R>> getValueChangeListeners() {
         return Collections.unmodifiableList(listeners);
     }
 
@@ -107,7 +122,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @see ReadableProperty#addValueChangeListener(ValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(ValueChangeListener<R> listener) {
+    public void addValueChangeListener(ValueChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
@@ -115,7 +130,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @see ReadableProperty#removeValueChangeListener(ValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(ValueChangeListener<R> listener) {
+    public void removeValueChangeListener(ValueChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -155,7 +170,6 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @param oldValue Previous value.
      * @param newValue New value.
-     *
      * @see #notifyListenersIfUninhibited(Object, Object)
      * @see #doNotifyListeners(Object, Object)
      */
@@ -170,7 +184,6 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @param oldValue Previous value.
      * @param newValue New value.
-     *
      * @see #maybeNotifyListeners(Object, Object)
      * @see #doNotifyListeners(Object, Object)
      */
@@ -201,9 +214,9 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @param newValue New value.
      */
     private void doNotifyListeners(R oldValue, R newValue) {
-        List<ValueChangeListener<R>> listenersCopy = new ArrayList<ValueChangeListener<R>>(listeners);
+        List<ValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
         notifyingListeners = true;
-        for (ValueChangeListener<R> listener : listenersCopy) {
+        for (ValueChangeListener<? super R> listener : listenersCopy) {
             listener.valueChanged(this, oldValue, newValue);
         }
         notifyingListeners = false;

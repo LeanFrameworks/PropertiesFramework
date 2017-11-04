@@ -48,7 +48,7 @@ public class WindowResizablePropertyTest {
     public void testNonNullFromProperty() {
         JFrame window = new JFrame();
 
-        ReadableWritableProperty<Boolean, Boolean> property = new WindowResizableProperty(window);
+        ReadableWritableProperty<Boolean> property = new WindowResizableProperty(window);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -67,7 +67,7 @@ public class WindowResizablePropertyTest {
     public void testNonNullFromComponent() {
         JFrame window = new JFrame();
 
-        ReadableWritableProperty<Boolean, Boolean> property = new WindowResizableProperty(window);
+        ReadableWritableProperty<Boolean> property = new WindowResizableProperty(window);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

@@ -42,14 +42,14 @@ public interface ReadableListProperty<R> extends Iterable<R> {
      *
      * @param listener Listener to be added.
      */
-    void addValueChangeListener(ListValueChangeListener<R> listener);
+    void addValueChangeListener(ListValueChangeListener<? super R> listener);
 
     /**
      * Removes the specified list item change listener.
      *
      * @param listener Listener to be removed.
      */
-    void removeValueChangeListener(ListValueChangeListener<R> listener);
+    void removeValueChangeListener(ListValueChangeListener<? super R> listener);
 
     /**
      * Gets the size of the list.

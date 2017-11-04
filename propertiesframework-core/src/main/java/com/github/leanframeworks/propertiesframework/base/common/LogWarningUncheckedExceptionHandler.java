@@ -30,29 +30,35 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Unchecked exception handler logging an warning message to handled the runtime exceptions and errors.
- *
- * @see UncheckedExceptionHandler
  */
-public class LogWarningUncheckedExceptionHandler implements UncheckedExceptionHandler {
+public class LogWarningUncheckedExceptionHandler implements ThrowableHandler<Throwable> {
 
     /**
-     * Logger for this class.
+     * Logger to be used.
      */
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogWarningUncheckedExceptionHandler.class);
+    private final Logger logger;
 
     /**
-     * @see UncheckedExceptionHandler#handleException(Exception)
+     * Constructor using a default logger.
      */
-    @Override
-    public void handleException(RuntimeException exception) {
-        LOGGER.warn("A runtime exception occurred", exception);
+    public LogWarningUncheckedExceptionHandler() {
+        this.logger = LoggerFactory.getLogger(LogWarningUncheckedExceptionHandler.class);
     }
 
     /**
-     * @see UncheckedExceptionHandler#handleError(Error)
+     * Constructor.
+     *
+     * @param logger Logger to be used.
+     */
+    public LogWarningUncheckedExceptionHandler(Logger logger) {
+        this.logger = logger;
+    }
+
+    /**
+     * @see ThrowableHandler#handleThrowable(Throwable)
      */
     @Override
-    public void handleError(Error error) {
-        LOGGER.warn("An error occurred", error);
+    public void handleThrowable(Throwable throwable) {
+        logger.warn("An exception or error occurred", throwable);
     }
 }

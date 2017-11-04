@@ -38,7 +38,7 @@ public class CompositeWritablePropertyTest {
     @Test
     public void testInitialValue() {
         // Create composite property and set value before adding the sub-properties
-        CompositeWritableProperty<Integer> compositeProperty = new CompositeWritableProperty<Integer>(10);
+        CompositeWritableProperty<Integer> compositeProperty = new CompositeWritableProperty<>(10);
 
         // Create sub-properties with different values
         SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
@@ -59,7 +59,7 @@ public class CompositeWritablePropertyTest {
     @Test
     public void testAddAndValueChange() {
         // Create composite property and set value before adding the sub-properties
-        CompositeWritableProperty<Integer> compositeProperty = new CompositeWritableProperty<Integer>();
+        CompositeWritableProperty<Integer> compositeProperty = new CompositeWritableProperty<>();
         compositeProperty.setValue(5);
 
         // Create sub-properties with different values

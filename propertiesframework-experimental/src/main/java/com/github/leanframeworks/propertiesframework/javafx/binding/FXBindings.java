@@ -28,7 +28,6 @@ package com.github.leanframeworks.propertiesframework.javafx.binding;
 import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableListProperty;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -47,12 +46,7 @@ public final class FXBindings {
 
     public static <R> ObservableValue<R> fx(ReadableProperty<R> vfProperty) {
         final SimpleObjectProperty<R> fxObservableValue = new SimpleObjectProperty<R>();
-        vfProperty.addValueChangeListener(new ValueChangeListener<R>() {
-            @Override
-            public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-                fxObservableValue.set(newValue);
-            }
-        });
+        vfProperty.addValueChangeListener((p, o, n) -> fxObservableValue.set(n));
         fxObservableValue.set(vfProperty.getValue());
         return fxObservableValue;
     }
@@ -63,7 +57,7 @@ public final class FXBindings {
         vfListProperty.addValueChangeListener(new ListValueChangeListener<R>() {
 
             @Override
-            public void valuesAdded(ReadableListProperty<R> p, int i, List<R> n) {
+            public void valuesAdded(ReadableListProperty<? extends R> p, int i, List<? extends R> n) {
                 int offset = 0;
                 for (R item : n) {
                     fxObservableList.add(i + offset++, item);
@@ -71,7 +65,7 @@ public final class FXBindings {
             }
 
             @Override
-            public void valuesChanged(ReadableListProperty<R> p, int i, List<R> o, List<R> n) {
+            public void valuesChanged(ReadableListProperty<? extends R> p, int i, List<? extends R> o, List<? extends R> n) {
                 int offset = 0;
                 for (R item : n) {
                     fxObservableList.set(i + offset++, item);
@@ -79,7 +73,7 @@ public final class FXBindings {
             }
 
             @Override
-            public void valuesRemoved(ReadableListProperty<R> p, int i, List<R> o) {
+            public void valuesRemoved(ReadableListProperty<? extends R> p, int i, List<? extends R> o) {
                 for (int j = 0; j < o.size(); j++) {
                     fxObservableList.remove(i);
                 }

@@ -50,17 +50,17 @@ public class CompositeReadablePropertyTest {
     public void testValueAfterChange() {
         SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
         SimpleIntegerProperty compoundProperty2 = new SimpleIntegerProperty(2);
-        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<>
                 (compoundProperty1, compoundProperty2);
 
         compoundProperty1.setValue(5);
         compoundProperty2.setValue(6);
 
         // Verify values
-        List<Integer> expectedNewValues = new ArrayList<Integer>();
+        List<Integer> expectedNewValues = new ArrayList<>();
         expectedNewValues.add(5);
         expectedNewValues.add(6);
-        assertTrue(haveEqualElements(expectedNewValues, new ArrayList<Integer>(compositeProperty.getValue())));
+        assertTrue(haveEqualElements(expectedNewValues, new ArrayList<>(compositeProperty.getValue())));
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +68,7 @@ public class CompositeReadablePropertyTest {
     public void testPropertyChangeEvent() {
         SimpleIntegerProperty compoundProperty1 = new SimpleIntegerProperty(1);
         SimpleIntegerProperty compoundProperty2 = new SimpleIntegerProperty(2);
-        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<Integer>
+        CompositeReadableProperty<Integer> compositeProperty = new CompositeReadableProperty<>
                 (compoundProperty1, compoundProperty2);
 
         ValueChangeListener<Collection<Integer>> mockListener = (ValueChangeListener<Collection<Integer>>) mock
@@ -78,21 +78,21 @@ public class CompositeReadablePropertyTest {
         compoundProperty2.setValue(6);
 
         // Verify first change event
-        List<Integer> expectedOldValues = new ArrayList<Integer>();
+        List<Integer> expectedOldValues = new ArrayList<>();
         expectedOldValues.add(1);
         expectedOldValues.add(2);
-        List<Integer> expectedNewValues = new ArrayList<Integer>();
+        List<Integer> expectedNewValues = new ArrayList<>();
         expectedNewValues.add(5);
         expectedNewValues.add(2);
-        verify(mockListener).valueChanged(eq(compositeProperty), argThat(new ListMatcher<Integer>(expectedOldValues))
-                , argThat(new ListMatcher<Integer>(expectedNewValues)));
+        verify(mockListener).valueChanged(eq(compositeProperty), argThat(new ListMatcher<>(expectedOldValues))
+                , argThat(new ListMatcher<>(expectedNewValues)));
 
         // Verify second change event
         expectedOldValues = expectedNewValues;
-        expectedNewValues = new ArrayList<Integer>();
+        expectedNewValues = new ArrayList<>();
         expectedNewValues.add(5);
         expectedNewValues.add(6);
-        verify(mockListener).valueChanged(eq(compositeProperty), argThat(new ListMatcher<Integer>(expectedOldValues))
-                , argThat(new ListMatcher<Integer>(expectedNewValues)));
+        verify(mockListener).valueChanged(eq(compositeProperty), argThat(new ListMatcher<>(expectedOldValues))
+                , argThat(new ListMatcher<>(expectedNewValues)));
     }
 }

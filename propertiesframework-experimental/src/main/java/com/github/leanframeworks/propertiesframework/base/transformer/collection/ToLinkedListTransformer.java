@@ -44,7 +44,7 @@ public class ToLinkedListTransformer<E> implements Transformer<Collection<E>, Li
         } else if (input instanceof LinkedList<?>) {
             list = (LinkedList<E>) input;
         } else {
-            list = new LinkedList<E>(input);
+            list = new LinkedList<>(input);
         }
 
         return list;

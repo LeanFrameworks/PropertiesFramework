@@ -1,3 +1,15 @@
+# Next release
+
+* TODO Check all usages of "? super" and "? extends" wildcards
+* TODO Check where they can be used
+* TODO Check all usages of Dispose and DeepDispose interfaces
+* TODO Move inhibition implementation to separate AbstractInihibitableReadableProperty
+* TODO DeepDisposable interface
+* TODO Functional interface for Set/List/MapValueChangeListener
+* TODO Use \<p\> or \<p/\> in javadoc
+* TODO Replace "Default constructor" by "Constructor"
+* TODO Check each new entry in CHANGES.md
+
 # Known issues
 
 * Inconsistent behavior of dispose() methods: test setting value before/after dispose() (from property, from component),
@@ -5,7 +17,6 @@ test listener before/after dispose(), test multiple dispose()
 
 # Ideas for the short term
 
-* Better use of "? super" and "? extends" wildcards
 * Convenient value change listeners to check the correct behavior of the properties (incl. set, list and map
 properties): always on the same thread, always on EDT, never on EDT, only called when values are different, etc.
 * Better support for Java 8 regarding the use of lambdas and method references (e.g. for set/list/map properties)

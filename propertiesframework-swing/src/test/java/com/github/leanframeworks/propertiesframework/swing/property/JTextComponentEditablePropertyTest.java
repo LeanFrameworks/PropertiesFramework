@@ -48,7 +48,7 @@ public class JTextComponentEditablePropertyTest {
     @Test
     public void testNonNullFromProperty() {
         JTextComponent component = new JTextField();
-        ReadableWritableProperty<Boolean, Boolean> property = new JTextComponentEditableProperty(component);
+        ReadableWritableProperty<Boolean> property = new JTextComponentEditableProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -66,7 +66,7 @@ public class JTextComponentEditablePropertyTest {
     @Test
     public void testNonNullFromComponent() {
         JTextComponent component = new JTextField();
-        ReadableWritableProperty<Boolean, Boolean> property = new JTextComponentEditableProperty(component);
+        ReadableWritableProperty<Boolean> property = new JTextComponentEditableProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

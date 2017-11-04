@@ -33,7 +33,6 @@ package com.github.leanframeworks.propertiesframework.api.property;
  * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
  * @param <R> Type of data that can be read from the changed readable property.
- *
  * @see ReadableProperty
  */
 public interface ValueChangeListener<R> {
@@ -45,5 +44,5 @@ public interface ValueChangeListener<R> {
      * @param oldValue Previous property value.
      * @param newValue New property value.
      */
-    void valueChanged(ReadableProperty<R> property, R oldValue, R newValue);
+    void valueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue);
 }

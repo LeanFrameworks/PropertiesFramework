@@ -51,7 +51,7 @@ public class ComponentMinimumSizePropertyTest {
     public void testNonNullFromProperty() {
         Component component = new JLabel();
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentMinimumSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentMinimumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -62,8 +62,7 @@ public class ComponentMinimumSizePropertyTest {
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(11, 12));
-        verify(listenerMock).valueChanged(any(ComponentMinimumSizeProperty.class), any(Dimension.class),
-                any(Dimension.class));
+        verify(listenerMock).valueChanged(any(ComponentMinimumSizeProperty.class), any(Dimension.class), any(Dimension.class));
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +74,7 @@ public class ComponentMinimumSizePropertyTest {
         Component component = new JLabel();
         contentPane.add(component);
 
-        ReadableWritableProperty<Dimension, Dimension> property = new ComponentMinimumSizeProperty(component);
+        ReadableWritableProperty<Dimension> property = new ComponentMinimumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -86,7 +85,6 @@ public class ComponentMinimumSizePropertyTest {
 
         // Check exactly one event fired
         verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
-        verify(listenerMock).valueChanged(any(ComponentMinimumSizeProperty.class), any(Dimension.class),
-                any(Dimension.class));
+        verify(listenerMock).valueChanged(any(ComponentMinimumSizeProperty.class), any(Dimension.class), any(Dimension.class));
     }
 }

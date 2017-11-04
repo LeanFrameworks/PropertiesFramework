@@ -44,14 +44,14 @@ public interface ReadableMapProperty<K, R> {
      *
      * @param listener Listener to be added.
      */
-    void addValueChangeListener(MapValueChangeListener<K, R> listener);
+    void addValueChangeListener(MapValueChangeListener<? super K, ? super R> listener);
 
     /**
      * Removes the specified map value change listener.
      *
      * @param listener Listener to be removed.
      */
-    void removeValueChangeListener(MapValueChangeListener<K, R> listener);
+    void removeValueChangeListener(MapValueChangeListener<? super K, ? super R> listener);
 
     /**
      * Gets the size of the map.

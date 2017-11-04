@@ -52,7 +52,7 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testDefaultConstructor() {
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -64,12 +64,12 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testConstructorWithItems() {
-        List<Integer> ref = new ArrayList<Integer>();
+        List<Integer> ref = new ArrayList<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(ref);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(ref);
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -83,7 +83,7 @@ public class SimpleListPropertyTest {
     public void testConstructorWithListeners() {
         ListValueChangeListener<Integer> listener1 = mock(ListValueChangeListener.class);
         ListValueChangeListener<Integer> listener2 = mock(ListValueChangeListener.class);
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(listener1, listener2);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(listener1, listener2);
 
         property.add(4);
 
@@ -95,14 +95,14 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testConstructorWithItemsAndListeners() {
-        List<Integer> ref = new ArrayList<Integer>();
+        List<Integer> ref = new ArrayList<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
 
         ListValueChangeListener<Integer> listener1 = mock(ListValueChangeListener.class);
         ListValueChangeListener<Integer> listener2 = mock(ListValueChangeListener.class);
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(ref, listener1, listener2);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(ref, listener1, listener2);
 
         assertTrue(haveEqualElements(ref, property));
         assertTrue(haveEqualElements(ref, property.asUnmodifiableList()));
@@ -117,7 +117,7 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testSize() {
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         assertEquals(0, property.size());
 
         property.add(1);
@@ -133,7 +133,7 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testIsEmpty() {
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         assertTrue(property.isEmpty());
 
         property.add(1);
@@ -149,7 +149,7 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testAdd() {
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -159,7 +159,7 @@ public class SimpleListPropertyTest {
         property.add(3);
         property.add(2);
 
-        List<Integer> refAll = new ArrayList<Integer>();
+        List<Integer> refAll = new ArrayList<>();
         refAll.add(1);
         refAll.add(3);
         refAll.add(2);
@@ -177,15 +177,15 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testAddAll() {
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
-        List<Integer> ref = new ArrayList<Integer>();
+        List<Integer> ref = new ArrayList<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
-        List<Integer> refAll = new ArrayList<Integer>();
+        List<Integer> refAll = new ArrayList<>();
         refAll.addAll(ref);
         refAll.addAll(ref);
 
@@ -201,12 +201,12 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testRemove() {
-        List<Integer> refAll = new ArrayList<Integer>();
+        List<Integer> refAll = new ArrayList<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(refAll);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(refAll);
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -223,12 +223,12 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testRemoveAt() {
-        List<String> refAll = new ArrayList<String>();
+        List<String> refAll = new ArrayList<>();
         refAll.add("A");
         refAll.add("B");
         refAll.add("C");
 
-        SimpleListProperty<String> property = new SimpleListProperty<String>(refAll);
+        SimpleListProperty<String> property = new SimpleListProperty<>(refAll);
         ListValueChangeListener<String> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -245,12 +245,12 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testRemoveAll() {
-        List<Integer> refAll = new ArrayList<Integer>();
+        List<Integer> refAll = new ArrayList<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(refAll);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(refAll);
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -272,7 +272,7 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testRetainAll() {
-        List<Integer> initial = new ArrayList<Integer>();
+        List<Integer> initial = new ArrayList<>();
         initial.add(1);
         initial.add(1);
         initial.add(2);
@@ -282,7 +282,7 @@ public class SimpleListPropertyTest {
         initial.add(6);
         initial.add(7);
         initial.add(6);
-        List<Integer> toBeRetained = new ArrayList<Integer>();
+        List<Integer> toBeRetained = new ArrayList<>();
         toBeRetained.add(1);
         toBeRetained.add(2);
         toBeRetained.add(3);
@@ -290,14 +290,14 @@ public class SimpleListPropertyTest {
         toBeRetained.add(12);
         toBeRetained.add(13);
         toBeRetained.add(7);
-        List<Integer> remaining = new ArrayList<Integer>();
+        List<Integer> remaining = new ArrayList<>();
         remaining.add(1);
         remaining.add(1);
         remaining.add(2);
         remaining.add(3);
         remaining.add(7);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(initial);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(initial);
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -316,12 +316,12 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testClear() {
-        List<Integer> refAll = new ArrayList<Integer>();
+        List<Integer> refAll = new ArrayList<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>(refAll);
+        SimpleListProperty<Integer> property = new SimpleListProperty<>(refAll);
         ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
         property.addValueChangeListener(listener);
 
@@ -334,7 +334,7 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testContains() {
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
 
         assertFalse(property.contains(1));
         assertFalse(property.contains(2));
@@ -363,19 +363,19 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testContainsAll() {
-        List<Integer> refSmall = new ArrayList<Integer>();
+        List<Integer> refSmall = new ArrayList<>();
         refSmall.add(1);
         refSmall.add(2);
         refSmall.add(3);
 
-        List<Integer> refBig = new ArrayList<Integer>();
+        List<Integer> refBig = new ArrayList<>();
         refBig.add(1);
         refBig.add(2);
         refBig.add(3);
         refBig.add(4);
         refBig.add(5);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         assertFalse(property.containsAll(refSmall));
         assertFalse(property.containsAll(refBig));
 
@@ -406,12 +406,12 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testAsUnmodifiableListAndIterator() {
-        List<Integer> ref = new ArrayList<Integer>();
+        List<Integer> ref = new ArrayList<>();
         ref.add(1);
         ref.add(2);
         ref.add(3);
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         List<Integer> unmodifiable = property.asUnmodifiableList();
 
         assertTrue(haveEqualElements(property, unmodifiable));
@@ -518,7 +518,7 @@ public class SimpleListPropertyTest {
     public void testToArray() {
         Integer[] ref = new Integer[]{1, 2, 3};
 
-        SimpleListProperty<Integer> property = new SimpleListProperty<Integer>();
+        SimpleListProperty<Integer> property = new SimpleListProperty<>();
         property.add(1);
         property.add(2);
         property.add(3);

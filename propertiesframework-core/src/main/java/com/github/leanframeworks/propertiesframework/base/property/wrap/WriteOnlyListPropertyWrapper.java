@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.WritableListProperty;
 
 import java.util.Collection;
@@ -38,12 +39,12 @@ import java.util.Collection;
  *
  * @param <W> Type of data that can be written to the wrapped set property.
  */
-public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> {
+public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W>, Disposable {
 
     /**
      * Wrapped list property.
      */
-    private final WritableListProperty<W> wrappedListProperty;
+    private WritableListProperty<W> wrappedListProperty;
 
     /**
      * Constructor specifying the list property to be wrapped, typically a list property that is both readable and
@@ -56,11 +57,28 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
     }
 
     /**
+     * @see Disposable#dispose()
+     */
+    @Override
+    public void dispose() {
+        if (wrappedListProperty instanceof Disposable) {
+            ((Disposable) wrappedListProperty).dispose();
+        }
+        wrappedListProperty = null;
+    }
+
+    /**
      * @see WritableListProperty#set(int, Object)
      */
     @Override
     public W set(int index, W item) {
-        return wrappedListProperty.set(index, item);
+        W oldItem = null;
+
+        if (wrappedListProperty != null) {
+            oldItem = wrappedListProperty.set(index, item);
+        }
+
+        return oldItem;
     }
 
     /**
@@ -68,7 +86,12 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public boolean add(W item) {
-        return wrappedListProperty.add(item);
+        if (wrappedListProperty != null) {
+            wrappedListProperty.add(item);
+        }
+
+        // See List#add(Object) and Collection#add(Object)
+        return true;
     }
 
     /**
@@ -76,7 +99,9 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public void add(int index, W item) {
-        wrappedListProperty.add(index, item);
+        if (wrappedListProperty != null) {
+            wrappedListProperty.add(index, item);
+        }
     }
 
     /**
@@ -84,7 +109,13 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public boolean addAll(Collection<? extends W> items) {
-        return wrappedListProperty.addAll(items);
+        boolean changed = false;
+
+        if (wrappedListProperty != null) {
+            changed = wrappedListProperty.addAll(items);
+        }
+
+        return changed;
     }
 
     /**
@@ -92,7 +123,13 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public boolean addAll(int index, Collection<? extends W> items) {
-        return wrappedListProperty.addAll(index, items);
+        boolean changed = false;
+
+        if (wrappedListProperty != null) {
+            changed = wrappedListProperty.addAll(index, items);
+        }
+
+        return changed;
     }
 
     /**
@@ -100,7 +137,13 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public boolean remove(Object item) {
-        return wrappedListProperty.remove(item);
+        boolean changed = false;
+
+        if (wrappedListProperty != null) {
+            changed = wrappedListProperty.remove(item);
+        }
+
+        return changed;
     }
 
     /**
@@ -108,7 +151,13 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public W remove(int index) {
-        return wrappedListProperty.remove(index);
+        W oldItem = null;
+
+        if (wrappedListProperty != null) {
+            oldItem = wrappedListProperty.remove(index);
+        }
+
+        return oldItem;
     }
 
     /**
@@ -116,7 +165,13 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public boolean removeAll(Collection<?> items) {
-        return wrappedListProperty.removeAll(items);
+        boolean changed = false;
+
+        if (wrappedListProperty != null) {
+            changed = wrappedListProperty.removeAll(items);
+        }
+
+        return changed;
     }
 
     /**
@@ -124,7 +179,13 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public boolean retainAll(Collection<?> items) {
-        return wrappedListProperty.retainAll(items);
+        boolean changed = false;
+
+        if (wrappedListProperty != null) {
+            changed = wrappedListProperty.retainAll(items);
+        }
+
+        return changed;
     }
 
     /**
@@ -132,6 +193,8 @@ public class WriteOnlyListPropertyWrapper<W> implements WritableListProperty<W> 
      */
     @Override
     public void clear() {
-        wrappedListProperty.clear();
+        if (wrappedListProperty != null) {
+            wrappedListProperty.clear();
+        }
     }
 }

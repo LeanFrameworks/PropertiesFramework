@@ -27,24 +27,26 @@ package com.github.leanframeworks.propertiesframework.base.common;
 
 /**
  * Unchecked exception handler re-throwing the runtime exceptions and errors.
- *
- * @see UncheckedExceptionHandler
  */
-public class RethrowUncheckedExceptionHandler implements UncheckedExceptionHandler {
+public class RethrowUncheckedExceptionHandler implements ThrowableHandler<Throwable> {
 
     /**
-     * @see UncheckedExceptionHandler#handleException(Exception)
+     * Logger for this class.
      */
-    @Override
-    public void handleException(RuntimeException exception) {
-        throw exception;
-    }
+    private static final ThrowableHandler<Throwable> FALLBACK_HANDLER = new LogErrorUncheckedExceptionHandler();
 
     /**
-     * @see UncheckedExceptionHandler#handleError(Error)
+     * @see ThrowableHandler#handleThrowable(Throwable)
      */
     @Override
-    public void handleError(Error error) {
-        throw error;
+    public void handleThrowable(Throwable throwable) {
+        if (throwable instanceof RuntimeException) {
+            throw (RuntimeException) throwable;
+        } else if (throwable instanceof Error) {
+            throw (Error) throwable;
+        } else {
+            // Cannot re-throw without changing interface
+            FALLBACK_HANDLER.handleThrowable(throwable);
+        }
     }
 }

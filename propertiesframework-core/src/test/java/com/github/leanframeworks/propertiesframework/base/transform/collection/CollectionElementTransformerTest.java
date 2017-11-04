@@ -41,11 +41,10 @@ public class CollectionElementTransformerTest {
 
     @Test
     public void testNonNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>());
+        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<>(new ToStringTransformer());
 
         // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
+        List<Long> input = new ArrayList<>();
         for (long i = 1000; i < 1030; i++) {
             input.add(i);
         }
@@ -62,11 +61,10 @@ public class CollectionElementTransformerTest {
 
     @Test
     public void testNull() {
-        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<Long,
-                String>(new ToStringTransformer<Long>("null value"));
+        CollectionElementTransformer<Long, String> transformer = new CollectionElementTransformer<>(new ToStringTransformer("null value"));
 
         // Prepare input to be transformed
-        List<Long> input = new ArrayList<Long>();
+        List<Long> input = new ArrayList<>();
         input.add(null);
 
         // Perform transformation

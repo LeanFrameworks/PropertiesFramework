@@ -40,9 +40,9 @@ public class GetMapSizeTransformerTest {
 
     @Test
     public void testNonNull() {
-        Transformer<Map<String, Integer>, Integer> transformer = new GetMapSizeTransformer<Map<String, Integer>>();
+        Transformer<Map<?, ?>, Integer> transformer = new GetMapSizeTransformer();
 
-        Map<String, Integer> map = new HashMap<String, Integer>();
+        Map<String, Integer> map = new HashMap<>();
         assertEquals(Integer.valueOf(0), transformer.transform(map));
 
         map.put("One", 1);

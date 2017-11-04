@@ -43,16 +43,16 @@ public class SimplePropertytTest {
 
     @Test
     public void testInitialValue() {
-        SimpleProperty<Integer> property = new SimpleProperty<Integer>();
+        SimpleProperty<Integer> property = new SimpleProperty<>();
         assertEquals(null, property.getValue());
 
-        property = new SimpleProperty<Integer>(5);
+        property = new SimpleProperty<>(5);
         assertEquals(Integer.valueOf(5), property.getValue());
     }
 
     @Test
     public void testReadWrite() {
-        SimpleProperty<Double> property = new SimpleProperty<Double>();
+        SimpleProperty<Double> property = new SimpleProperty<>();
 
         property.setValue(8.2);
         assertEquals(Double.valueOf(8.2), property.getValue());
@@ -64,7 +64,7 @@ public class SimplePropertytTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testValueChangeEvent() {
-        SimpleProperty<Integer> property = new SimpleProperty<Integer>();
+        SimpleProperty<Integer> property = new SimpleProperty<>();
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
 
         property.addValueChangeListener(listenerMock);
@@ -80,7 +80,7 @@ public class SimplePropertytTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testInhibitAndValueChangeEvent() {
-        SimpleProperty<Integer> property = new SimpleProperty<Integer>(null);
+        SimpleProperty<Integer> property = new SimpleProperty<>(null);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 
@@ -97,7 +97,7 @@ public class SimplePropertytTest {
     @SuppressWarnings("unchecked")
     @Test
     public void testInhibitAndNoValueChangeEvent() {
-        SimpleProperty<Integer> property = new SimpleProperty<Integer>(null);
+        SimpleProperty<Integer> property = new SimpleProperty<>(null);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
         property.addValueChangeListener(listenerMock);
 

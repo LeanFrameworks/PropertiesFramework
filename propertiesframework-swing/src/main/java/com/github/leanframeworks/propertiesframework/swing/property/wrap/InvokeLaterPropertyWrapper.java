@@ -25,88 +25,64 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property.wrap;
 
-import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
-import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
+import com.github.leanframeworks.propertiesframework.base.property.wrap.AbstractReadablePropertyWrapper;
 
 import javax.swing.SwingUtilities;
 
 /**
- * Wrapper for {@link ReadableProperty} that postpones the notifications of the {@link ValueChangeListener}s later on
- * the EDT.
+ * Wrapper for {@link ReadableProperty} that postpones the notifications of the {@link
+ * com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener}s later on the EDT.
+ * <p>
+ * Note that this property wrapper and the wrapped property are meant to be used on the EDT only.
  *
  * @param <R> Type of data that can be read from this property and the wrapped property.
  */
-public class InvokeLaterPropertyWrapper<R> extends AbstractReadableProperty<R> implements Disposable {
-
-    /**
-     * Listener to value changes of the wrapped property and notifying the listeners of this property later on the EDT.
-     */
-    private class ValueChangeAdapter implements ValueChangeListener<R>, Runnable {
-
-        /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
-         * @see SwingUtilities#invokeLater(Runnable)
-         */
-        @Override
-        public void valueChanged(ReadableProperty<R> property, R oldValue, R newValue) {
-            SwingUtilities.invokeLater(this);
-        }
-
-        /**
-         * @see Runnable#run()
-         */
-        @Override
-        public void run() {
-            R oldValue = value;
-            value = getValue();
-            maybeNotifyListeners(oldValue, value);
-        }
-    }
-
-    /**
-     * Wrapped property.
-     */
-    private ReadableProperty<R> wrappedProperty = null;
-
-    /**
-     * Entity postponing value change events to later on the EDT.
-     */
-    private final ValueChangeListener<R> valueChangeAdapter = new ValueChangeAdapter();
+public class InvokeLaterPropertyWrapper<R> extends AbstractReadablePropertyWrapper<R> {
 
     /**
      * Last value notified.
+     * <p>
+     * It must be accessed on the EDT.
      */
     private R value = null;
 
     /**
-     * Constructor specifying the property to be wrapped.
-     *
-     * @param wrappedProperty {@link ReadableProperty} to be wrapped.
+     * @see AbstractReadablePropertyWrapper#AbstractReadablePropertyWrapper(ReadableProperty)
      */
     public InvokeLaterPropertyWrapper(ReadableProperty<R> wrappedProperty) {
-        this.wrappedProperty = wrappedProperty;
-        this.wrappedProperty.addValueChangeListener(valueChangeAdapter);
-        this.value = wrappedProperty.getValue();
+        super(wrappedProperty);
+        assert SwingUtilities.isEventDispatchThread();
+        value = wrappedProperty.getValue();
     }
 
-    /**
-     * @see Disposable#dispose()
-     */
     @Override
     public void dispose() {
-        if (wrappedProperty != null) {
-            wrappedProperty.removeValueChangeListener(valueChangeAdapter);
-            wrappedProperty = null;
-        }
+        assert SwingUtilities.isEventDispatchThread();
+        super.dispose();
     }
 
     /**
-     * @see AbstractReadableProperty#getValue()
+     * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     */
+    @Override
+    protected void wrappedPropertyValueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
+        assert SwingUtilities.isEventDispatchThread();
+        SwingUtilities.invokeLater(() -> {
+            if (wrappedProperty != null) {
+                R oldValue1 = value;
+                value = wrappedProperty.getValue();
+                maybeNotifyListeners(oldValue1, value);
+            }
+        });
+    }
+
+    /**
+     * @see AbstractReadablePropertyWrapper#getValue()
      */
     @Override
     public R getValue() {
-        return wrappedProperty.getValue();
+        assert SwingUtilities.isEventDispatchThread();
+        return value;
     }
 }

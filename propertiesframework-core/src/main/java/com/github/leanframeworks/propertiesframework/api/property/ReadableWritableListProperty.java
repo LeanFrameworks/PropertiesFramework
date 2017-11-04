@@ -30,9 +30,8 @@ package com.github.leanframeworks.propertiesframework.api.property;
  * <p>
  * Note that most of the methods are based on the {@link java.util.List} interface.
  *
- * @param <R> Type of values that can be read from this list property.
- * @param <W> Type of values that can be written to this list property.
+ * @param <V> Type of values that can be read from and written to this list property.
  */
-public interface ReadableWritableListProperty<R, W> extends ReadableListProperty<R>, WritableListProperty<W> {
+public interface ReadableWritableListProperty<V> extends ReadableListProperty<V>, WritableListProperty<V> {
     // Nothing more to be done
 }

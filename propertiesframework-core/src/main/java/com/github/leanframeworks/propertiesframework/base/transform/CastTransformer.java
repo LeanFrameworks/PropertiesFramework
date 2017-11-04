@@ -36,36 +36,9 @@ import java.io.Serializable;
  *
  * @param <I> Type of the input object to be transformed.
  * @param <O> Type of the output object after transformation.
- *
  * @see Transformer
  */
 public class CastTransformer<I, O> implements Transformer<I, O>, Serializable {
-
-    /**
-     * Type of behavior in case of an error while casting.
-     */
-    public enum CastErrorBehavior {
-
-        /**
-         * Just return null.
-         */
-        IGNORE,
-
-        /**
-         * Log a warning and return null.
-         */
-        LOG_WARNING,
-
-        /**
-         * Log an error and return null.
-         */
-        LOG_ERROR,
-
-        /**
-         * Throw a ClassCastException.
-         */
-        TRHOW_EXCEPTION
-    }
 
     /**
      * Generated serial UID.
@@ -127,5 +100,31 @@ public class CastTransformer<I, O> implements Transformer<I, O>, Serializable {
         }
 
         return output;
+    }
+
+    /**
+     * Type of behavior in case of an error while casting.
+     */
+    public enum CastErrorBehavior {
+
+        /**
+         * Just return null.
+         */
+        IGNORE,
+
+        /**
+         * Log a warning and return null.
+         */
+        LOG_WARNING,
+
+        /**
+         * Log an error and return null.
+         */
+        LOG_ERROR,
+
+        /**
+         * Throw a ClassCastException.
+         */
+        TRHOW_EXCEPTION
     }
 }

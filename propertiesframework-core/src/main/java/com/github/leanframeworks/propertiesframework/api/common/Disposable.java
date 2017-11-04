@@ -31,11 +31,14 @@ package com.github.leanframeworks.propertiesframework.api.common;
  * <p>
  * For example, if the disposable entity registers some listeners to other objects, disposing this entity should remove
  * those listeners.
+ * <p>
+ * Note that after disposing an object, it cannot be re-used for other purposes. Also, calling methods on previously
+ * disposed objects has unspecified behavior.
  */
 public interface Disposable {
 
     /**
-     * Disposes the component by disconnecting any listener and any reference that would prevent garbage collection.
+     * Disposes the entity by disconnecting any listener and any reference that would prevent garbage collection.
      * <p>
      * Note that calling this method a second time should have no effect (and certainly not generate an exception).
      */

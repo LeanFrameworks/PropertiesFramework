@@ -21,7 +21,7 @@ public class AndBooleanAggregatorTest {
         Aggregator<Boolean, Boolean> transformer = new AndBooleanAggregator();
 
         // All true
-        List<Boolean> booleans = new ArrayList<Boolean>();
+        List<Boolean> booleans = new ArrayList<>();
         booleans.add(true);
         booleans.add(true);
         booleans.add(true);
@@ -62,7 +62,7 @@ public class AndBooleanAggregatorTest {
 
     @Test
     public void testNullElement() {
-        List<Boolean> booleans = new ArrayList<Boolean>();
+        List<Boolean> booleans = new ArrayList<>();
         booleans.add(true);
         booleans.add(true);
         booleans.add(null);

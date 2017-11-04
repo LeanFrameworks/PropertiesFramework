@@ -25,7 +25,6 @@
 
 package com.github.leanframeworks.propertiesframework.base.transform;
 
-import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +38,7 @@ public class ChainedTransformerTest {
     @Test
     public void testBoolean() {
         // Test with no transformer
-        ChainedTransformer<Boolean, Boolean> transformer = new ChainedTransformer<Boolean, Boolean>(null);
+        ChainedTransformer<Boolean, Boolean> transformer = new ChainedTransformer<>(null);
 
         // Test with one transformer
         transformer = transformer.chain(new NegateBooleanTransformer());
@@ -52,15 +51,9 @@ public class ChainedTransformerTest {
 
     @Test
     public void testType() {
-        ChainedTransformer<Object, Number> transformer = new ChainedTransformer<Object,
-                Number>(new CastTransformer<Object, Number>());
+        ChainedTransformer<Object, Number> transformer = new ChainedTransformer<>(new CastTransformer<>());
         ChainedTransformer<Object, Double> transformer2 = transformer.chain(new CastTransformer<Number, Double>());
-        ChainedTransformer<Object, Integer> transformer3 = transformer2.chain(new Transformer<Double, Integer>() {
-            @Override
-            public Integer transform(Double input) {
-                return input.intValue();
-            }
-        });
+        ChainedTransformer<Object, Integer> transformer3 = transformer2.chain(Double::intValue);
 
         assertEquals(Integer.valueOf(3), transformer3.transform(3.2d));
     }

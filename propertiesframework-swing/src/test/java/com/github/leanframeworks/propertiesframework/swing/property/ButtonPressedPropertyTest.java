@@ -23,14 +23,41 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.leanframeworks.propertiesframework.base.transform;
+package com.github.leanframeworks.propertiesframework.swing.property;
 
-import java.util.Collection;
+import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import org.junit.Test;
+
+import javax.swing.JButton;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 /**
- * @deprecated Use {@link com.github.leanframeworks.propertiesframework.api.transform.Aggregator} instead.
+ * @see ButtonPressedProperty
  */
-@Deprecated
-public interface Aggregator<E, O> extends Transformer<Collection<E>, O> {
-    // Nothing to be done
+public class ButtonPressedPropertyTest {
+
+    @Test
+    public void testDispose() {
+        JButton button = new JButton();
+        ButtonPressedProperty property = new ButtonPressedProperty(button);
+        ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
+        property.addValueChangeListener(listener);
+
+        button.getModel().setPressed(true);
+        button.getModel().setPressed(false);
+        property.dispose();
+        button.getModel().setPressed(true);
+        button.getModel().setPressed(false);
+        button.getModel().setPressed(true);
+
+        property.dispose();
+        property.dispose();
+
+        verify(listener).valueChanged(property, false, true);
+        verify(listener).valueChanged(property, true, false);
+        verifyNoMoreInteractions(listener);
+    }
 }
