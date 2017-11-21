@@ -25,9 +25,5 @@
 
 /**
  * This package contains the main API related to the properties that can be used for binding.
- * <p>
- * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
- * the PropertiesFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
- * JavaFX has a much more furnished API to achieve similar goals and much more.
  */
 package com.github.leanframeworks.propertiesframework.api.property;

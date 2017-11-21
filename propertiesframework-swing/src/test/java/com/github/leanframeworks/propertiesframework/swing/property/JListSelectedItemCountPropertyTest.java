@@ -72,7 +72,7 @@ public class JListSelectedItemCountPropertyTest {
         // Create property
         property = new JListSelectedItemCountProperty(list);
         listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
     }
 
     @Test

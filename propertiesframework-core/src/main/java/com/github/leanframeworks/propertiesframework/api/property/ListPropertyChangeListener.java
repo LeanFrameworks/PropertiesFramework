@@ -25,47 +25,18 @@
 
 package com.github.leanframeworks.propertiesframework.api.property;
 
-import java.util.List;
-
 /**
  * Interface to be implemented by listener to changes in a {@link ReadableListProperty}.
  *
  * @param <R> Type of values in the list property.
  */
-public interface ListValueChangeListener<R> {
+@FunctionalInterface
+public interface ListPropertyChangeListener<R> {
 
     /**
-     * Called whenever values have been added to the list property.
+     * Called whenever values have been added to, replaced in or removed from the list property.
      *
-     * @param listProperty List property to which the values have been added.
-     * @param startIndex   Index of the first added value.
-     * @param newValues    Newly added values.
+     * @param event Details of the change.
      */
-    void valuesAdded(ReadableListProperty<? extends R> listProperty,
-                     int startIndex,
-                     List<? extends R> newValues);
-
-    /**
-     * Called whenever values have been replaced in the list property.
-     *
-     * @param listProperty List property in which the values have been replaced.
-     * @param startIndex   Index of the first replaced value.
-     * @param oldValues    Previous values.
-     * @param newValues    New values.
-     */
-    void valuesChanged(ReadableListProperty<? extends R> listProperty,
-                       int startIndex,
-                       List<? extends R> oldValues,
-                       List<? extends R> newValues);
-
-    /**
-     * Called whenever values have been removed from the list property.
-     *
-     * @param listProperty List property from which the values have been removed.
-     * @param startIndex   Index of the first removed value.
-     * @param oldValues    Removed values.
-     */
-    void valuesRemoved(ReadableListProperty<? extends R> listProperty,
-                       int startIndex,
-                       List<? extends R> oldValues);
+    void listPropertyChanged(ListPropertyChange<? extends R> event);
 }

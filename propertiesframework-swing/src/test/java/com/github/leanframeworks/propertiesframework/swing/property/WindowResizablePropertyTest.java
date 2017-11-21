@@ -50,7 +50,7 @@ public class WindowResizablePropertyTest {
 
         ReadableWritableProperty<Boolean> property = new WindowResizableProperty(window);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
         assertTrue(window.isResizable());
@@ -69,7 +69,7 @@ public class WindowResizablePropertyTest {
 
         ReadableWritableProperty<Boolean> property = new WindowResizableProperty(window);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
         assertTrue(window.isResizable());

@@ -73,7 +73,7 @@ public class CompositeReadablePropertyTest {
 
         ValueChangeListener<Collection<Integer>> mockListener = (ValueChangeListener<Collection<Integer>>) mock
                 (ValueChangeListener.class);
-        compositeProperty.addValueChangeListener(mockListener);
+        compositeProperty.addChangeListener(mockListener);
         compoundProperty1.setValue(5);
         compoundProperty2.setValue(6);
 

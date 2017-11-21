@@ -125,7 +125,7 @@ public class SimpleBinding<MO, SI> implements Disposable {
         this.transformer = transformer;
         this.slave = slave;
 
-        master.addValueChangeListener(masterAdapter);
+        master.addChangeListener(masterAdapter);
 
         // Slave initial values
         updateSlaves(master.getValue());
@@ -149,7 +149,7 @@ public class SimpleBinding<MO, SI> implements Disposable {
      */
     @Override
     public void dispose() {
-        master.removeValueChangeListener(masterAdapter);
+        master.removeChangeListener(masterAdapter);
     }
 
     /**

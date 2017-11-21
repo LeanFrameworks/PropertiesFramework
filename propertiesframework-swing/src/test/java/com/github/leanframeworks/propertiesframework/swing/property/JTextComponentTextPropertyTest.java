@@ -52,7 +52,7 @@ public class JTextComponentTextPropertyTest {
         JTextComponent component = new JTextField();
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals("", component.getDocument().getText(0, component.getDocument().getLength()));
         assertEquals("", component.getText());
@@ -71,7 +71,7 @@ public class JTextComponentTextPropertyTest {
         JTextComponent component = new JTextField();
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals("", component.getDocument().getText(0, component.getDocument().getLength()));
         assertEquals("", component.getText());
@@ -90,7 +90,7 @@ public class JTextComponentTextPropertyTest {
         JTextComponent component = new JTextField("initial text");
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals("initial text", component.getDocument().getText(0, component.getDocument().getLength()));
         assertEquals("initial text", component.getText());
@@ -109,7 +109,7 @@ public class JTextComponentTextPropertyTest {
         JTextComponent component = new JTextField("initial text");
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals("initial text", component.getDocument().getText(0, component.getDocument().getLength()));
         assertEquals("initial text", component.getText());
@@ -127,7 +127,7 @@ public class JTextComponentTextPropertyTest {
         JTextComponent component = new JTextField("initial text");
         JTextComponentTextProperty property = new JTextComponentTextProperty(component);
         ValueChangeListener<String> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         component.setText("new text");
         component.setText("another one");

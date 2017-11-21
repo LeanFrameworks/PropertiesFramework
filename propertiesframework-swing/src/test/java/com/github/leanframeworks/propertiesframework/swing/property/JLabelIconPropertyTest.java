@@ -52,7 +52,7 @@ public class JLabelIconPropertyTest {
         JLabel label = new JLabel(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
-        iconProperty.addValueChangeListener(listenerMock);
+        iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
         iconProperty.setValue(null);
@@ -69,7 +69,7 @@ public class JLabelIconPropertyTest {
         JLabel label = new JLabel(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
-        iconProperty.addValueChangeListener(listenerMock);
+        iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
         iconProperty.setValue(ICON2);
@@ -86,7 +86,7 @@ public class JLabelIconPropertyTest {
         JLabel label = new JLabel(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
-        iconProperty.addValueChangeListener(listenerMock);
+        iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
         label.setIcon(null);
@@ -103,7 +103,7 @@ public class JLabelIconPropertyTest {
         JLabel label = new JLabel(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JLabelIconProperty(label);
         ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
-        iconProperty.addValueChangeListener(listenerMock);
+        iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
         label.setIcon(ICON2);

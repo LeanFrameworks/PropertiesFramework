@@ -26,7 +26,8 @@
 package com.github.leanframeworks.propertiesframework.base.property;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
-import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableListProperty;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
     /**
      * Listeners to changes in the list property.
      */
-    private final List<ListValueChangeListener<? super R>> listeners = new ArrayList<>();
+    private final List<ListPropertyChangeListener<? super R>> listeners = new ArrayList<>();
 
     /**
      * Default constructor adding no listener.
@@ -58,9 +59,9 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
      *
      * @param listeners Listeners to be added.
      */
-    public AbstractReadableListProperty(ListValueChangeListener<? super R>... listeners) {
-        for (ListValueChangeListener<? super R> listener : listeners) {
-            addValueChangeListener(listener);
+    public AbstractReadableListProperty(ListPropertyChangeListener<? super R>... listeners) {
+        for (ListPropertyChangeListener<? super R> listener : listeners) {
+            addChangeListener(listener);
         }
     }
 
@@ -85,23 +86,23 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
      *
      * @return List item change listeners.
      */
-    public Collection<ListValueChangeListener<? super R>> getValueChangeListeners() {
+    public Collection<ListPropertyChangeListener<? super R>> getChangeListeners() {
         return Collections.unmodifiableList(listeners);
     }
 
     /**
-     * @see ReadableListProperty#addValueChangeListener(ListValueChangeListener)
+     * @see ReadableListProperty#addChangeListener(ListPropertyChangeListener)
      */
     @Override
-    public void addValueChangeListener(ListValueChangeListener<? super R> listener) {
+    public void addChangeListener(ListPropertyChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
     /**
-     * @see ReadableListProperty#removeValueChangeListener(ListValueChangeListener)
+     * @see ReadableListProperty#removeChangeListener(ListPropertyChangeListener)
      */
     @Override
-    public void removeValueChangeListener(ListValueChangeListener<? super R> listener) {
+    public void removeChangeListener(ListPropertyChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -115,11 +116,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
      * @param newItems   Newly added items.
      */
     protected void doNotifyListenersOfAddedValues(int startIndex, List<? extends R> newItems) {
-        List<ListValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
-        List<R> unmodifiable = Collections.unmodifiableList(newItems);
-        for (ListValueChangeListener<? super R> listener : listenersCopy) {
-            listener.valuesAdded(this, startIndex, unmodifiable);
-        }
+        doNotifyListeners(new ListPropertyChange<>(this, startIndex, null, newItems));
     }
 
     /**
@@ -135,12 +132,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
     protected void doNotifyListenersOfChangedValues(int startIndex,
                                                     List<? extends R> oldItems,
                                                     List<? extends R> newItems) {
-        List<ListValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
-        List<R> oldUnmodifiable = Collections.unmodifiableList(oldItems);
-        List<R> newUnmodifiable = Collections.unmodifiableList(newItems);
-        for (ListValueChangeListener<? super R> listener : listenersCopy) {
-            listener.valuesChanged(this, startIndex, oldUnmodifiable, newUnmodifiable);
-        }
+        doNotifyListeners(new ListPropertyChange<>(this, startIndex, oldItems, newItems));
     }
 
     /**
@@ -153,10 +145,21 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
      * @param oldItems   Removed items.
      */
     protected void doNotifyListenersOfRemovedValues(int startIndex, List<? extends R> oldItems) {
-        List<ListValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
-        List<R> unmodifiable = Collections.unmodifiableList(oldItems);
-        for (ListValueChangeListener<? super R> listener : listenersCopy) {
-            listener.valuesRemoved(this, startIndex, unmodifiable);
+        doNotifyListeners(new ListPropertyChange<>(this, startIndex, oldItems, null));
+    }
+
+    /**
+     * Notifies the change listeners that items have been added, replaced or removed.
+     * <p>
+     * Note that the specified lists of items in the event should be wrapped in unmodifiable lists before being passed
+     * to the listeners.
+     *
+     * @param event Event to be passed to the listeners.
+     */
+    protected void doNotifyListeners(ListPropertyChange<? extends R> event) {
+        List<ListPropertyChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
+        for (ListPropertyChangeListener<? super R> listener : listenersCopy) {
+            listener.listPropertyChanged(event);
         }
     }
 }

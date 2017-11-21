@@ -52,7 +52,7 @@ public class JDialogTitlePropertyTest {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         titleProperty.setValue(null);
@@ -69,7 +69,7 @@ public class JDialogTitlePropertyTest {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         titleProperty.setValue(TITLE2);
@@ -86,7 +86,7 @@ public class JDialogTitlePropertyTest {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         dialog.setTitle(null);
@@ -103,7 +103,7 @@ public class JDialogTitlePropertyTest {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         dialog.setTitle(TITLE2);

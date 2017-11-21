@@ -10,8 +10,10 @@
 * Changed `ReadableWritableSetProperty<R, W>` to `ReadableWritableSetProperty<V>`
 * Changed `ReadableWritableListProperty<R, W>` to `ReadableWritableListProperty<V>`
 * Changed `ReadableWritableMapProperty<K, R, W>` to `ReadableWritableMapProperty<K, V>`
-* TODO Move inhibition implementation to separate AbstractInihibitableReadableProperty
-* TODO DeepDisposable interface
+* Annotated one-method interfaces as `@FunctionalInterface`
+* Replaced the `SetValueChangeListener` interface by the `SetPropertyChangeListener` functional interface
+* Replaced the `ListValueChangeListener` interface by the `ListPropertyChangeListener` functional interface
+* Replaced the `MapValueChangeListener` interface by the `MapPropertyChangeListener` functional interface
 * TODO Functional interface for Set/List/MapValueChangeListener
 
 ## Migration from version 0.0.1

@@ -25,15 +25,12 @@
 
 package com.github.leanframeworks.propertiesframework.javafx.binding;
 
-import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableListProperty;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import java.util.List;
 
 public final class FXBindings {
 
@@ -46,7 +43,7 @@ public final class FXBindings {
 
     public static <R> ObservableValue<R> fx(ReadableProperty<R> vfProperty) {
         final SimpleObjectProperty<R> fxObservableValue = new SimpleObjectProperty<R>();
-        vfProperty.addValueChangeListener((p, o, n) -> fxObservableValue.set(n));
+        vfProperty.addChangeListener((p, o, n) -> fxObservableValue.set(n));
         fxObservableValue.set(vfProperty.getValue());
         return fxObservableValue;
     }
@@ -54,31 +51,24 @@ public final class FXBindings {
     public static <R> ObservableList<R> fx(ReadableListProperty<R> vfListProperty) {
         final ObservableList<R> fxObservableList = FXCollections.observableArrayList();
 
-        vfListProperty.addValueChangeListener(new ListValueChangeListener<R>() {
-
-            @Override
-            public void valuesAdded(ReadableListProperty<? extends R> p, int i, List<? extends R> n) {
-                int offset = 0;
-                for (R item : n) {
-                    fxObservableList.add(i + offset++, item);
+        vfListProperty.addChangeListener(e -> {
+                    if (e.valuesAdded()) {
+                        int offset = 0;
+                        for (R item : e.getNewValues()) {
+                            fxObservableList.add(e.getStartIndex() + offset++, item);
+                        }
+                    } else if (e.valuesReplaced()) {
+                        int offset = 0;
+                        for (R item : e.getNewValues()) {
+                            fxObservableList.set(e.getStartIndex() + offset++, item);
+                        }
+                    } else if (e.valuesRemoved()) {
+                        for (int j = 0; j < e.getOldValues().size(); j++) {
+                            fxObservableList.remove(e.getStartIndex());
+                        }
+                    }
                 }
-            }
-
-            @Override
-            public void valuesChanged(ReadableListProperty<? extends R> p, int i, List<? extends R> o, List<? extends R> n) {
-                int offset = 0;
-                for (R item : n) {
-                    fxObservableList.set(i + offset++, item);
-                }
-            }
-
-            @Override
-            public void valuesRemoved(ReadableListProperty<? extends R> p, int i, List<? extends R> o) {
-                for (int j = 0; j < o.size(); j++) {
-                    fxObservableList.remove(i);
-                }
-            }
-        });
+        );
         fxObservableList.addAll(vfListProperty.asUnmodifiableList());
 
         return fxObservableList;

@@ -132,7 +132,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * @param property Sub-property to be added.
      */
     public void addProperty(ReadableProperty<? extends R> property) {
-        property.addValueChangeListener(changeAdapter);
+        property.addChangeListener(changeAdapter);
         properties.add(property);
         updateFromProperties();
     }
@@ -146,7 +146,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      * @see #clear()
      */
     public void removeProperty(ReadableProperty<? extends R> property) {
-        property.removeValueChangeListener(changeAdapter);
+        property.removeChangeListener(changeAdapter);
         properties.remove(property);
         updateFromProperties();
     }

@@ -25,9 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.simple;
 
-import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChangeListener;
 import org.junit.Test;
-import org.mockito.Matchers;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,12 +36,12 @@ import java.util.List;
 
 import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
 import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
+import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,8 +53,8 @@ public class SimpleListPropertyTest {
     @Test
     public void testDefaultConstructor() {
         SimpleListProperty<Integer> property = new SimpleListProperty<>();
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         assertTrue(haveEqualElements(property, Collections.<Integer>emptyList()));
         assertTrue(haveEqualElements(property.asUnmodifiableList(), Collections.<Integer>emptyList()));
@@ -70,8 +70,8 @@ public class SimpleListPropertyTest {
         ref.add(3);
 
         SimpleListProperty<Integer> property = new SimpleListProperty<>(ref);
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         assertTrue(haveEqualElements(ref, property));
         assertTrue(haveEqualElements(ref, property.asUnmodifiableList()));
@@ -81,14 +81,18 @@ public class SimpleListPropertyTest {
 
     @Test
     public void testConstructorWithListeners() {
-        ListValueChangeListener<Integer> listener1 = mock(ListValueChangeListener.class);
-        ListValueChangeListener<Integer> listener2 = mock(ListValueChangeListener.class);
+        ListPropertyChangeListener<Integer> listener1 = mock(ListPropertyChangeListener.class);
+        ListPropertyChangeListener<Integer> listener2 = mock(ListPropertyChangeListener.class);
         SimpleListProperty<Integer> property = new SimpleListProperty<>(listener1, listener2);
 
         property.add(4);
 
-        verify(listener1).valuesAdded(eq(property), eq(0), matches(Collections.singletonList(4)));
-        verify(listener2).valuesAdded(eq(property), eq(0), matches(Collections.singletonList(4)));
+        verify(listener1).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, null, singletonList(4))
+        ));
+        verify(listener2).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, null, singletonList(4))
+        ));
         verifyNoMoreInteractions(listener1);
         verifyNoMoreInteractions(listener2);
     }
@@ -100,8 +104,8 @@ public class SimpleListPropertyTest {
         ref.add(2);
         ref.add(3);
 
-        ListValueChangeListener<Integer> listener1 = mock(ListValueChangeListener.class);
-        ListValueChangeListener<Integer> listener2 = mock(ListValueChangeListener.class);
+        ListPropertyChangeListener<Integer> listener1 = mock(ListPropertyChangeListener.class);
+        ListPropertyChangeListener<Integer> listener2 = mock(ListPropertyChangeListener.class);
         SimpleListProperty<Integer> property = new SimpleListProperty<>(ref, listener1, listener2);
 
         assertTrue(haveEqualElements(ref, property));
@@ -109,8 +113,12 @@ public class SimpleListPropertyTest {
 
         property.add(4);
 
-        verify(listener1).valuesAdded(eq(property), eq(3), matches(Collections.singletonList(4)));
-        verify(listener2).valuesAdded(eq(property), eq(3), matches(Collections.singletonList(4)));
+        verify(listener1).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 3, null, singletonList(4))
+        ));
+        verify(listener2).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 3, null, singletonList(4))
+        ));
         verifyNoMoreInteractions(listener1);
         verifyNoMoreInteractions(listener2);
     }
@@ -150,8 +158,8 @@ public class SimpleListPropertyTest {
     @Test
     public void testAdd() {
         SimpleListProperty<Integer> property = new SimpleListProperty<>();
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.add(1);
         property.add(3);
@@ -167,19 +175,29 @@ public class SimpleListPropertyTest {
         refAll.add(2);
 
         assertTrue(haveEqualElements(refAll, property));
-        verify(listener).valuesAdded(eq(property), eq(0), matches(Collections.singletonList(1)));
-        verify(listener).valuesAdded(eq(property), eq(1), matches(Collections.singletonList(3)));
-        verify(listener).valuesAdded(eq(property), eq(2), matches(Collections.singletonList(2)));
-        verify(listener).valuesAdded(eq(property), eq(3), matches(Collections.singletonList(3)));
-        verify(listener).valuesAdded(eq(property), eq(4), matches(Collections.singletonList(2)));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, null, singletonList(1))
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 1, null, singletonList(3))
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 2, null, singletonList(2))
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 3, null, singletonList(3))
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 4, null, singletonList(2))
+        ));
         verifyNoMoreInteractions(listener);
     }
 
     @Test
     public void testAddAll() {
         SimpleListProperty<Integer> property = new SimpleListProperty<>();
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         List<Integer> ref = new ArrayList<>();
         ref.add(1);
@@ -194,8 +212,12 @@ public class SimpleListPropertyTest {
 
         assertEquals(refAll.size(), property.size());
         assertTrue(haveEqualElements(refAll, property));
-        verify(listener).valuesAdded(eq(property), eq(0), matches(ref));
-        verify(listener).valuesAdded(eq(property), eq(3), matches(ref));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, null, ref)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 3, null, ref)
+        ));
         verifyNoMoreInteractions(listener);
     }
 
@@ -207,17 +229,23 @@ public class SimpleListPropertyTest {
         refAll.add(3);
 
         SimpleListProperty<Integer> property = new SimpleListProperty<>(refAll);
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.remove(Integer.valueOf(2));
         property.remove(Integer.valueOf(1));
         property.remove(Integer.valueOf(3));
 
         assertTrue(property.isEmpty());
-        verify(listener).valuesRemoved(eq(property), eq(1), matches(Collections.singletonList(2)));
-        verify(listener).valuesRemoved(eq(property), eq(0), matches(Collections.singletonList(1)));
-        verify(listener).valuesRemoved(eq(property), eq(0), matches(Collections.singletonList(3)));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 1, singletonList(2), null)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, singletonList(1), null)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, singletonList(3), null)
+        ));
         verifyNoMoreInteractions(listener);
     }
 
@@ -229,17 +257,23 @@ public class SimpleListPropertyTest {
         refAll.add("C");
 
         SimpleListProperty<String> property = new SimpleListProperty<>(refAll);
-        ListValueChangeListener<String> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<String> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.remove(1);
         property.remove(0);
         property.remove(0);
 
         assertTrue(property.isEmpty());
-        verify(listener).valuesRemoved(eq(property), eq(1), matches(Collections.singletonList("B")));
-        verify(listener).valuesRemoved(eq(property), eq(0), matches(Collections.singletonList("A")));
-        verify(listener).valuesRemoved(eq(property), eq(0), matches(Collections.singletonList("C")));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 1, singletonList("B"), null)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, singletonList("A"), null)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, singletonList("C"), null)
+        ));
         verifyNoMoreInteractions(listener);
     }
 
@@ -251,8 +285,8 @@ public class SimpleListPropertyTest {
         refAll.add(3);
 
         SimpleListProperty<Integer> property = new SimpleListProperty<>(refAll);
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         refAll.clear();
         refAll.add(2);
@@ -261,12 +295,18 @@ public class SimpleListPropertyTest {
         property.removeAll(refAll);
 
         assertTrue(property.isEmpty());
-        verify(listener, times(0)).valuesAdded(eq(property), anyInt(), Matchers.<List<Integer>>any());
+        verify(listener, times(3)).listPropertyChanged(any());
 
         // Note that the number and ordering of calls depends on the implementation
-        verify(listener).valuesRemoved(eq(property), eq(1), matches(Collections.singletonList(2)));
-        verify(listener).valuesRemoved(eq(property), eq(1), matches(Collections.singletonList(3)));
-        verify(listener).valuesRemoved(eq(property), eq(0), matches(Collections.singletonList(1)));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 1, singletonList(2), null)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 1, singletonList(3), null)
+        ));
+        verify(listener).listPropertyChanged(matches(
+                new ListPropertyChange<>(property, 0, singletonList(1), null)
+        ));
         verifyNoMoreInteractions(listener);
     }
 
@@ -298,8 +338,8 @@ public class SimpleListPropertyTest {
         remaining.add(7);
 
         SimpleListProperty<Integer> property = new SimpleListProperty<>(initial);
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.retainAll(toBeRetained);
 
@@ -307,10 +347,10 @@ public class SimpleListPropertyTest {
         assertTrue(haveEqualElements(remaining, property));
 
         // Note that the number and ordering of calls depends on the implementation
-        verify(listener).valuesRemoved(eq(property), eq(4), matches(Collections.singletonList(4)));
-        verify(listener).valuesRemoved(eq(property), eq(4), matches(Collections.singletonList(5)));
-        verify(listener).valuesRemoved(eq(property), eq(4), matches(Collections.singletonList(6)));
-        verify(listener).valuesRemoved(eq(property), eq(5), matches(Collections.singletonList(6)));
+        verify(listener).listPropertyChanged(matches(new ListPropertyChange<>(property, 4, singletonList(4), null)));
+        verify(listener).listPropertyChanged(matches(new ListPropertyChange<>(property, 4, singletonList(5), null)));
+        verify(listener).listPropertyChanged(matches(new ListPropertyChange<>(property, 4, singletonList(6), null)));
+        verify(listener).listPropertyChanged(matches(new ListPropertyChange<>(property, 5, singletonList(6), null)));
         verifyNoMoreInteractions(listener);
     }
 
@@ -322,13 +362,13 @@ public class SimpleListPropertyTest {
         refAll.add(3);
 
         SimpleListProperty<Integer> property = new SimpleListProperty<>(refAll);
-        ListValueChangeListener<Integer> listener = mock(ListValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.clear();
 
         assertTrue(property.isEmpty());
-        verify(listener).valuesRemoved(eq(property), eq(0), matches(refAll));
+        verify(listener).listPropertyChanged(matches(new ListPropertyChange<>(property, 0, refAll, null)));
         verifyNoMoreInteractions(listener);
     }
 

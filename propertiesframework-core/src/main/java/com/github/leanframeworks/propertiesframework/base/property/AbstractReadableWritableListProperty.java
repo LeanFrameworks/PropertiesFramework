@@ -25,7 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableListProperty;
 
 /**
@@ -48,9 +48,9 @@ public abstract class AbstractReadableWritableListProperty<T> extends AbstractRe
     /**
      * {@inheritDoc}
      *
-     * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty(ListValueChangeListener[])
+     * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty(ListPropertyChangeListener[])
      */
-    public AbstractReadableWritableListProperty(ListValueChangeListener<? super T>... listeners) {
+    public AbstractReadableWritableListProperty(ListPropertyChangeListener<? super T>... listeners) {
         super(listeners);
     }
 }

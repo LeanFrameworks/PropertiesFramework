@@ -50,7 +50,7 @@ public class JComponentToolTipTextPropertyTest {
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        toolTipProperty.addValueChangeListener(listenerMock);
+        toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
         toolTipProperty.setValue(null);
@@ -68,7 +68,7 @@ public class JComponentToolTipTextPropertyTest {
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        toolTipProperty.addValueChangeListener(listenerMock);
+        toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
         toolTipProperty.setValue("Another tooltip");
@@ -86,7 +86,7 @@ public class JComponentToolTipTextPropertyTest {
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        toolTipProperty.addValueChangeListener(listenerMock);
+        toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
         component.setToolTipText(null);
@@ -104,7 +104,7 @@ public class JComponentToolTipTextPropertyTest {
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        toolTipProperty.addValueChangeListener(listenerMock);
+        toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
         component.setToolTipText("Another tooltip");

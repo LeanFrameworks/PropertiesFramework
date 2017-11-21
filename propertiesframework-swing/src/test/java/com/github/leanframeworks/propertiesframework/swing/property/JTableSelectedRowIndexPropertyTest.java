@@ -76,7 +76,7 @@ public class JTableSelectedRowIndexPropertyTest {
         // Create property
         property = new JTableSelectedRowIndexProperty(table);
         listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
     }
 
     @Test

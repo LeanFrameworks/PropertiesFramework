@@ -25,7 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.simple;
 
-import com.github.leanframeworks.propertiesframework.api.property.SetValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableWritableSetProperty;
 
 import java.util.Collection;
@@ -63,7 +63,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T>
      *
      * @param listeners Listeners to be added.
      */
-    public SimpleSetProperty(SetValueChangeListener<T>... listeners) {
+    public SimpleSetProperty(SetPropertyChangeListener<T>... listeners) {
         super(listeners);
     }
 
@@ -85,13 +85,13 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T>
      * @param items     Initial items.
      * @param listeners Listeners to be added.
      */
-    public SimpleSetProperty(Set<T> items, SetValueChangeListener<T>... listeners) {
+    public SimpleSetProperty(Set<T> items, SetPropertyChangeListener<T>... listeners) {
         super(); // Without listeners
 
         internal.addAll(items);
 
-        for (SetValueChangeListener<T> listener : listeners) {
-            addValueChangeListener(listener);
+        for (SetPropertyChangeListener<T> listener : listeners) {
+            addChangeListener(listener);
         }
     }
 

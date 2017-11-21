@@ -56,7 +56,7 @@ public class ComponentVisiblePropertyTest {
 
         ComponentVisibleProperty property = new ComponentVisibleProperty(component);
         ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         setVisible(component, false);
         setVisible(component, true);

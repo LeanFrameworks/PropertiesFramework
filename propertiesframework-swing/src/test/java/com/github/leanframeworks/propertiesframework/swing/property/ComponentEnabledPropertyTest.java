@@ -50,7 +50,7 @@ public class ComponentEnabledPropertyTest {
         Component component = new JLabel();
         ReadableWritableProperty<Boolean> property = new ComponentEnabledProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
         assertTrue(component.isEnabled());
@@ -68,7 +68,7 @@ public class ComponentEnabledPropertyTest {
         Component component = new JLabel();
         ReadableWritableProperty<Boolean> property = new ComponentEnabledProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
         component.setEnabled(false);

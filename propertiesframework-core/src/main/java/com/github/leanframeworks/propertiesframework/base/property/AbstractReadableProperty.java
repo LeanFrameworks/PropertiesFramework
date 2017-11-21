@@ -114,23 +114,23 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @return Value change listeners.
      */
-    public Collection<ValueChangeListener<? super R>> getValueChangeListeners() {
+    public Collection<ValueChangeListener<? super R>> getChangeListeners() {
         return Collections.unmodifiableList(listeners);
     }
 
     /**
-     * @see ReadableProperty#addValueChangeListener(ValueChangeListener)
+     * @see ReadableProperty#addChangeListener(ValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(ValueChangeListener<? super R> listener) {
+    public void addChangeListener(ValueChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
     /**
-     * @see ReadableProperty#removeValueChangeListener(ValueChangeListener)
+     * @see ReadableProperty#removeChangeListener(ValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(ValueChangeListener<? super R> listener) {
+    public void removeChangeListener(ValueChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 

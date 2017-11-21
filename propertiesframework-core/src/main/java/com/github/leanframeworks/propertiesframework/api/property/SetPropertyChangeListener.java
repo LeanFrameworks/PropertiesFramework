@@ -26,20 +26,17 @@
 package com.github.leanframeworks.propertiesframework.api.property;
 
 /**
- * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
- * properties.
+ * Interface to be implemented by listener to changes in a {@link ReadableSetProperty}.
  *
- * @param <W> Type of data that can be written to this property.
- * @see ReadableProperty
+ * @param <R> Type of values in the set property.
  */
-public interface WritableProperty<W> {
+@FunctionalInterface
+public interface SetPropertyChangeListener<R> {
 
     /**
-     * Sets the value of the property.
-     * <p>
-     * This method can be called by the programmer or a {@link ReadableProperty} that is bound to it.
+     * Called whenever values have been added to or removed from the set property.
      *
-     * @param value Property value.
+     * @param event Details of the change.
      */
-    void setValue(W value);
+    void setPropertyChanged(SetPropertyChange<? extends R> event);
 }

@@ -73,7 +73,7 @@ public class JTableRowCountPropertyTest {
         // Create property
         property = new JTableRowCountProperty(table);
         listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
     }
 
     @Test

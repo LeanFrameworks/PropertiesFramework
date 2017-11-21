@@ -25,28 +25,32 @@
 
 package com.github.leanframeworks.propertiesframework.test;
 
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
+import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 import org.hamcrest.Description;
 import org.mockito.ArgumentMatcher;
 
-import java.util.HashSet;
-import java.util.Set;
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
 
-public class SetMatcher<T> extends ArgumentMatcher<Set<T>> {
+public class ListValueChangeEventMatcher<T> extends ArgumentMatcher<ListPropertyChange<T>> {
 
-    private final Set<T> refElements;
+    private final ListPropertyChange<T> refEvent;
 
-    public SetMatcher(Set<T> refElements) {
+    public ListValueChangeEventMatcher(ListPropertyChange<T> refEvent) {
         super();
-        this.refElements = new HashSet<>(refElements);
+        this.refEvent = refEvent;
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean matches(Object actualElements) {
+    public boolean matches(Object actualEvent) {
         boolean match = false;
 
-        if (actualElements instanceof Set<?>) {
-            match = TestUtils.haveEqualElements(refElements, (Set<T>) actualElements);
+        if (actualEvent instanceof ListPropertyChange<?>) {
+            match = ValueUtils.areEqual(refEvent.getSource(), ((ListPropertyChange) actualEvent).getSource()) &&
+                    (refEvent.getStartIndex() == ((ListPropertyChange) actualEvent).getStartIndex()) &&
+                    haveEqualElements(refEvent.getOldValues(), ((ListPropertyChange) actualEvent).getOldValues()) &&
+                    haveEqualElements(refEvent.getNewValues(), ((ListPropertyChange) actualEvent).getNewValues());
         }
 
         return match;

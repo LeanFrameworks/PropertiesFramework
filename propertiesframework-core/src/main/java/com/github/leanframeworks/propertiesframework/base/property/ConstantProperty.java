@@ -33,21 +33,21 @@ public class ConstantProperty<R> implements ReadableProperty<R> {
     /**
      * Does nothing because the listener will never be triggered, because this property's value will never change.
      *
-     * @see ReadableProperty#addValueChangeListener(ValueChangeListener)
+     * @see ReadableProperty#addChangeListener(ValueChangeListener)
      */
     @Override
-    public void addValueChangeListener(ValueChangeListener<? super R> listener) {
+    public void addChangeListener(ValueChangeListener<? super R> listener) {
         // Nothing to be done
     }
 
     /**
      * Does nothing because no listener was actually added.
      *
-     * @see ReadableProperty#removeValueChangeListener(ValueChangeListener)
-     * @see #addValueChangeListener(ValueChangeListener)
+     * @see ReadableProperty#removeChangeListener(ValueChangeListener)
+     * @see #addChangeListener(ValueChangeListener)
      */
     @Override
-    public void removeValueChangeListener(ValueChangeListener<? super R> listener) {
+    public void removeChangeListener(ValueChangeListener<? super R> listener) {
         // Nothing to be done
     }
 

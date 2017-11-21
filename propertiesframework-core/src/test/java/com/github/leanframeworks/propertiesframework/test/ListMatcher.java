@@ -37,7 +37,7 @@ public class ListMatcher<T> extends ArgumentMatcher<List<T>> {
 
     public ListMatcher(List<T> refElements) {
         super();
-        this.refElements = new ArrayList<T>(refElements);
+        this.refElements = new ArrayList<>(refElements);
     }
 
     @SuppressWarnings("unchecked")

@@ -116,7 +116,7 @@ public class BinderTest {
         ReadableWritableProperty<String> slave = new SimpleStringProperty("Initial value");
 
         ValueChangeListener<String> slaveListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        slave.addValueChangeListener(slaveListenerMock);
+        slave.addChangeListener(slaveListenerMock);
 
         from(master).to(slave);
 
@@ -133,9 +133,9 @@ public class BinderTest {
         ReadableWritableProperty<String> slave2 = new SimpleStringProperty("Initial value 2");
 
         ValueChangeListener<String> slave1ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        slave1.addValueChangeListener(slave1ListenerMock);
+        slave1.addChangeListener(slave1ListenerMock);
         ValueChangeListener<String> slave2ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        slave2.addValueChangeListener(slave2ListenerMock);
+        slave2.addChangeListener(slave2ListenerMock);
 
         from(master).to(slave1, slave2);
 

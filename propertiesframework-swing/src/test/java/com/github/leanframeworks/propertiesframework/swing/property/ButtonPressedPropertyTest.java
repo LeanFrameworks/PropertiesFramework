@@ -44,7 +44,7 @@ public class ButtonPressedPropertyTest {
         JButton button = new JButton();
         ButtonPressedProperty property = new ButtonPressedProperty(button);
         ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         button.getModel().setPressed(true);
         button.getModel().setPressed(false);

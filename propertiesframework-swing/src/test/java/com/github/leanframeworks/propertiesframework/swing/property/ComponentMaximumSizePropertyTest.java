@@ -53,7 +53,7 @@ public class ComponentMaximumSizePropertyTest {
 
         ReadableWritableProperty<Dimension> property = new ComponentMaximumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getMaximumSize());
@@ -76,7 +76,7 @@ public class ComponentMaximumSizePropertyTest {
 
         ReadableWritableProperty<Dimension> property = new ComponentMaximumSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getMaximumSize());

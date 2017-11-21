@@ -30,6 +30,7 @@ package com.github.leanframeworks.propertiesframework.base.common;
  *
  * @param <T> Type of throwable to be handled.
  */
+@FunctionalInterface
 public interface ThrowableHandler<T extends Throwable> {
 
     /**

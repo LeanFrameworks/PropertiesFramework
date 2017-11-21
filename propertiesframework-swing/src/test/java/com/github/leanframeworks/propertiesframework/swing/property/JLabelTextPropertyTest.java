@@ -48,7 +48,7 @@ public class JLabelTextPropertyTest {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        textProperty.addValueChangeListener(listenerMock);
+        textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
         textProperty.setValue(null);
@@ -65,7 +65,7 @@ public class JLabelTextPropertyTest {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        textProperty.addValueChangeListener(listenerMock);
+        textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
         textProperty.setValue("Another text");
@@ -82,7 +82,7 @@ public class JLabelTextPropertyTest {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        textProperty.addValueChangeListener(listenerMock);
+        textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
         label.setText(null);
@@ -99,7 +99,7 @@ public class JLabelTextPropertyTest {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        textProperty.addValueChangeListener(listenerMock);
+        textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
         label.setText("Another text");

@@ -26,7 +26,7 @@
 package com.github.leanframeworks.propertiesframework.base.property;
 
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableSetProperty;
-import com.github.leanframeworks.propertiesframework.api.property.SetValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChangeListener;
 
 /**
  * Abstract implementation of a {@link ReadableWritableSetProperty}.
@@ -48,9 +48,9 @@ public abstract class AbstractReadableWritableSetProperty<T> extends AbstractRea
     /**
      * {@inheritDoc}
      *
-     * @see AbstractReadableSetProperty#AbstractReadableSetProperty(SetValueChangeListener[])
+     * @see AbstractReadableSetProperty#AbstractReadableSetProperty(SetPropertyChangeListener[])
      */
-    public AbstractReadableWritableSetProperty(SetValueChangeListener<? super T>... listeners) {
+    public AbstractReadableWritableSetProperty(SetPropertyChangeListener<? super T>... listeners) {
         super(listeners);
     }
 }

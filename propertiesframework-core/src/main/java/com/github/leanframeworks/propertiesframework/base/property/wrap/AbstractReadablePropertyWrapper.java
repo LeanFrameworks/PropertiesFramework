@@ -58,7 +58,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
         super();
         this.wrappedProperty = wrappedProperty;
         this.wrappedPropertyAdapter = new ValueChangeAdapter();
-        this.wrappedProperty.addValueChangeListener(wrappedPropertyAdapter);
+        this.wrappedProperty.addChangeListener(wrappedPropertyAdapter);
     }
 
     /**
@@ -68,7 +68,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
     public void dispose() {
         super.dispose();
         if (wrappedProperty != null) {
-            wrappedProperty.removeValueChangeListener(wrappedPropertyAdapter);
+            wrappedProperty.removeChangeListener(wrappedPropertyAdapter);
             if (wrappedProperty instanceof Disposable) {
                 ((Disposable) wrappedProperty).dispose();
             }

@@ -25,7 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.simple;
 
-import com.github.leanframeworks.propertiesframework.api.property.SetValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChangeListener;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -35,11 +36,11 @@ import java.util.Set;
 
 import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
 import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
+import static java.util.Collections.singleton;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -50,11 +51,11 @@ public class SimpleSetPropertyTest {
     @Test
     public void testDefaultConstructor() {
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
-        assertTrue(haveEqualElements(property, Collections.<Integer>emptySet()));
-        assertTrue(haveEqualElements(property.asUnmodifiableSet(), Collections.<Integer>emptySet()));
+        assertTrue(haveEqualElements(property, Collections.emptySet()));
+        assertTrue(haveEqualElements(property.asUnmodifiableSet(), Collections.emptySet()));
 
         verifyZeroInteractions(listener);
     }
@@ -67,8 +68,8 @@ public class SimpleSetPropertyTest {
         ref.add(3);
 
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(ref);
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         assertTrue(haveEqualElements(ref, property));
         assertTrue(haveEqualElements(ref, property.asUnmodifiableSet()));
@@ -78,14 +79,14 @@ public class SimpleSetPropertyTest {
 
     @Test
     public void testConstructorWithListeners() {
-        SetValueChangeListener<Integer> listener1 = mock(SetValueChangeListener.class);
-        SetValueChangeListener<Integer> listener2 = mock(SetValueChangeListener.class);
+        SetPropertyChangeListener<Integer> listener1 = mock(SetPropertyChangeListener.class);
+        SetPropertyChangeListener<Integer> listener2 = mock(SetPropertyChangeListener.class);
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(listener1, listener2);
 
         property.add(4);
 
-        verify(listener1).valuesAdded(eq(property), matches(Collections.singleton(4)));
-        verify(listener2).valuesAdded(eq(property), matches(Collections.singleton(4)));
+        verify(listener1).setPropertyChanged(matches(new SetPropertyChange<>(property, null, singleton(4))));
+        verify(listener2).setPropertyChanged(matches(new SetPropertyChange<>(property, null, singleton(4))));
         verifyNoMoreInteractions(listener1);
         verifyNoMoreInteractions(listener2);
     }
@@ -97,8 +98,8 @@ public class SimpleSetPropertyTest {
         ref.add(2);
         ref.add(3);
 
-        SetValueChangeListener<Integer> listener1 = mock(SetValueChangeListener.class);
-        SetValueChangeListener<Integer> listener2 = mock(SetValueChangeListener.class);
+        SetPropertyChangeListener<Integer> listener1 = mock(SetPropertyChangeListener.class);
+        SetPropertyChangeListener<Integer> listener2 = mock(SetPropertyChangeListener.class);
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(ref, listener1, listener2);
 
         assertTrue(haveEqualElements(ref, property));
@@ -106,8 +107,8 @@ public class SimpleSetPropertyTest {
 
         property.add(4);
 
-        verify(listener1).valuesAdded(eq(property), matches(Collections.singleton(4)));
-        verify(listener2).valuesAdded(eq(property), matches(Collections.singleton(4)));
+        verify(listener1).setPropertyChanged(matches(new SetPropertyChange<>(property, null, singleton(4))));
+        verify(listener2).setPropertyChanged(matches(new SetPropertyChange<>(property, null, singleton(4))));
         verifyNoMoreInteractions(listener1);
         verifyNoMoreInteractions(listener2);
     }
@@ -147,8 +148,8 @@ public class SimpleSetPropertyTest {
     @Test
     public void testAdd() {
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.add(1);
         property.add(3);
@@ -156,26 +157,26 @@ public class SimpleSetPropertyTest {
         property.add(3);
         property.add(2);
 
-        Set<Integer> refFirst = Collections.singleton(1);
-        Set<Integer> refSecond = Collections.singleton(3);
-        Set<Integer> refThird = Collections.singleton(2);
+        Set<Integer> refFirst = singleton(1);
+        Set<Integer> refSecond = singleton(3);
+        Set<Integer> refThird = singleton(2);
         Set<Integer> refAll = new HashSet<>();
         refAll.add(1);
         refAll.add(2);
         refAll.add(3);
 
         assertTrue(haveEqualElements(refAll, property));
-        verify(listener).valuesAdded(eq(property), matches(refFirst));
-        verify(listener).valuesAdded(eq(property), matches(refSecond));
-        verify(listener).valuesAdded(eq(property), matches(refThird));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, null, refFirst)));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, null, refSecond)));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, null, refThird)));
         verifyNoMoreInteractions(listener);
     }
 
     @Test
     public void testAddAll() {
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>();
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         Set<Integer> ref = new HashSet<>();
         ref.add(1);
@@ -186,7 +187,7 @@ public class SimpleSetPropertyTest {
 
         assertEquals(ref.size(), property.size());
         assertTrue(haveEqualElements(ref, property));
-        verify(listener).valuesAdded(eq(property), matches(ref));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, null, ref)));
         verifyNoMoreInteractions(listener);
     }
 
@@ -198,17 +199,17 @@ public class SimpleSetPropertyTest {
         refAll.add(3);
 
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(refAll);
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.remove(2);
         property.remove(1);
         property.remove(3);
 
         assertTrue(property.isEmpty());
-        verify(listener).valuesRemoved(eq(property), matches(Collections.singleton(2)));
-        verify(listener).valuesRemoved(eq(property), matches(Collections.singleton(1)));
-        verify(listener).valuesRemoved(eq(property), matches(Collections.singleton(3)));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, singleton(2), null)));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, singleton(1), null)));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, singleton(3), null)));
         verifyNoMoreInteractions(listener);
     }
 
@@ -220,13 +221,13 @@ public class SimpleSetPropertyTest {
         refAll.add(3);
 
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(refAll);
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.removeAll(refAll);
 
         assertTrue(property.isEmpty());
-        verify(listener).valuesRemoved(eq(property), matches(refAll));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, refAll, null)));
         verifyNoMoreInteractions(listener);
     }
 
@@ -252,13 +253,13 @@ public class SimpleSetPropertyTest {
         removed.add(6);
 
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(initial);
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.retainAll(retained);
 
         assertEquals(3, property.size());
-        verify(listener).valuesRemoved(eq(property), matches(removed));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, removed, null)));
         verifyNoMoreInteractions(listener);
     }
 
@@ -270,13 +271,13 @@ public class SimpleSetPropertyTest {
         refAll.add(3);
 
         SimpleSetProperty<Integer> property = new SimpleSetProperty<>(refAll);
-        SetValueChangeListener<Integer> listener = mock(SetValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        SetPropertyChangeListener<Integer> listener = mock(SetPropertyChangeListener.class);
+        property.addChangeListener(listener);
 
         property.clear();
 
         assertTrue(property.isEmpty());
-        verify(listener).valuesRemoved(eq(property), matches(refAll));
+        verify(listener).setPropertyChanged(matches(new SetPropertyChange<>(property, refAll, null)));
         verifyNoMoreInteractions(listener);
     }
 

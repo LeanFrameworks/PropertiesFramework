@@ -224,7 +224,7 @@ public final class Bindings {
 
         public BoundProperty(ReadableProperty<R> resultProperty, Disposable disposable) {
             this(resultProperty, Collections.singleton(disposable));
-            resultProperty.addValueChangeListener((p, o, n) -> maybeNotifyListeners(o, n));
+            resultProperty.addChangeListener((p, o, n) -> maybeNotifyListeners(o, n));
         }
 
         public BoundProperty(ReadableProperty<R> resultProperty, Collection<Disposable> disposables) {

@@ -50,7 +50,7 @@ public class JToggleButtonSelectedPropertyTest {
         JToggleButton component = new JToggleButton();
         ReadableWritableProperty<Boolean> property = new JToggleButtonSelectedProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertFalse(property.getValue());
         assertFalse(component.isSelected());
@@ -69,7 +69,7 @@ public class JToggleButtonSelectedPropertyTest {
         component.setSelected(true);
         ReadableWritableProperty<Boolean> property = new JToggleButtonSelectedProperty(component);
         ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
         component.setSelected(false);
@@ -85,7 +85,7 @@ public class JToggleButtonSelectedPropertyTest {
         JToggleButton component = new JToggleButton();
         JToggleButtonSelectedProperty property = new JToggleButtonSelectedProperty(component);
         ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         component.setSelected(true);
         component.setSelected(false);

@@ -25,42 +25,18 @@
 
 package com.github.leanframeworks.propertiesframework.api.property;
 
-import java.util.Map;
-
 /**
- * Interface to be implemented by listener to changes in a {@link ReadableMapProperty}.
+ * Interface to be implemented by listener to changes in a {@link ReadableProperty}.
  *
- * @param <K> Type of keys maintained by the map property.
- * @param <R> Type mapped values that can be read from the map property.
+ * @param <R> Type of value in the property.
  */
-public interface MapValueChangeListener<K, R> {
+@FunctionalInterface
+public interface PropertyChangeListener2<R> {
 
     /**
-     * Called when entries have been added to the map property.
+     * Called whenever the value of the property has changed.
      *
-     * @param mapProperty Map property to which values have been added.
-     * @param newValues   Newly added values.
+     * @param event Details of the change.
      */
-    void valuesAdded(ReadableMapProperty<? extends K, ? extends R> mapProperty,
-                     Map<? extends K, ? extends R> newValues);
-
-    /**
-     * Called when entries have been replaced in map property.
-     *
-     * @param mapProperty Map property in which values have been replaced.
-     * @param oldValues   Previous values.
-     * @param newValues   New values.
-     */
-    void valuesChanged(ReadableMapProperty<? extends K, ? extends R> mapProperty,
-                       Map<? extends K, ? extends R> oldValues,
-                       Map<? extends K, ? extends R> newValues);
-
-    /**
-     * Called when entries have been removed from the map property.
-     *
-     * @param mapProperty Map property from which values have been removed.
-     * @param oldValues   Removed values.
-     */
-    void valuesRemoved(ReadableMapProperty<? extends K, ? extends R> mapProperty,
-                       Map<? extends K, ? extends R> oldValues);
+    void propertyChanged(PropertyChange<? extends R> event);
 }

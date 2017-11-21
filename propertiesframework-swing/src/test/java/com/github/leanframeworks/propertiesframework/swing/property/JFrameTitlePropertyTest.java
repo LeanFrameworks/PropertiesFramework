@@ -53,7 +53,7 @@ public class JFrameTitlePropertyTest {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         titleProperty.setValue(null);
@@ -70,7 +70,7 @@ public class JFrameTitlePropertyTest {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         titleProperty.setValue(TITLE2);
@@ -87,7 +87,7 @@ public class JFrameTitlePropertyTest {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         frame.setTitle(null);
@@ -104,7 +104,7 @@ public class JFrameTitlePropertyTest {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        titleProperty.addValueChangeListener(listenerMock);
+        titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
         frame.setTitle(TITLE2);
@@ -120,7 +120,7 @@ public class JFrameTitlePropertyTest {
         JFrame frame = new JFrame(TITLE1);
         JFrameTitleProperty property = new JFrameTitleProperty(frame);
         ValueChangeListener<String> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         frame.setTitle(TITLE2);
         frame.setTitle(TITLE1);

@@ -108,8 +108,8 @@ public class JTableSelectedRowIndicesPropertyTest {
         // Create property
         property = new JTableSelectedRowIndicesProperty(table);
         listenerMock = (ValueChangeListener<List<Integer>>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
-        property.addValueChangeListener(new PrintStreamValueChangeAdapter<>("SELECTION"));
+        property.addChangeListener(listenerMock);
+        property.addChangeListener(new PrintStreamValueChangeAdapter<>("SELECTION"));
     }
 
     @Test

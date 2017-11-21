@@ -76,7 +76,7 @@ public class JTableSelectedRowCountPropertyTest {
         // Create property
         property = new JTableSelectedRowCountProperty(table);
         listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
     }
 
     @Test

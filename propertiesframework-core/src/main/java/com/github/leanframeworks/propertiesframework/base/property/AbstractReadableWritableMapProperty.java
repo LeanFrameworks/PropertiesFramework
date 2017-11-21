@@ -25,7 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.MapValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.MapPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableMapProperty;
 
 /**
@@ -49,9 +49,9 @@ public abstract class AbstractReadableWritableMapProperty<K, V> extends Abstract
     /**
      * {@inheritDoc}
      *
-     * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty(MapValueChangeListener[])
+     * @see AbstractReadableWritableMapProperty#AbstractReadableWritableMapProperty(MapPropertyChangeListener[])
      */
-    public AbstractReadableWritableMapProperty(MapValueChangeListener<? super K, ? super V>... listeners) {
+    public AbstractReadableWritableMapProperty(MapPropertyChangeListener<? super K, ? super V>... listeners) {
         super(listeners);
     }
 }

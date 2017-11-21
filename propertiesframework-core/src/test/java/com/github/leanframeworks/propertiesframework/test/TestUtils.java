@@ -25,6 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.test;
 
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +44,28 @@ public final class TestUtils {
      */
     private TestUtils() {
         // Nothing to be done
+    }
+
+    /**
+     * Returns a set property change event that can be used when verifying mocks.
+     *
+     * @param ref Set property change event to compare to.
+     * @param <T> Type of items in the corresponding set property.
+     * @return Set property change event to be used when verifying mocks.
+     */
+    public static <T> SetPropertyChange<T> matches(SetPropertyChange<T> ref) {
+        return argThat(new SetValueChangeEventMatcher<>(ref));
+    }
+
+    /**
+     * Returns a list property change event that can be used when verifying mocks.
+     *
+     * @param ref List property change event to compare to.
+     * @param <T> Type of items in the corresponding list property.
+     * @return List property change event to be used when verifying mocks.
+     */
+    public static <T> ListPropertyChange<T> matches(ListPropertyChange<T> ref) {
+        return argThat(new ListValueChangeEventMatcher<>(ref));
     }
 
     /**

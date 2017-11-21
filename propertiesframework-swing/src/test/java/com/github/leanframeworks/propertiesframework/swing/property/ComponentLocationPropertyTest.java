@@ -58,7 +58,7 @@ public class ComponentLocationPropertyTest {
 
         ReadableWritableProperty<Point> property = new ComponentLocationProperty(component);
         ValueChangeListener<Point> listenerMock = (ValueChangeListener<Point>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Point(0, 0), property.getValue());
         assertEquals(new Point(0, 0), component.getLocation());
@@ -87,7 +87,7 @@ public class ComponentLocationPropertyTest {
 
         ReadableWritableProperty<Point> property = new ComponentLocationProperty(component);
         ValueChangeListener<Point> listenerMock = (ValueChangeListener<Point>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Point(0, 0), property.getValue());
         assertEquals(new Point(0, 0), component.getLocation());
@@ -111,7 +111,7 @@ public class ComponentLocationPropertyTest {
         frame.setLocation(0, 0);
         ComponentLocationProperty property = new ComponentLocationProperty(frame);
         ValueChangeListener<Point> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         frame.setLocation(10, 10);
         // Wait a little bit because the location may be applied asynchronously

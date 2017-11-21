@@ -9,6 +9,7 @@
 * TODO Use \<p\> or \<p/\> in javadoc
 * TODO Replace "Default constructor" by "Constructor"
 * TODO Check each new entry in CHANGES.md
+* TODO Use @SafeVarargs where appropriate
 
 # Known issues
 
@@ -17,6 +18,8 @@ test listener before/after dispose(), test multiple dispose()
 
 # Ideas for the short term
 
+* Move inhibition implementations to separate AbstractInhibitableReadable*Property classes
+* Add DeepDisposable interface
 * Convenient value change listeners to check the correct behavior of the properties (incl. set, list and map
 properties): always on the same thread, always on EDT, never on EDT, only called when values are different, etc.
 * Better support for Java 8 regarding the use of lambdas and method references (e.g. for set/list/map properties)

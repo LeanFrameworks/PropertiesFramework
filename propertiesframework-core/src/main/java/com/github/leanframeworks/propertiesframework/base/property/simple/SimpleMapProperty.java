@@ -25,7 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.simple;
 
-import com.github.leanframeworks.propertiesframework.api.property.MapValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.MapPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableWritableMapProperty;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 import org.slf4j.Logger;
@@ -72,7 +72,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      *
      * @param listeners Listeners to be added.
      */
-    public SimpleMapProperty(MapValueChangeListener<K, V>... listeners) {
+    public SimpleMapProperty(MapPropertyChangeListener<K, V>... listeners) {
         super(listeners);
     }
 
@@ -94,13 +94,13 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      * @param entries   Initial entries.
      * @param listeners Listeners to be added.
      */
-    public SimpleMapProperty(Map<K, V> entries, MapValueChangeListener<K, V>... listeners) {
+    public SimpleMapProperty(Map<K, V> entries, MapPropertyChangeListener<K, V>... listeners) {
         super(); // Without listeners
 
         internal.putAll(entries);
 
-        for (MapValueChangeListener<K, V> listener : listeners) {
-            addValueChangeListener(listener);
+        for (MapPropertyChangeListener<K, V> listener : listeners) {
+            addChangeListener(listener);
         }
     }
 

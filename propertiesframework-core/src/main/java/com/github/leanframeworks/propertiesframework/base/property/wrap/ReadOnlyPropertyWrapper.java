@@ -39,7 +39,11 @@ import com.github.leanframeworks.propertiesframework.api.property.ReadableProper
 public class ReadOnlyPropertyWrapper<R> extends AbstractReadablePropertyWrapper<R> {
 
     /**
-     * @see AbstractReadablePropertyWrapper#AbstractReadablePropertyWrapper(ReadableProperty)
+     * Constructor specifying the property to be wrapped.
+     * <p>
+     * The wrapped property will be disposed whenever this property is disposed.
+     *
+     * @param wrappedProperty Property to be wrapped.
      */
     public ReadOnlyPropertyWrapper(ReadableProperty<? extends R> wrappedProperty) {
         super(wrappedProperty);

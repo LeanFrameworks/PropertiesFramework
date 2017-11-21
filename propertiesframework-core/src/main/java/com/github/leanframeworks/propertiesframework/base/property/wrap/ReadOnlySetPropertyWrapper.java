@@ -27,7 +27,8 @@ package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableSetProperty;
-import com.github.leanframeworks.propertiesframework.api.property.SetValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableSetProperty;
 
 import java.util.Collection;
@@ -49,7 +50,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
     /**
      * Listener to changes on the wrapped property.
      */
-    private final SetValueChangeListener<? super R> changeAdapter = new SetValueChangeForwarder();
+    private final SetPropertyChangeListener<? super R> changeAdapter = new SetPropertyChangeForwarder();
 
     /**
      * Wrapped set property.
@@ -67,7 +68,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
     public ReadOnlySetPropertyWrapper(ReadableSetProperty<? extends R> wrappedSetProperty) {
         super();
         this.wrappedSetProperty = wrappedSetProperty;
-        this.wrappedSetProperty.addValueChangeListener(changeAdapter);
+        this.wrappedSetProperty.addChangeListener(changeAdapter);
     }
 
     /**
@@ -77,7 +78,7 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
     public void dispose() {
         super.dispose();
         if (wrappedSetProperty != null) {
-            wrappedSetProperty.removeValueChangeListener(changeAdapter);
+            wrappedSetProperty.removeChangeListener(changeAdapter);
             if (wrappedSetProperty instanceof Disposable) {
                 ((Disposable) wrappedSetProperty).dispose();
             }
@@ -150,22 +151,14 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
      * Entity responsible for forwarding the change events from the wrapped set property to the listeners of the
      * read-only wrapper.
      */
-    private class SetValueChangeForwarder implements SetValueChangeListener<R> {
+    private class SetPropertyChangeForwarder implements SetPropertyChangeListener<R> {
 
         /**
-         * @see SetValueChangeListener#valuesAdded(ReadableSetProperty, Set)
+         * @see SetPropertyChangeListener#setPropertyChanged(SetPropertyChange)
          */
         @Override
-        public void valuesAdded(ReadableSetProperty<? extends R> setProperty, Set<? extends R> newValues) {
-            doNotifyListenersOfAddedValues(newValues);
-        }
-
-        /**
-         * @see SetValueChangeListener#valuesRemoved(ReadableSetProperty, Set)
-         */
-        @Override
-        public void valuesRemoved(ReadableSetProperty<? extends R> setProperty, Set<? extends R> oldValues) {
-            doNotifyListenersOfRemovedValues(oldValues);
+        public void setPropertyChanged(SetPropertyChange<? extends R> event) {
+            doNotifyListeners(event);
         }
     }
 }

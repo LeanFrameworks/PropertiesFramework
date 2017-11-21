@@ -63,7 +63,7 @@ public class JComboBoxSelectedValuePropertyTest {
         // Create property
         property = new JComboBoxSelectedValueProperty<>(comboBox);
         listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
     }
 
     @Test

@@ -53,7 +53,7 @@ public class ComponentPreferredSizePropertyTest {
 
         ReadableWritableProperty<Dimension> property = new ComponentPreferredSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getPreferredSize());
@@ -76,7 +76,7 @@ public class ComponentPreferredSizePropertyTest {
 
         ReadableWritableProperty<Dimension> property = new ComponentPreferredSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getPreferredSize());

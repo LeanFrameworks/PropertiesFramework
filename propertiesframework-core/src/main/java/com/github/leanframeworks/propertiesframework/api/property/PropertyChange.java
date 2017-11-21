@@ -25,28 +25,71 @@
 
 package com.github.leanframeworks.propertiesframework.api.property;
 
-import java.util.Set;
-
 /**
- * Interface to be implemented by listener to changes in a {@link ReadableSetProperty}.
+ * Entity representing a change in a property.
  *
- * @param <R> Type of values in the set property.
+ * @param <R> Type of value in the property.
  */
-public interface SetValueChangeListener<R> {
+public class PropertyChange<R> {
 
     /**
-     * Called whenever values have been added to the set property.
-     *
-     * @param setProperty Set property to which the values have been added.
-     * @param newValues   Newly added values.
+     * Property that has changed.
      */
-    void valuesAdded(ReadableSetProperty<? extends R> setProperty, Set<? extends R> newValues);
+    private ReadableProperty<? extends R> source;
 
     /**
-     * Called whenever values have been removed from the set property.
-     *
-     * @param setProperty Set property from which the values have been removed.
-     * @param oldValues   Removed values.
+     * Old value in the property.
      */
-    void valuesRemoved(ReadableSetProperty<? extends R> setProperty, Set<? extends R> oldValues);
+    private R oldValue;
+
+    /**
+     * New value in the property.
+     */
+    private R newValue;
+
+    /**
+     * Constructor.
+     *
+     * @param source   Property that has changed.
+     * @param oldValue Old value in the property.
+     * @param newValue New Value in the property.
+     */
+    public PropertyChange(ReadableProperty<? extends R> source, R oldValue, R newValue) {
+        this.source = source;
+        this.oldValue = oldValue;
+        this.newValue = newValue;
+    }
+
+    /**
+     * Gets the property that has changed.
+     *
+     * @return Property that has changed.
+     */
+    public ReadableProperty<? extends R> getSource() {
+        return source;
+    }
+
+    /**
+     * Gets the old value.
+     * <p>
+     * It is guaranteed that the old value does not equal to the new value.
+     *
+     * @return Old value.
+     * @see #getNewValue()
+     */
+    public R getOldValue() {
+        return oldValue;
+    }
+
+    /**
+     * Gets the new value.
+     * <p>
+     * It is guaranteed that the old value does not equal to the new value.
+     *
+     * @return New value.
+     * @see #getOldValue()
+     */
+    public R getNewValue() {
+        return newValue;
+    }
 }

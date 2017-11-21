@@ -26,7 +26,8 @@
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
-import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableListProperty;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableListProperty;
 
@@ -49,7 +50,7 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
     /**
      * Listener to changes on the wrapped property.
      */
-    private final ListValueChangeListener<? super R> changeAdapter = new ListValueChangeForwarder();
+    private final ListPropertyChangeListener<? super R> changeAdapter = new ListPropertyChangeForwarder();
 
     /**
      * Wrapped list property.
@@ -67,7 +68,7 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
     public ReadOnlyListPropertyWrapper(ReadableListProperty<? extends R> wrappedListProperty) {
         super();
         this.wrappedListProperty = wrappedListProperty;
-        this.wrappedListProperty.addValueChangeListener(changeAdapter);
+        this.wrappedListProperty.addChangeListener(changeAdapter);
     }
 
     /**
@@ -77,7 +78,7 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
     public void dispose() {
         super.dispose();
         if (wrappedListProperty != null) {
-            wrappedListProperty.removeValueChangeListener(changeAdapter);
+            wrappedListProperty.removeChangeListener(changeAdapter);
             if (wrappedListProperty instanceof Disposable) {
                 ((Disposable) wrappedListProperty).dispose();
             }
@@ -164,37 +165,14 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
      * Entity responsible for forwarding the change events from the wrapped list property to the listeners of the
      * read-only wrapper.
      */
-    private class ListValueChangeForwarder implements ListValueChangeListener<R> {
+    private class ListPropertyChangeForwarder implements ListPropertyChangeListener<R> {
 
         /**
-         * @see ListValueChangeListener#valuesAdded(ReadableListProperty, int, List)
+         * @see ListPropertyChangeListener#listPropertyChanged(ListPropertyChange)
          */
         @Override
-        public void valuesAdded(ReadableListProperty<? extends R> listProperty,
-                                int startIndex,
-                                List<? extends R> newValues) {
-            doNotifyListenersOfAddedValues(startIndex, newValues);
-        }
-
-        /**
-         * @see ListValueChangeListener#valuesChanged(ReadableListProperty, int, List, List)
-         */
-        @Override
-        public void valuesChanged(ReadableListProperty<? extends R> listProperty,
-                                  int startIndex,
-                                  List<? extends R> oldValues,
-                                  List<? extends R> newValues) {
-            doNotifyListenersOfChangedValues(startIndex, oldValues, newValues);
-        }
-
-        /**
-         * @see ListValueChangeListener#valuesRemoved(ReadableListProperty, int, List)
-         */
-        @Override
-        public void valuesRemoved(ReadableListProperty<? extends R> listProperty,
-                                  int startIndex,
-                                  List<? extends R> oldValues) {
-            doNotifyListenersOfRemovedValues(startIndex, oldValues);
+        public void listPropertyChanged(ListPropertyChange<? extends R> event) {
+            doNotifyListeners(event);
         }
     }
 }

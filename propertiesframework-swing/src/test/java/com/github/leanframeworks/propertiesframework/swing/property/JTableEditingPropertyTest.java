@@ -77,7 +77,7 @@ public class JTableEditingPropertyTest {
         // Create property
         property = new JTableEditingProperty(table);
         listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
     }
 
     @Test

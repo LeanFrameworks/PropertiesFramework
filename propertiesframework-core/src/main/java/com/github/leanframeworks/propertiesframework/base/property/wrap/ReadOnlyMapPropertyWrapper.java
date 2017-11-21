@@ -26,7 +26,8 @@
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
-import com.github.leanframeworks.propertiesframework.api.property.MapValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.MapPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.MapPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableMapProperty;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableMapProperty;
 
@@ -50,7 +51,7 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
     /**
      * Listener to changes on the wrapped property.
      */
-    private final MapValueChangeListener<? super K, ? super R> changeAdapter = new MapValueChangeForwarder();
+    private final MapPropertyChangeListener<? super K, ? super R> changeAdapter = new MapPropertyChangeForwarder();
 
     /**
      * Wrapped map property.
@@ -68,7 +69,7 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
     public ReadOnlyMapPropertyWrapper(ReadableMapProperty<? extends K, ? extends R> wrappedMapProperty) {
         super();
         this.wrappedMapProperty = wrappedMapProperty;
-        this.wrappedMapProperty.addValueChangeListener(changeAdapter);
+        this.wrappedMapProperty.addChangeListener(changeAdapter);
     }
 
     /**
@@ -78,7 +79,7 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
     public void dispose() {
         super.dispose();
         if (wrappedMapProperty != null) {
-            wrappedMapProperty.removeValueChangeListener(changeAdapter);
+            wrappedMapProperty.removeChangeListener(changeAdapter);
             if (wrappedMapProperty instanceof Disposable) {
                 ((Disposable) wrappedMapProperty).dispose();
             }
@@ -181,25 +182,11 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
      * Entity responsible for forwarding the change events from the wrapped map property to the listeners of the
      * read-only wrapper.
      */
-    private class MapValueChangeForwarder implements MapValueChangeListener<K, R> {
+    private class MapPropertyChangeForwarder implements MapPropertyChangeListener<K, R> {
 
         @Override
-        public void valuesAdded(ReadableMapProperty<? extends K, ? extends R> mapProperty,
-                                Map<? extends K, ? extends R> newValues) {
-            doNotifyListenersOfAddedValues(newValues);
-        }
-
-        @Override
-        public void valuesChanged(ReadableMapProperty<? extends K, ? extends R> mapProperty,
-                                  Map<? extends K, ? extends R> oldValues,
-                                  Map<? extends K, ? extends R> newValues) {
-            doNotifyListenersOfChangedValues(oldValues, newValues);
-        }
-
-        @Override
-        public void valuesRemoved(ReadableMapProperty<? extends K, ? extends R> mapProperty,
-                                  Map<? extends K, ? extends R> oldValues) {
-            doNotifyListenersOfRemovedValues(oldValues);
+        public void mapPropertyChanged(MapPropertyChange<? extends K, ? extends R> event) {
+            doNotifyListeners(event);
         }
     }
 }

@@ -63,7 +63,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         mnemonicProperty.setValue(null);
@@ -81,7 +81,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         mnemonicProperty.setValue(MNEMONIC2);
@@ -99,7 +99,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         label.setDisplayedMnemonic(KeyEvent.VK_UNDEFINED);
@@ -117,7 +117,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         label.setDisplayedMnemonic(MNEMONIC2);

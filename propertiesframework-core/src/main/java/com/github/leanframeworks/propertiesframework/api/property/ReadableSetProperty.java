@@ -42,14 +42,14 @@ public interface ReadableSetProperty<R> extends Iterable<R> {
      *
      * @param listener Listener to be added.
      */
-    void addValueChangeListener(SetValueChangeListener<? super R> listener);
+    void addChangeListener(SetPropertyChangeListener<? super R> listener);
 
     /**
      * Removes the specified set item change listener.
      *
      * @param listener Listener to be removed.
      */
-    void removeValueChangeListener(SetValueChangeListener<? super R> listener);
+    void removeChangeListener(SetPropertyChangeListener<? super R> listener);
 
     /**
      * Gets the size of the set.

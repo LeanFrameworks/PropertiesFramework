@@ -31,6 +31,7 @@ package com.github.leanframeworks.propertiesframework.api.transform;
  * @param <I> Type of the input object to be transformed.
  * @param <O> Type of the output object after transformation.
  */
+@FunctionalInterface
 public interface Transformer<I, O> {
 
     /**

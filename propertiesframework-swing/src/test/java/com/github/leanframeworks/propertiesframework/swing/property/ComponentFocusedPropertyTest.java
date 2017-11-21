@@ -71,7 +71,7 @@ public class ComponentFocusedPropertyTest {
             buttonUnderTest = new TestButton("Button under test");
             propertyUnderTest = new ComponentFocusedProperty(buttonUnderTest);
             listener = mock(ValueChangeListener.class);
-            propertyUnderTest.addValueChangeListener(listener);
+            propertyUnderTest.addChangeListener(listener);
 
             contentPane.add(otherButton, BorderLayout.NORTH);
             contentPane.add(buttonUnderTest, BorderLayout.CENTER);

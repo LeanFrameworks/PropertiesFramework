@@ -27,7 +27,8 @@ package com.github.leanframeworks.propertiesframework.base.property;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableSetProperty;
-import com.github.leanframeworks.propertiesframework.api.property.SetValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChangeListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,7 +46,7 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
     /**
      * Listeners to changes in the list property.
      */
-    private final List<SetValueChangeListener<? super R>> listeners = new ArrayList<>();
+    private final List<SetPropertyChangeListener<? super R>> listeners = new ArrayList<>();
 
     /**
      * Default constructor adding no listener.
@@ -59,9 +60,9 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      *
      * @param listeners Listeners to be added.
      */
-    public AbstractReadableSetProperty(SetValueChangeListener<? super R>... listeners) {
-        for (SetValueChangeListener<? super R> listener : listeners) {
-            addValueChangeListener(listener);
+    public AbstractReadableSetProperty(SetPropertyChangeListener<? super R>... listeners) {
+        for (SetPropertyChangeListener<? super R> listener : listeners) {
+            addChangeListener(listener);
         }
     }
 
@@ -86,23 +87,23 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      *
      * @return Set item change listeners.
      */
-    public Collection<SetValueChangeListener<? super R>> getValueChangeListeners() {
+    public Collection<SetPropertyChangeListener<? super R>> getChangeListeners() {
         return Collections.unmodifiableList(listeners);
     }
 
     /**
-     * @see ReadableSetProperty#addValueChangeListener(SetValueChangeListener)
+     * @see ReadableSetProperty#addChangeListener(SetPropertyChangeListener)
      */
     @Override
-    public void addValueChangeListener(SetValueChangeListener<? super R> listener) {
+    public void addChangeListener(SetPropertyChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
     /**
-     * @see ReadableSetProperty#removeValueChangeListener(SetValueChangeListener)
+     * @see ReadableSetProperty#removeChangeListener(SetPropertyChangeListener)
      */
     @Override
-    public void removeValueChangeListener(SetValueChangeListener<? super R> listener) {
+    public void removeChangeListener(SetPropertyChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -112,11 +113,7 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @param newItems Newly added items.
      */
     protected void doNotifyListenersOfAddedValues(Set<? extends R> newItems) {
-        List<SetValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
-        Set<? extends R> unmodifiable = Collections.unmodifiableSet(newItems);
-        for (SetValueChangeListener<? super R> listener : listenersCopy) {
-            listener.valuesAdded(this, unmodifiable);
-        }
+        doNotifyListeners(new SetPropertyChange<>(this, null, newItems));
     }
 
     /**
@@ -125,10 +122,21 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      * @param oldItems Removed items.
      */
     protected void doNotifyListenersOfRemovedValues(Set<? extends R> oldItems) {
-        List<SetValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
-        Set<? extends R> unmodifiable = Collections.unmodifiableSet(oldItems);
-        for (SetValueChangeListener<? super R> listener : listenersCopy) {
-            listener.valuesRemoved(this, unmodifiable);
+        doNotifyListeners(new SetPropertyChange<>(this, oldItems, null));
+    }
+
+    /**
+     * Notifies the change listeners that items have been added or removed.
+     * <p>
+     * Note that the specified sets of items in the event should be wrapped in unmodifiable sets before being passed to
+     * the listeners.
+     *
+     * @param event Event to be passed to the listeners.
+     */
+    protected void doNotifyListeners(SetPropertyChange<? extends R> event) {
+        List<SetPropertyChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
+        for (SetPropertyChangeListener<? super R> listener : listenersCopy) {
+            listener.setPropertyChanged(event);
         }
     }
 }

@@ -67,7 +67,7 @@ public class SimplePropertytTest {
         SimpleProperty<Integer> property = new SimpleProperty<>();
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
 
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
         property.setValue(3);
         property.setValue(4);
 
@@ -82,7 +82,7 @@ public class SimplePropertytTest {
     public void testInhibitAndValueChangeEvent() {
         SimpleProperty<Integer> property = new SimpleProperty<>(null);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         property.setInhibited(true);
         property.setValue(3);
@@ -99,7 +99,7 @@ public class SimplePropertytTest {
     public void testInhibitAndNoValueChangeEvent() {
         SimpleProperty<Integer> property = new SimpleProperty<>(null);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         property.setInhibited(true);
         property.setValue(3);

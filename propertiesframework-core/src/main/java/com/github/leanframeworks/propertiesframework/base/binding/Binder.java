@@ -39,10 +39,6 @@ import java.util.Collection;
  * <p>
  * This binder utility will create {@link SimpleBinding}s between properties. These bindings can be broken by calling
  * their {@link SimpleBinding#dispose()} method.
- * <p>
- * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
- * the PropertiesFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
- * JavaFX has a much more furnished API to achieve similar goals and much more.
  *
  * @see ReadableProperty
  * @see WritableProperty

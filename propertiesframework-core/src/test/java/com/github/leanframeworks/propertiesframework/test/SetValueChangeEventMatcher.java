@@ -23,23 +23,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.leanframeworks.propertiesframework.api.property;
+package com.github.leanframeworks.propertiesframework.test;
 
-/**
- * Interface to be implemented by writable properties whose value can be set by the programmer or slave to readable
- * properties.
- *
- * @param <W> Type of data that can be written to this property.
- * @see ReadableProperty
- */
-public interface WritableProperty<W> {
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
+import org.hamcrest.Description;
+import org.mockito.ArgumentMatcher;
 
-    /**
-     * Sets the value of the property.
-     * <p>
-     * This method can be called by the programmer or a {@link ReadableProperty} that is bound to it.
-     *
-     * @param value Property value.
-     */
-    void setValue(W value);
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
+
+public class SetValueChangeEventMatcher<T> extends ArgumentMatcher<SetPropertyChange<T>> {
+
+    private final SetPropertyChange<T> refEvent;
+
+    public SetValueChangeEventMatcher(SetPropertyChange<T> refEvent) {
+        super();
+        this.refEvent = refEvent;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean matches(Object actualEvent) {
+        boolean match = false;
+
+        if (actualEvent instanceof SetPropertyChange<?>) {
+            match = ValueUtils.areEqual(refEvent.getSource(), ((SetPropertyChange) actualEvent).getSource()) &&
+                    haveEqualElements(refEvent.getOldValues(), ((SetPropertyChange) actualEvent).getOldValues()) &&
+                    haveEqualElements(refEvent.getNewValues(), ((SetPropertyChange) actualEvent).getNewValues());
+        }
+
+        return match;
+    }
+
+    @Override
+    public void describeTo(Description description) {
+        // Do nothing
+    }
 }

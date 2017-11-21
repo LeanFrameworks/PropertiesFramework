@@ -86,7 +86,7 @@ public class ActionPropertyTest {
         Action action = new TestAction();
         ReadableWritableProperty<String> property = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(null, property.getValue());
         assertEquals(null, action.getValue(Action.LONG_DESCRIPTION));
@@ -108,7 +108,7 @@ public class ActionPropertyTest {
         Action action = new TestAction();
         ReadableWritableProperty<String> property = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
         ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(null, property.getValue());
         action.putValue(Action.LONG_DESCRIPTION, DESCRIPTION1);
@@ -128,7 +128,7 @@ public class ActionPropertyTest {
         Action action = new TestAction();
         ActionProperty<String> property = new ActionProperty<>(action, Action.NAME);
         ValueChangeListener<String> listener = (ValueChangeListener<String>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         property.setValue("First");
         property.dispose();

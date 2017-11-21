@@ -25,7 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.simple;
 
-import com.github.leanframeworks.propertiesframework.api.property.ListValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableWritableListProperty;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 
@@ -65,7 +65,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      *
      * @param listeners Listeners to be added.
      */
-    public SimpleListProperty(ListValueChangeListener<T>... listeners) {
+    public SimpleListProperty(ListPropertyChangeListener<T>... listeners) {
         super(listeners);
     }
 
@@ -87,13 +87,13 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      * @param items     Initial items.
      * @param listeners Listeners to be added.
      */
-    public SimpleListProperty(List<T> items, ListValueChangeListener<T>... listeners) {
+    public SimpleListProperty(List<T> items, ListPropertyChangeListener<T>... listeners) {
         super(); // Without listeners
 
         internal.addAll(items);
 
-        for (ListValueChangeListener<T> listener : listeners) {
-            addValueChangeListener(listener);
+        for (ListPropertyChangeListener<T> listener : listeners) {
+            addChangeListener(listener);
         }
     }
 

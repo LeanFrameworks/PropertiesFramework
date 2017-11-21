@@ -63,7 +63,7 @@ public class InvokeLaterPropertyWrapperTest {
             from(new InvokeLaterPropertyWrapper<>(orRolloverProperty)).to(globalRolloverProperty);
 
             final ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
-            globalRolloverProperty.addValueChangeListener(rolloverListener);
+            globalRolloverProperty.addChangeListener(rolloverListener);
 
             rolloverProperty1.setValue(true);
             assertTrue(orRolloverProperty.getValue());
@@ -102,7 +102,7 @@ public class InvokeLaterPropertyWrapperTest {
             from(new InvokeLaterPropertyWrapper<>(orRolloverProperty)).to(globalRolloverProperty);
 
             final ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
-            globalRolloverProperty.addValueChangeListener(rolloverListener);
+            globalRolloverProperty.addChangeListener(rolloverListener);
 
             rolloverProperty1.setValue(true);
             assertTrue(orRolloverProperty.getValue());

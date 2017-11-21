@@ -58,7 +58,7 @@ public class ComponentSizePropertyTest {
 
         ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getSize());
@@ -87,7 +87,7 @@ public class ComponentSizePropertyTest {
 
         ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
-        property.addValueChangeListener(listenerMock);
+        property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
         assertEquals(new Dimension(0, 0), component.getSize());
@@ -109,7 +109,7 @@ public class ComponentSizePropertyTest {
 
         ComponentSizeProperty property = new ComponentSizeProperty(component);
         ValueChangeListener<Dimension> listener = mock(ValueChangeListener.class);
-        property.addValueChangeListener(listener);
+        property.addChangeListener(listener);
 
         setSize(component, new Dimension(13, 14));
         setSize(component, new Dimension(15, 16));

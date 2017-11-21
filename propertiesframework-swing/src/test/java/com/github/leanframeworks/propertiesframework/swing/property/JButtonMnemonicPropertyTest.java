@@ -63,7 +63,7 @@ public class JButtonMnemonicPropertyTest {
         button.setMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         mnemonicProperty.setValue(null);
@@ -81,7 +81,7 @@ public class JButtonMnemonicPropertyTest {
         button.setMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         mnemonicProperty.setValue(MNEMONIC2);
@@ -99,7 +99,7 @@ public class JButtonMnemonicPropertyTest {
         button.setMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         button.setMnemonic(KeyEvent.VK_UNDEFINED);
@@ -117,7 +117,7 @@ public class JButtonMnemonicPropertyTest {
         button.setMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JButtonMnemonicProperty(button);
         ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
-        mnemonicProperty.addValueChangeListener(listenerMock);
+        mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
         button.setMnemonic(MNEMONIC2);
