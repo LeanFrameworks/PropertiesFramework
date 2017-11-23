@@ -150,12 +150,14 @@ public final class Bindings {
         return new NegateBooleanPropertyWrapper(property);
     }
 
+    @SafeVarargs
     public static ReadableProperty<Boolean> and(ReadableProperty<Boolean>... properties) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
         Disposable binding = from(properties).transform(new AndBooleanAggregator()).to(result);
         return new BoundProperty<>(result, binding);
     }
 
+    @SafeVarargs
     public static ReadableProperty<Boolean> or(ReadableProperty<Boolean>... properties) {
         SimpleBooleanProperty result = new SimpleBooleanProperty();
         from(properties).transform(new OrBooleanAggregator()).to(result);
@@ -224,7 +226,7 @@ public final class Bindings {
 
         public BoundProperty(ReadableProperty<R> resultProperty, Disposable disposable) {
             this(resultProperty, Collections.singleton(disposable));
-            resultProperty.addChangeListener((p, o, n) -> maybeNotifyListeners(o, n));
+            resultProperty.addChangeListener(e -> maybeNotifyListeners(e.getOldValue(), e.getNewValue()));
         }
 
         public BoundProperty(ReadableProperty<R> resultProperty, Collection<Disposable> disposables) {

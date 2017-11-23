@@ -48,7 +48,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
     private final List<ListPropertyChangeListener<? super R>> listeners = new ArrayList<>();
 
     /**
-     * Default constructor adding no listener.
+     * Constructor adding no listener.
      */
     public AbstractReadableListProperty() {
         // Nothing to be done
@@ -59,6 +59,7 @@ public abstract class AbstractReadableListProperty<R> implements ReadableListPro
      *
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public AbstractReadableListProperty(ListPropertyChangeListener<? super R>... listeners) {
         for (ListPropertyChangeListener<? super R> listener : listeners) {
             addChangeListener(listener);

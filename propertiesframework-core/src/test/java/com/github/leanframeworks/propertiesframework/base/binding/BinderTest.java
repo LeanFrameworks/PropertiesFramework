@@ -25,8 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.base.binding;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.simple.SimpleBooleanProperty;
 import com.github.leanframeworks.propertiesframework.base.property.simple.SimpleIntegerProperty;
 import com.github.leanframeworks.propertiesframework.base.property.simple.SimpleProperty;
@@ -36,9 +37,9 @@ import com.github.leanframeworks.propertiesframework.base.transform.ToStringTran
 import org.junit.Test;
 
 import static com.github.leanframeworks.propertiesframework.base.binding.Binder.from;
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -115,14 +116,14 @@ public class BinderTest {
         ReadableWritableProperty<String> master = new SimpleStringProperty("New value");
         ReadableWritableProperty<String> slave = new SimpleStringProperty("Initial value");
 
-        ValueChangeListener<String> slaveListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> slaveListenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         slave.addChangeListener(slaveListenerMock);
 
         from(master).to(slave);
 
         // Check exactly one event fired
-        verify(slaveListenerMock).valueChanged(slave, "Initial value", "New value");
-        verify(slaveListenerMock).valueChanged(any(SimpleStringProperty.class), anyString(), anyString());
+        verify(slaveListenerMock).propertyChanged(matches(new PropertyChange<>(slave, "Initial value", "New value")));
+        verify(slaveListenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -132,17 +133,17 @@ public class BinderTest {
         ReadableWritableProperty<String> slave1 = new SimpleStringProperty("Initial value 1");
         ReadableWritableProperty<String> slave2 = new SimpleStringProperty("Initial value 2");
 
-        ValueChangeListener<String> slave1ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> slave1ListenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         slave1.addChangeListener(slave1ListenerMock);
-        ValueChangeListener<String> slave2ListenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> slave2ListenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         slave2.addChangeListener(slave2ListenerMock);
 
         from(master).to(slave1, slave2);
 
         // Check exactly one event fired for each slave
-        verify(slave1ListenerMock).valueChanged(slave1, "Initial value 1", "New value");
-        verify(slave1ListenerMock).valueChanged(any(SimpleStringProperty.class), anyString(), anyString());
-        verify(slave2ListenerMock).valueChanged(slave2, "Initial value 2", "New value");
-        verify(slave2ListenerMock).valueChanged(any(SimpleStringProperty.class), anyString(), anyString());
+        verify(slave1ListenerMock).propertyChanged(matches(new PropertyChange<>(slave1, "Initial value 1", "New value")));
+        verify(slave1ListenerMock).propertyChanged(any());
+        verify(slave2ListenerMock).propertyChanged(matches(new PropertyChange<>(slave2, "Initial value 2", "New value")));
+        verify(slave2ListenerMock).propertyChanged(any());
     }
 }

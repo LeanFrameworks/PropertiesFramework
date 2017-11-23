@@ -36,7 +36,7 @@ public interface SetPropertyChangeListener<R> {
     /**
      * Called whenever values have been added to or removed from the set property.
      *
-     * @param event Details of the change.
+     * @param e Details of the change.
      */
-    void setPropertyChanged(SetPropertyChange<? extends R> event);
+    void setPropertyChanged(SetPropertyChange<? extends R> e);
 }

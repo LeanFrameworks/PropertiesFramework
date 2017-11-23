@@ -185,8 +185,8 @@ public class ReadOnlyMapPropertyWrapper<K, R> extends AbstractReadableMapPropert
     private class MapPropertyChangeForwarder implements MapPropertyChangeListener<K, R> {
 
         @Override
-        public void mapPropertyChanged(MapPropertyChange<? extends K, ? extends R> event) {
-            doNotifyListeners(event);
+        public void mapPropertyChanged(MapPropertyChange<? extends K, ? extends R> e) {
+            doNotifyListeners(e);
         }
     }
 }

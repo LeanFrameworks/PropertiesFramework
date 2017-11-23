@@ -43,7 +43,7 @@ import java.awt.Component;
 public class ComponentForegroundProperty extends AbstractComponentProperty<Component, Color> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(Component, String)
+     * {@inheritDoc}
      */
     public ComponentForegroundProperty(Component component) {
         super(component, "foreground");

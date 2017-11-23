@@ -26,8 +26,9 @@
 package com.github.leanframeworks.propertiesframework.base.binding;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.WritableProperty;
 import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 import com.github.leanframeworks.propertiesframework.base.property.CompositeWritableProperty;
@@ -155,14 +156,14 @@ public class SimpleBinding<MO, SI> implements Disposable {
     /**
      * Listener to master property changes and updating the slave property.
      */
-    private class MasterAdapter implements ValueChangeListener<MO> {
+    private class MasterAdapter implements PropertyChangeListener<MO> {
 
         /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * {@inheritDoc}
          */
         @Override
-        public void valueChanged(ReadableProperty<? extends MO> property, MO oldValue, MO newValue) {
-            updateSlaves(newValue);
+        public void propertyChanged(PropertyChange<? extends MO> e) {
+            updateSlaves(e.getNewValue());
         }
     }
 }

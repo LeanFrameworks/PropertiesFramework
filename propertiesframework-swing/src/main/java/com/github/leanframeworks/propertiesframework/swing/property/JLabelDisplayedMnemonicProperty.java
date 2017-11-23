@@ -43,7 +43,7 @@ import java.awt.event.KeyEvent;
 public class JLabelDisplayedMnemonicProperty extends AbstractComponentProperty<JLabel, Integer> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JLabelDisplayedMnemonicProperty(JLabel label) {
         super(label, "displayedMnemonic");

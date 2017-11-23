@@ -25,15 +25,16 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JDialog;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -51,7 +52,7 @@ public class JDialogTitlePropertyTest {
     public void testNullFromProperty() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -59,8 +60,8 @@ public class JDialogTitlePropertyTest {
         assertEquals(null, dialog.getTitle());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, null);
-        verify(listenerMock).valueChanged(any(JDialogTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +69,7 @@ public class JDialogTitlePropertyTest {
     public void testNonNullFromProperty() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -76,8 +77,8 @@ public class JDialogTitlePropertyTest {
         assertEquals(TITLE2, dialog.getTitle());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, TITLE2);
-        verify(listenerMock).valueChanged(any(JDialogTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, TITLE2)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -85,7 +86,7 @@ public class JDialogTitlePropertyTest {
     public void testNullFromComponent() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -93,8 +94,8 @@ public class JDialogTitlePropertyTest {
         assertEquals(null, titleProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, null);
-        verify(listenerMock).valueChanged(any(JDialogTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -102,7 +103,7 @@ public class JDialogTitlePropertyTest {
     public void testNonNullFromComponent() {
         JDialog dialog = new JDialog((JDialog) null, TITLE1);
         ReadableWritableProperty<String> titleProperty = new JDialogTitleProperty(dialog);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -110,7 +111,7 @@ public class JDialogTitlePropertyTest {
         assertEquals(TITLE2, titleProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, TITLE2);
-        verify(listenerMock).valueChanged(any(JDialogTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, TITLE2)));
+        verify(listenerMock).propertyChanged(any());
     }
 }

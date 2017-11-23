@@ -25,7 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Test;
 
 import javax.swing.JButton;
@@ -39,6 +40,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -56,7 +58,7 @@ public class ComponentFocusedPropertyTest {
 
     private ComponentFocusedProperty propertyUnderTest;
 
-    private ValueChangeListener<Boolean> listener;
+    private PropertyChangeListener<Boolean> listener;
 
     private CountDownLatch focusLatch;
 
@@ -70,7 +72,7 @@ public class ComponentFocusedPropertyTest {
 
             buttonUnderTest = new TestButton("Button under test");
             propertyUnderTest = new ComponentFocusedProperty(buttonUnderTest);
-            listener = mock(ValueChangeListener.class);
+            listener = mock(PropertyChangeListener.class);
             propertyUnderTest.addChangeListener(listener);
 
             contentPane.add(otherButton, BorderLayout.NORTH);
@@ -95,8 +97,8 @@ public class ComponentFocusedPropertyTest {
             propertyUnderTest.dispose();
         });
 
-        verify(listener).valueChanged(propertyUnderTest, false, true);
-        verify(listener).valueChanged(propertyUnderTest, true, false);
+        verify(listener).propertyChanged(matches(new PropertyChange<>(propertyUnderTest, false, true)));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(propertyUnderTest, true, false)));
         verifyNoMoreInteractions(listener);
 
         SwingUtilities.invokeAndWait(() -> frame.dispose());

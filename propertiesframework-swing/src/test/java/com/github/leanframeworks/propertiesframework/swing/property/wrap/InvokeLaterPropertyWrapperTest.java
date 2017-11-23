@@ -25,8 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.simple.SimpleBooleanProperty;
 import com.github.leanframeworks.propertiesframework.base.transform.OrBooleanAggregator;
 import org.junit.Test;
@@ -36,6 +37,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import static com.github.leanframeworks.propertiesframework.base.binding.Binder.from;
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -62,7 +64,7 @@ public class InvokeLaterPropertyWrapperTest {
             final ReadableWritableProperty<Boolean> globalRolloverProperty = new SimpleBooleanProperty(false);
             from(new InvokeLaterPropertyWrapper<>(orRolloverProperty)).to(globalRolloverProperty);
 
-            final ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
+            final PropertyChangeListener<Boolean> rolloverListener = mock(PropertyChangeListener.class);
             globalRolloverProperty.addChangeListener(rolloverListener);
 
             rolloverProperty1.setValue(true);
@@ -101,7 +103,7 @@ public class InvokeLaterPropertyWrapperTest {
             final ReadableWritableProperty<Boolean> globalRolloverProperty = new SimpleBooleanProperty(false);
             from(new InvokeLaterPropertyWrapper<>(orRolloverProperty)).to(globalRolloverProperty);
 
-            final ValueChangeListener<Boolean> rolloverListener = mock(ValueChangeListener.class);
+            final PropertyChangeListener<Boolean> rolloverListener = mock(PropertyChangeListener.class);
             globalRolloverProperty.addChangeListener(rolloverListener);
 
             rolloverProperty1.setValue(true);
@@ -138,9 +140,9 @@ public class InvokeLaterPropertyWrapperTest {
                         assertFalse(globalRolloverProperty.getValue());
 
                         verify(rolloverListener, times(1))
-                                .valueChanged(globalRolloverProperty, false, true);
+                                .propertyChanged(matches(new PropertyChange<>(globalRolloverProperty, false, true)));
                         verify(rolloverListener, times(1))
-                                .valueChanged(globalRolloverProperty, true, false);
+                                .propertyChanged(matches(new PropertyChange<>(globalRolloverProperty, true, false)));
                         verifyNoMoreInteractions(rolloverListener);
 
                         finished.countDown();

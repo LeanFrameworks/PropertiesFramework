@@ -1,7 +1,7 @@
 package com.github.leanframeworks.propertiesframework.base.property;
 
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 
 /**
  * Readable property holding a constant value.
@@ -33,21 +33,21 @@ public class ConstantProperty<R> implements ReadableProperty<R> {
     /**
      * Does nothing because the listener will never be triggered, because this property's value will never change.
      *
-     * @see ReadableProperty#addChangeListener(ValueChangeListener)
+     * @see ReadableProperty#addChangeListener(PropertyChangeListener)
      */
     @Override
-    public void addChangeListener(ValueChangeListener<? super R> listener) {
+    public void addChangeListener(PropertyChangeListener<? super R> listener) {
         // Nothing to be done
     }
 
     /**
      * Does nothing because no listener was actually added.
      *
-     * @see ReadableProperty#removeChangeListener(ValueChangeListener)
-     * @see #addChangeListener(ValueChangeListener)
+     * @see ReadableProperty#removeChangeListener(PropertyChangeListener)
+     * @see #addChangeListener(PropertyChangeListener)
      */
     @Override
-    public void removeChangeListener(ValueChangeListener<? super R> listener) {
+    public void removeChangeListener(PropertyChangeListener<? super R> listener) {
         // Nothing to be done
     }
 

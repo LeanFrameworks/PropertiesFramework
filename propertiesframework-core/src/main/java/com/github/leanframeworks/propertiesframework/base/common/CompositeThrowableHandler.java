@@ -70,6 +70,7 @@ public class CompositeThrowableHandler<T extends Throwable> implements Throwable
      *
      * @param handlers Sub-handlers.
      */
+    @SafeVarargs
     public CompositeThrowableHandler(ThrowableHandler<? super T>... handlers) {
         Collections.addAll(this.handlers, handlers);
     }

@@ -25,6 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
 import com.github.leanframeworks.propertiesframework.base.property.wrap.AbstractReadablePropertyWrapper;
 
@@ -32,7 +34,7 @@ import javax.swing.SwingUtilities;
 
 /**
  * Wrapper for {@link ReadableProperty} that postpones the notifications of the {@link
- * com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener}s later on the EDT.
+ * PropertyChangeListener}s later on the EDT.
  * <p>
  * Note that this property wrapper and the wrapped property are meant to be used on the EDT only.
  *
@@ -48,7 +50,7 @@ public class InvokeLaterPropertyWrapper<R> extends AbstractReadablePropertyWrapp
     private R value = null;
 
     /**
-     * @see AbstractReadablePropertyWrapper#AbstractReadablePropertyWrapper(ReadableProperty)
+     * {@inheritDoc}
      */
     public InvokeLaterPropertyWrapper(ReadableProperty<R> wrappedProperty) {
         super(wrappedProperty);
@@ -63,10 +65,10 @@ public class InvokeLaterPropertyWrapper<R> extends AbstractReadablePropertyWrapp
     }
 
     /**
-     * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     * @see AbstractReadablePropertyWrapper#wrappedPropertyChanged(PropertyChange)
      */
     @Override
-    protected void wrappedPropertyValueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
+    protected void wrappedPropertyChanged(PropertyChange<? extends R> e) {
         assert SwingUtilities.isEventDispatchThread();
         SwingUtilities.invokeLater(() -> {
             if (wrappedProperty != null) {

@@ -52,7 +52,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T>
     private final Set<T> unmodifiable = Collections.unmodifiableSet(internal);
 
     /**
-     * Default constructor.
+     * Constructor.
      */
     public SimpleSetProperty() {
         super();
@@ -63,6 +63,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T>
      *
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public SimpleSetProperty(SetPropertyChangeListener<T>... listeners) {
         super(listeners);
     }
@@ -85,6 +86,7 @@ public class SimpleSetProperty<T> extends AbstractReadableWritableSetProperty<T>
      * @param items     Initial items.
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public SimpleSetProperty(Set<T> items, SetPropertyChangeListener<T>... listeners) {
         super(); // Without listeners
 

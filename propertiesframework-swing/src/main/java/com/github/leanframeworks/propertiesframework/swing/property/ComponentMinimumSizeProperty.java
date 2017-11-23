@@ -46,7 +46,7 @@ import java.awt.Dimension;
 public class ComponentMinimumSizeProperty extends AbstractComponentProperty<Component, Dimension> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(Component, String)
+     * {@inheritDoc}
      */
     public ComponentMinimumSizeProperty(Component component) {
         super(component, "minimumSize");

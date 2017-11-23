@@ -26,8 +26,9 @@
 package com.github.leanframeworks.propertiesframework.base.property;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
     /**
      * Writable properties to be updated.
      */
-    private final List<ValueChangeListener<? super R>> listeners = new ArrayList<>();
+    private final List<PropertyChangeListener<? super R>> listeners = new ArrayList<>();
 
     /**
      * Flag stating whether the inhibit the firing of value change events.
@@ -114,23 +115,23 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      *
      * @return Value change listeners.
      */
-    public Collection<ValueChangeListener<? super R>> getChangeListeners() {
+    public Collection<PropertyChangeListener<? super R>> getChangeListeners() {
         return Collections.unmodifiableList(listeners);
     }
 
     /**
-     * @see ReadableProperty#addChangeListener(ValueChangeListener)
+     * @see ReadableProperty#addChangeListener(PropertyChangeListener)
      */
     @Override
-    public void addChangeListener(ValueChangeListener<? super R> listener) {
+    public void addChangeListener(PropertyChangeListener<? super R> listener) {
         listeners.add(listener);
     }
 
     /**
-     * @see ReadableProperty#removeChangeListener(ValueChangeListener)
+     * @see ReadableProperty#removeChangeListener(PropertyChangeListener)
      */
     @Override
-    public void removeChangeListener(ValueChangeListener<? super R> listener) {
+    public void removeChangeListener(PropertyChangeListener<? super R> listener) {
         listeners.remove(listener);
     }
 
@@ -214,10 +215,11 @@ public abstract class AbstractReadableProperty<R> implements ReadableProperty<R>
      * @param newValue New value.
      */
     private void doNotifyListeners(R oldValue, R newValue) {
-        List<ValueChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
+        List<PropertyChangeListener<? super R>> listenersCopy = new ArrayList<>(listeners);
         notifyingListeners = true;
-        for (ValueChangeListener<? super R> listener : listenersCopy) {
-            listener.valueChanged(this, oldValue, newValue);
+        PropertyChange<R> event = new PropertyChange<>(this, oldValue, newValue);
+        for (PropertyChangeListener<? super R> listener : listenersCopy) {
+            listener.propertyChanged(event);
         }
         notifyingListeners = false;
     }

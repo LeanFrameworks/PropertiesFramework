@@ -25,13 +25,15 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -51,7 +53,7 @@ public class JButtonIconPropertyTest {
     public void testNullFromProperty() {
         JButton button = new JButton(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
-        ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Icon> listenerMock = (PropertyChangeListener<Icon>) mock(PropertyChangeListener.class);
         iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
@@ -59,8 +61,8 @@ public class JButtonIconPropertyTest {
         assertEquals(null, button.getIcon());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(iconProperty, ICON1, null);
-        verify(listenerMock).valueChanged(any(JButtonIconProperty.class), any(Icon.class), any(Icon.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(iconProperty, ICON1, null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +70,7 @@ public class JButtonIconPropertyTest {
     public void testNonNullFromProperty() {
         JButton button = new JButton(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
-        ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Icon> listenerMock = (PropertyChangeListener<Icon>) mock(PropertyChangeListener.class);
         iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
@@ -76,8 +78,8 @@ public class JButtonIconPropertyTest {
         assertEquals(ICON2, button.getIcon());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(iconProperty, ICON1, ICON2);
-        verify(listenerMock).valueChanged(any(JButtonIconProperty.class), any(Icon.class), any(Icon.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(iconProperty, ICON1, ICON2)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -85,7 +87,7 @@ public class JButtonIconPropertyTest {
     public void testNullFromComponent() {
         JButton button = new JButton(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
-        ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Icon> listenerMock = (PropertyChangeListener<Icon>) mock(PropertyChangeListener.class);
         iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
@@ -93,8 +95,8 @@ public class JButtonIconPropertyTest {
         assertEquals(null, iconProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(iconProperty, ICON1, null);
-        verify(listenerMock).valueChanged(any(JButtonIconProperty.class), any(Icon.class), any(Icon.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(iconProperty, ICON1, null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -102,7 +104,7 @@ public class JButtonIconPropertyTest {
     public void testNonNullFromComponent() {
         JButton button = new JButton(ICON1);
         ReadableWritableProperty<Icon> iconProperty = new JButtonIconProperty(button);
-        ValueChangeListener<Icon> listenerMock = (ValueChangeListener<Icon>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Icon> listenerMock = (PropertyChangeListener<Icon>) mock(PropertyChangeListener.class);
         iconProperty.addChangeListener(listenerMock);
 
         assertEquals(ICON1, iconProperty.getValue());
@@ -110,7 +112,7 @@ public class JButtonIconPropertyTest {
         assertEquals(ICON2, iconProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(iconProperty, ICON1, ICON2);
-        verify(listenerMock).valueChanged(any(JButtonIconProperty.class), any(Icon.class), any(Icon.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(iconProperty, ICON1, ICON2)));
+        verify(listenerMock).propertyChanged(any());
     }
 }

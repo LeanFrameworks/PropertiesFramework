@@ -41,7 +41,7 @@ import javax.swing.JButton;
 public class JButtonTextProperty extends AbstractComponentProperty<JButton, String> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JButtonTextProperty(JButton button) {
         super(button, "text");

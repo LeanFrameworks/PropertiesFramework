@@ -25,7 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,9 +35,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,7 +54,7 @@ public class JTableSelectedRowIndexPropertyTest {
 
     private JTableSelectedRowIndexProperty property;
 
-    private ValueChangeListener<Integer> listenerMock;
+    private PropertyChangeListener<Integer> listenerMock;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -75,7 +76,7 @@ public class JTableSelectedRowIndexPropertyTest {
 
         // Create property
         property = new JTableSelectedRowIndexProperty(table);
-        listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
     }
 
@@ -100,12 +101,12 @@ public class JTableSelectedRowIndexPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, -1, 0);
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, -1);
-        verify(listenerMock).valueChanged(property, -1, 1);
-        verify(listenerMock).valueChanged(property, 1, -1);
-        verify(listenerMock, times(5)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 0)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, -1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, -1)));
+        verify(listenerMock, times(5)).propertyChanged(any());
     }
 
     @Test
@@ -121,9 +122,9 @@ public class JTableSelectedRowIndexPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, -1, 1);
-        verify(listenerMock).valueChanged(property, 1, -1);
-        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, -1)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -139,9 +140,9 @@ public class JTableSelectedRowIndexPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, -1, 1);
-        verify(listenerMock).valueChanged(property, 1, -1);
-        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, -1)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -163,11 +164,11 @@ public class JTableSelectedRowIndexPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRow()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, -1, 1);
-        verify(listenerMock).valueChanged(property, 1, -1);
-        verify(listenerMock).valueChanged(property, -1, 2);
-        verify(listenerMock).valueChanged(property, 2, -1);
-        verify(listenerMock, times(4)).valueChanged(any(JTableSelectedRowIndexProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, -1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, -1)));
+        verify(listenerMock, times(4)).propertyChanged(any());
     }
 
     @Test
@@ -184,8 +185,8 @@ public class JTableSelectedRowIndexPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listenerMock).valueChanged(property, -1, 0);
-        verify(listenerMock).valueChanged(property, 0, 2);
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, -1, 0)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
         verifyNoMoreInteractions(listenerMock);
     }
 }

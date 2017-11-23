@@ -50,6 +50,7 @@ public abstract class AbstractReadableWritableSetProperty<T> extends AbstractRea
      *
      * @see AbstractReadableSetProperty#AbstractReadableSetProperty(SetPropertyChangeListener[])
      */
+    @SafeVarargs
     public AbstractReadableWritableSetProperty(SetPropertyChangeListener<? super T>... listeners) {
         super(listeners);
     }

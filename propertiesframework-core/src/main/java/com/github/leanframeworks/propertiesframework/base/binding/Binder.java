@@ -82,6 +82,7 @@ public final class Binder {
      * @param <MO>    Type of value to be read from the master properties.
      * @return DSL object.
      */
+    @SafeVarargs
     public static <MO> MultipleMasterBinding<MO, Collection<MO>> from(ReadableProperty<MO>... masters) {
         return new MultipleMasterBinding<>(Arrays.asList(masters), null);
     }
@@ -155,7 +156,8 @@ public final class Binder {
          * @param slaves Slave properties.
          * @return Binding between the master and the slaves.
          */
-        public SimpleBinding<MO, SI> to(WritableProperty<SI>... slaves) {
+        @SafeVarargs
+        public final SimpleBinding<MO, SI> to(WritableProperty<SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }
@@ -230,7 +232,8 @@ public final class Binder {
          * @param slaves Slave properties.
          * @return Binding between the masters and the slaves.
          */
-        public SimpleBinding<Collection<MO>, SI> to(WritableProperty<? super SI>... slaves) {
+        @SafeVarargs
+        public final SimpleBinding<Collection<MO>, SI> to(WritableProperty<? super SI>... slaves) {
             return to(Arrays.asList(slaves));
         }
     }

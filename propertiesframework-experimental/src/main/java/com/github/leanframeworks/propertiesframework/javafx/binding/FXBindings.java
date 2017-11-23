@@ -42,8 +42,8 @@ public final class FXBindings {
     }
 
     public static <R> ObservableValue<R> fx(ReadableProperty<R> vfProperty) {
-        final SimpleObjectProperty<R> fxObservableValue = new SimpleObjectProperty<R>();
-        vfProperty.addChangeListener((p, o, n) -> fxObservableValue.set(n));
+        final SimpleObjectProperty<R> fxObservableValue = new SimpleObjectProperty<>();
+        vfProperty.addChangeListener(e -> fxObservableValue.set(e.getNewValue()));
         fxObservableValue.set(vfProperty.getValue());
         return fxObservableValue;
     }

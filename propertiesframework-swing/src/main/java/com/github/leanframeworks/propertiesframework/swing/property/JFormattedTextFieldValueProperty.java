@@ -39,7 +39,7 @@ import javax.swing.JFormattedTextField;
 public class JFormattedTextFieldValueProperty extends AbstractComponentProperty<JFormattedTextField, Object> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JFormattedTextFieldValueProperty(JFormattedTextField component) {
         super(component, "value");

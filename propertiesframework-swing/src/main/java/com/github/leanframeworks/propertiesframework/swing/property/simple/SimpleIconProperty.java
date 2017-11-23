@@ -37,14 +37,14 @@ import javax.swing.Icon;
 public class SimpleIconProperty extends SimpleProperty<Icon> {
 
     /**
-     * @see SimpleProperty#SimpleProperty()
+     * {@inheritDoc}
      */
     public SimpleIconProperty() {
         super();
     }
 
     /**
-     * @see SimpleProperty#SimpleProperty(Object)
+     * {@inheritDoc}
      */
     public SimpleIconProperty(Icon value) {
         super(value);

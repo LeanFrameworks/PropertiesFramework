@@ -42,7 +42,7 @@ import javax.swing.JButton;
 public class JButtonIconProperty extends AbstractComponentProperty<JButton, Icon> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JButtonIconProperty(JButton button) {
         super(button, "icon");

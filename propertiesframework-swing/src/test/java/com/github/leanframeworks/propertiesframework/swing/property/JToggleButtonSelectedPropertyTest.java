@@ -25,16 +25,17 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JToggleButton;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -49,7 +50,7 @@ public class JToggleButtonSelectedPropertyTest {
     public void testNonNullFromProperty() {
         JToggleButton component = new JToggleButton();
         ReadableWritableProperty<Boolean> property = new JToggleButtonSelectedProperty(component);
-        ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listenerMock = (PropertyChangeListener<Boolean>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertFalse(property.getValue());
@@ -58,8 +59,8 @@ public class JToggleButtonSelectedPropertyTest {
         assertTrue(component.isSelected());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, false, true);
-        verify(listenerMock).valueChanged(any(JToggleButtonSelectedProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, false, true)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +69,7 @@ public class JToggleButtonSelectedPropertyTest {
         JToggleButton component = new JToggleButton();
         component.setSelected(true);
         ReadableWritableProperty<Boolean> property = new JToggleButtonSelectedProperty(component);
-        ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listenerMock = (PropertyChangeListener<Boolean>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
@@ -76,15 +77,15 @@ public class JToggleButtonSelectedPropertyTest {
         assertFalse(property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, true, false);
-        verify(listenerMock).valueChanged(any(JToggleButtonSelectedProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, true, false)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @Test
     public void testDispose() {
         JToggleButton component = new JToggleButton();
         JToggleButtonSelectedProperty property = new JToggleButtonSelectedProperty(component);
-        ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         component.setSelected(true);
@@ -99,8 +100,8 @@ public class JToggleButtonSelectedPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, false, true);
-        verify(listener).valueChanged(property, true, false);
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, false, true)));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, true, false)));
         verifyNoMoreInteractions(listener);
     }
 }

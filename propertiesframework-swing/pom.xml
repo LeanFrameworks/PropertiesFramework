@@ -21,6 +21,13 @@
             <artifactId>propertiesframework-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.leanframeworks</groupId>
+            <artifactId>propertiesframework-core</artifactId>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Logging -->
 
         <dependency>

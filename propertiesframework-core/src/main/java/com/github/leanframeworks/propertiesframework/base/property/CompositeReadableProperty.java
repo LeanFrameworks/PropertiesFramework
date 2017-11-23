@@ -26,8 +26,9 @@
 package com.github.leanframeworks.propertiesframework.base.property;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     /**
      * Listener to changes in the sub-properties.
      */
-    private final ValueChangeListener<R> changeAdapter = new ValueChangeAdapter();
+    private final PropertyChangeListener<R> changeAdapter = new PropertyChangeAdapter();
 
     /**
      * Collection of current values of the sub-properties.
@@ -93,6 +94,7 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
      *
      * @param properties Sub-properties to be added.
      */
+    @SafeVarargs
     public CompositeReadableProperty(ReadableProperty<R>... properties) {
         super();
         for (ReadableProperty<R> property : properties) {
@@ -199,16 +201,14 @@ public class CompositeReadableProperty<R> extends AbstractReadableProperty<Colle
     /**
      * Listener to changes in the sub-properties.
      */
-    private class ValueChangeAdapter implements ValueChangeListener<R> {
+    private class PropertyChangeAdapter implements PropertyChangeListener<R> {
 
         /**
          * {@inheritDoc}
-         *
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
          */
         @Override
-        public void valueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
-            if (!ValueUtils.areEqual(oldValue, newValue)) {
+        public void propertyChanged(PropertyChange<? extends R> e) {
+            if (!ValueUtils.areEqual(e.getOldValue(), e.getNewValue())) {
                 updateFromProperties();
             }
         }

@@ -26,8 +26,11 @@
 package com.github.leanframeworks.propertiesframework.test;
 
 import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
 import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -47,6 +50,17 @@ public final class TestUtils {
     }
 
     /**
+     * Returns a property change event that can be used when verifying mocks.
+     *
+     * @param ref Property change event to compare to.
+     * @param <T> Type of items in the corresponding property.
+     * @return Property change event to be used when verifying mocks.
+     */
+    public static <T> PropertyChange<T> matches(PropertyChange<T> ref) {
+        return argThat(new PropertyChangeMatcher<>(ref));
+    }
+
+    /**
      * Returns a set property change event that can be used when verifying mocks.
      *
      * @param ref Set property change event to compare to.
@@ -54,7 +68,7 @@ public final class TestUtils {
      * @return Set property change event to be used when verifying mocks.
      */
     public static <T> SetPropertyChange<T> matches(SetPropertyChange<T> ref) {
-        return argThat(new SetValueChangeEventMatcher<>(ref));
+        return argThat(new SetPropertyChangeMatcher<>(ref));
     }
 
     /**
@@ -65,7 +79,7 @@ public final class TestUtils {
      * @return List property change event to be used when verifying mocks.
      */
     public static <T> ListPropertyChange<T> matches(ListPropertyChange<T> ref) {
-        return argThat(new ListValueChangeEventMatcher<>(ref));
+        return argThat(new ListPropertyChangeMatcher<>(ref));
     }
 
     /**
@@ -123,6 +137,17 @@ public final class TestUtils {
      * @return True if both sets contain the same elements, false otherwise.
      */
     public static <T> boolean haveEqualElements(Set<T> first, Set<T> second) {
+        return haveEqualElements(first, second, false);
+    }
+
+    /**
+     * Returns true if both collections contain the same elements, false otherwise.
+     *
+     * @param first  First collection to compare the elements of.
+     * @param second Second collection to compare the elements of.
+     * @return True if both collections contain the same elements, false otherwise.
+     */
+    public static boolean haveEqualElements(Collection<?> first, Collection<?> second, boolean sameOrder) {
         boolean match = false;
 
         // First, check size
@@ -130,9 +155,17 @@ public final class TestUtils {
 
             // Then, check each element
             match = true;
-            Iterator<T> firstIterator = first.iterator();
-            while (firstIterator.hasNext() && match) {
-                match = second.contains(firstIterator.next());
+            Iterator<?> firstIterator = first.iterator();
+
+            if (sameOrder) {
+                Iterator<?> secondIterator = second.iterator();
+                while (firstIterator.hasNext() && match) {
+                    match = ValueUtils.areEqual(firstIterator.next(), secondIterator.next());
+                }
+            } else {
+                while (firstIterator.hasNext() && match) {
+                    match = second.contains(firstIterator.next());
+                }
             }
         }
 

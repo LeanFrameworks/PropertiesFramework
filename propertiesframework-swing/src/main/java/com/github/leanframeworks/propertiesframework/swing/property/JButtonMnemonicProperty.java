@@ -43,7 +43,7 @@ import java.awt.event.KeyEvent;
 public class JButtonMnemonicProperty extends AbstractComponentProperty<JButton, Integer> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JButtonMnemonicProperty(JButton button) {
         super(button, "mnemonic");

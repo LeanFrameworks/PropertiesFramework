@@ -35,7 +35,7 @@ import javax.swing.JToggleButton;
 public class JToggleButtonPressedProperty extends ButtonPressedProperty {
 
     /**
-     * @see ButtonPressedProperty#ButtonPressedProperty(javax.swing.AbstractButton)
+     * {@inheritDoc}
      */
     public JToggleButtonPressedProperty(JToggleButton toggleButton) {
         super(toggleButton);

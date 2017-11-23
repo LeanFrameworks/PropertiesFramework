@@ -96,6 +96,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W>, Dispos
      *
      * @param properties Sub-properties to be added.
      */
+    @SafeVarargs
     public CompositeWritableProperty(WritableProperty<? super W>... properties) {
         super();
         Collections.addAll(this.properties, properties);
@@ -108,6 +109,7 @@ public class CompositeWritableProperty<W> implements WritableProperty<W>, Dispos
      * @param value      Initial value.
      * @param properties Sub-properties to be added.
      */
+    @SafeVarargs
     public CompositeWritableProperty(W value, WritableProperty<? super W>... properties) {
         super();
         Collections.addAll(this.properties, properties);

@@ -42,7 +42,7 @@ import javax.swing.JFrame;
 public class JFrameTitleProperty extends AbstractComponentProperty<JFrame, String> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JFrameTitleProperty(JFrame frame) {
         super(frame, "title");

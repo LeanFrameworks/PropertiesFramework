@@ -36,7 +36,7 @@ public interface ListPropertyChangeListener<R> {
     /**
      * Called whenever values have been added to, replaced in or removed from the list property.
      *
-     * @param event Details of the change.
+     * @param e Details of the change.
      */
-    void listPropertyChanged(ListPropertyChange<? extends R> event);
+    void listPropertyChanged(ListPropertyChange<? extends R> e);
 }

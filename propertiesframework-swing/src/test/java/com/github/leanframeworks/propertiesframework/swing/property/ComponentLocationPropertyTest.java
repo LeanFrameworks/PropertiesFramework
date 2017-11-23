@@ -25,8 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -57,7 +59,7 @@ public class ComponentLocationPropertyTest {
         contentPane.add(component);
 
         ReadableWritableProperty<Point> property = new ComponentLocationProperty(component);
-        ValueChangeListener<Point> listenerMock = (ValueChangeListener<Point>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Point> listenerMock = (PropertyChangeListener<Point>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(new Point(0, 0), property.getValue());
@@ -72,8 +74,8 @@ public class ComponentLocationPropertyTest {
         assertEquals(new Point(11, 12), component.getLocation());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, new Point(0, 0), new Point(11, 12));
-        verify(listenerMock).valueChanged(any(ComponentLocationProperty.class), any(Point.class), any(Point.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, new Point(0, 0), new Point(11, 12))));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -86,7 +88,7 @@ public class ComponentLocationPropertyTest {
         contentPane.add(component);
 
         ReadableWritableProperty<Point> property = new ComponentLocationProperty(component);
-        ValueChangeListener<Point> listenerMock = (ValueChangeListener<Point>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Point> listenerMock = (PropertyChangeListener<Point>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(new Point(0, 0), property.getValue());
@@ -101,8 +103,8 @@ public class ComponentLocationPropertyTest {
         assertEquals(new Point(13, 14), property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, new Point(0, 0), new Point(13, 14));
-        verify(listenerMock).valueChanged(any(ComponentLocationProperty.class), any(Point.class), any(Point.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, new Point(0, 0), new Point(13, 14))));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @Test
@@ -110,7 +112,7 @@ public class ComponentLocationPropertyTest {
         JFrame frame = new JFrame();
         frame.setLocation(0, 0);
         ComponentLocationProperty property = new ComponentLocationProperty(frame);
-        ValueChangeListener<Point> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<Point> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         frame.setLocation(10, 10);
@@ -148,8 +150,8 @@ public class ComponentLocationPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, new Point(0, 0), new Point(10, 10));
-        verify(listener).valueChanged(property, new Point(10, 10), new Point(20, 20));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, new Point(0, 0), new Point(10, 10))));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, new Point(10, 10), new Point(20, 20))));
         verifyNoMoreInteractions(listener);
     }
 }

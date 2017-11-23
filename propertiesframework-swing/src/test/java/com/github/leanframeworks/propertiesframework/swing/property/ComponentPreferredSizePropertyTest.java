@@ -25,8 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -52,7 +54,7 @@ public class ComponentPreferredSizePropertyTest {
         Component component = new JLabel();
 
         ReadableWritableProperty<Dimension> property = new ComponentPreferredSizeProperty(component);
-        ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Dimension> listenerMock = (PropertyChangeListener<Dimension>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
@@ -61,8 +63,8 @@ public class ComponentPreferredSizePropertyTest {
         assertEquals(new Dimension(11, 12), component.getPreferredSize());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(11, 12));
-        verify(listenerMock).valueChanged(any(ComponentPreferredSizeProperty.class), any(Dimension.class), any(Dimension.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, new Dimension(0, 0), new Dimension(11, 12))));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -75,7 +77,7 @@ public class ComponentPreferredSizePropertyTest {
         contentPane.add(component);
 
         ReadableWritableProperty<Dimension> property = new ComponentPreferredSizeProperty(component);
-        ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Dimension> listenerMock = (PropertyChangeListener<Dimension>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
@@ -84,7 +86,7 @@ public class ComponentPreferredSizePropertyTest {
         assertEquals(new Dimension(13, 14), property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
-        verify(listenerMock).valueChanged(any(ComponentPreferredSizeProperty.class), any(Dimension.class), any(Dimension.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, new Dimension(0, 0), new Dimension(13, 14))));
+        verify(listenerMock).propertyChanged(any());
     }
 }

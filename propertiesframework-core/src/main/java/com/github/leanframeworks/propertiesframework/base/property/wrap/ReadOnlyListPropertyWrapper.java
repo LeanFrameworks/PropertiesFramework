@@ -171,8 +171,8 @@ public class ReadOnlyListPropertyWrapper<R> extends AbstractReadableListProperty
          * @see ListPropertyChangeListener#listPropertyChanged(ListPropertyChange)
          */
         @Override
-        public void listPropertyChanged(ListPropertyChange<? extends R> event) {
-            doNotifyListeners(event);
+        public void listPropertyChanged(ListPropertyChange<? extends R> e) {
+            doNotifyListeners(e);
         }
     }
 }

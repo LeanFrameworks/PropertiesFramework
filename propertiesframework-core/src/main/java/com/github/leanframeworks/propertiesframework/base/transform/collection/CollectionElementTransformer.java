@@ -54,7 +54,7 @@ public class CollectionElementTransformer<I, O> implements Transformer<Collectio
     private final Transformer<? super I, O> elementTransformer;
 
     /**
-     * Default constructor using the {@link CastTransformer} to transform each element of the collection given in {@link
+     * Constructor using the {@link CastTransformer} to transform each element of the collection given in {@link
      * #transform(Collection)} method.
      */
     public CollectionElementTransformer() {

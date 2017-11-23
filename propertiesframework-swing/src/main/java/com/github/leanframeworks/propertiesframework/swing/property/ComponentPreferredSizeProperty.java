@@ -46,7 +46,7 @@ import java.awt.Dimension;
 public class ComponentPreferredSizeProperty extends AbstractComponentProperty<Component, Dimension> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(Component, String)
+     * {@inheritDoc}
      */
     public ComponentPreferredSizeProperty(Component component) {
         super(component, "preferredSize");

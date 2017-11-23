@@ -25,7 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,9 +35,9 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -47,19 +48,19 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
  */
 public class JListSelectedItemCountPropertyTest {
 
-    private JList list;
+    private JList<Integer> list;
 
     private ListSelectionModel selectionModel;
 
     private JListSelectedItemCountProperty property;
 
-    private ValueChangeListener<Integer> listenerMock;
+    private PropertyChangeListener<Integer> listenerMock;
 
     @SuppressWarnings("unchecked")
     @Before
     public void setUp() {
         // Create list model
-        DefaultListModel listModel = new DefaultListModel();
+        DefaultListModel<Integer> listModel = new DefaultListModel<>();
 
         listModel.addElement(1);
         listModel.addElement(2);
@@ -71,7 +72,7 @@ public class JListSelectedItemCountPropertyTest {
 
         // Create property
         property = new JListSelectedItemCountProperty(list);
-        listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
     }
 
@@ -96,12 +97,12 @@ public class JListSelectedItemCountPropertyTest {
         assertEquals(Integer.valueOf(list.getSelectedIndices().length), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 3);
-        verify(listenerMock).valueChanged(property, 3, 2);
-        verify(listenerMock).valueChanged(property, 2, 1);
-        verify(listenerMock).valueChanged(property, 1, 0);
-        verify(listenerMock, times(5)).valueChanged(any(JListSelectedItemCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 3)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 3, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, 0)));
+        verify(listenerMock, times(5)).propertyChanged(any());
     }
 
     @Test
@@ -113,13 +114,13 @@ public class JListSelectedItemCountPropertyTest {
         selectionModel.setSelectionInterval(0, 1);
         assertEquals(Integer.valueOf(list.getSelectedIndices().length), property.getValue());
 
-        list.setModel(new DefaultListModel());
+        list.setModel(new DefaultListModel<>());
         assertEquals(Integer.valueOf(list.getSelectedIndices().length), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 0);
-        verify(listenerMock, times(2)).valueChanged(any(JListSelectedItemCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 0)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -135,9 +136,9 @@ public class JListSelectedItemCountPropertyTest {
         assertEquals(Integer.valueOf(list.getSelectedIndices().length), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 0);
-        verify(listenerMock, times(2)).valueChanged(any(JListSelectedItemCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 0)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -154,7 +155,7 @@ public class JListSelectedItemCountPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listenerMock, times(2)).valueChanged(any(JListSelectedItemCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock, times(2)).propertyChanged(any());
         verifyNoMoreInteractions(listenerMock);
     }
 }

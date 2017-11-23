@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
 
 /**
@@ -50,12 +51,12 @@ public class ReadOnlyPropertyWrapper<R> extends AbstractReadablePropertyWrapper<
     }
 
     /**
-     * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     * @see AbstractReadablePropertyWrapper#wrappedPropertyChanged(PropertyChange)
      */
     @Override
-    protected void wrappedPropertyValueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
+    protected void wrappedPropertyChanged(PropertyChange<? extends R> e) {
         // Just forward the property change
-        maybeNotifyListeners(oldValue, newValue);
+        maybeNotifyListeners(e.getOldValue(), e.getNewValue());
     }
 
     /**

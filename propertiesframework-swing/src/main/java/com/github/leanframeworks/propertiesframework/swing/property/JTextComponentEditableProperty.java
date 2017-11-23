@@ -41,7 +41,7 @@ import javax.swing.text.JTextComponent;
 public class JTextComponentEditableProperty extends AbstractComponentProperty<JTextComponent, Boolean> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JTextComponentEditableProperty(JTextComponent component) {
         super(component, "editable");

@@ -37,7 +37,7 @@ public interface MapPropertyChangeListener<K, R> {
     /**
      * Called whenever values have been added to, replaced in or removed from the map property.
      *
-     * @param event Details of the change.
+     * @param e Details of the change.
      */
-    void mapPropertyChanged(MapPropertyChange<? extends K, ? extends R> event);
+    void mapPropertyChanged(MapPropertyChange<? extends K, ? extends R> e);
 }

@@ -35,7 +35,7 @@ import javax.swing.JMenuItem;
 public class JMenuItemPressedProperty extends ButtonPressedProperty {
 
     /**
-     * @see ButtonPressedProperty#ButtonPressedProperty(javax.swing.AbstractButton)
+     * {@inheritDoc}
      */
     public JMenuItemPressedProperty(JMenuItem menuItem) {
         super(menuItem);

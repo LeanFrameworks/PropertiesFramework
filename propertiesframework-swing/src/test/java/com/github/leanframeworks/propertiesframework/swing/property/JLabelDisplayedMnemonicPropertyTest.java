@@ -25,16 +25,17 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JLabel;
 import java.awt.event.KeyEvent;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -62,7 +63,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
@@ -70,8 +71,8 @@ public class JLabelDisplayedMnemonicPropertyTest {
         assertEquals(KeyEvent.VK_UNDEFINED, label.getDisplayedMnemonic());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(mnemonicProperty, MNEMONIC1, KeyEvent.VK_UNDEFINED);
-        verify(listenerMock).valueChanged(any(JLabelDisplayedMnemonicProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(mnemonicProperty, MNEMONIC1, KeyEvent.VK_UNDEFINED)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -80,7 +81,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
@@ -88,8 +89,8 @@ public class JLabelDisplayedMnemonicPropertyTest {
         assertEquals(MNEMONIC2, Integer.valueOf(label.getDisplayedMnemonic()));
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(mnemonicProperty, MNEMONIC1, MNEMONIC2);
-        verify(listenerMock).valueChanged(any(JLabelDisplayedMnemonicProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(mnemonicProperty, MNEMONIC1, MNEMONIC2)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +99,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
@@ -106,8 +107,8 @@ public class JLabelDisplayedMnemonicPropertyTest {
         assertEquals(Integer.valueOf(KeyEvent.VK_UNDEFINED), mnemonicProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(mnemonicProperty, MNEMONIC1, KeyEvent.VK_UNDEFINED);
-        verify(listenerMock).valueChanged(any(JLabelDisplayedMnemonicProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(mnemonicProperty, MNEMONIC1, KeyEvent.VK_UNDEFINED)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -116,7 +117,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         JLabel label = new JLabel();
         label.setDisplayedMnemonic(MNEMONIC1);
         ReadableWritableProperty<Integer> mnemonicProperty = new JLabelDisplayedMnemonicProperty(label);
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         mnemonicProperty.addChangeListener(listenerMock);
 
         assertEquals(MNEMONIC1, mnemonicProperty.getValue());
@@ -124,7 +125,7 @@ public class JLabelDisplayedMnemonicPropertyTest {
         assertEquals(MNEMONIC2, mnemonicProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(mnemonicProperty, MNEMONIC1, MNEMONIC2);
-        verify(listenerMock).valueChanged(any(JLabelDisplayedMnemonicProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(mnemonicProperty, MNEMONIC1, MNEMONIC2)));
+        verify(listenerMock).propertyChanged(any());
     }
 }

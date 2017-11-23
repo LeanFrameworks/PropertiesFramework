@@ -25,8 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.base.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 
 import java.io.PrintStream;
 
@@ -35,7 +35,7 @@ import java.io.PrintStream;
  *
  * @param <T> Type of property value.
  */
-public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> {
+public class PrintStreamPropertyChangeAdapter<T> implements PropertyChangeListener<T> {
 
     /**
      * Print stream to be use to print the change information.
@@ -48,12 +48,12 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
     private final String propertyName;
 
     /**
-     * Default constructor.
+     * Constructor.
      * <p>
      * By default, the {@link System#out} print stream will be used, and the simple class name of the property will be
      * printed out.
      */
-    public PrintStreamValueChangeAdapter() {
+    public PrintStreamPropertyChangeAdapter() {
         this(null, null);
     }
 
@@ -64,7 +64,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
      *
      * @param stream Print stream to be used to print the change information.
      */
-    public PrintStreamValueChangeAdapter(PrintStream stream) {
+    public PrintStreamPropertyChangeAdapter(PrintStream stream) {
         this(stream, null);
     }
 
@@ -75,7 +75,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
      *
      * @param propertyName Property name to be printed with the change information.
      */
-    public PrintStreamValueChangeAdapter(String propertyName) {
+    public PrintStreamPropertyChangeAdapter(String propertyName) {
         this(null, propertyName);
     }
 
@@ -86,7 +86,7 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
      * @param stream       Print stream to be used to print the change information.
      * @param propertyName Property name to be printed with the change information.
      */
-    public PrintStreamValueChangeAdapter(PrintStream stream, String propertyName) {
+    public PrintStreamPropertyChangeAdapter(PrintStream stream, String propertyName) {
         if (stream == null) {
             this.stream = System.out;
         } else {
@@ -96,14 +96,14 @@ public class PrintStreamValueChangeAdapter<T> implements ValueChangeListener<T> 
     }
 
     /**
-     * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+     * @see PropertyChangeListener#propertyChanged(PropertyChange)
      */
     @Override
-    public void valueChanged(ReadableProperty<? extends T> property, T oldValue, T newValue) {
+    public void propertyChanged(PropertyChange<? extends T> e) {
         String name = propertyName;
         if (name == null) {
-            name = property.getClass().getSimpleName();
+            name = e.getSource().getClass().getSimpleName();
         }
-        stream.println(name + ": " + oldValue + " => " + newValue);
+        stream.println(name + ": " + e.getOldValue() + " => " + e.getNewValue());
     }
 }

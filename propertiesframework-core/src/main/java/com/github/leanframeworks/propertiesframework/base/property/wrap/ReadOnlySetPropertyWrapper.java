@@ -157,8 +157,8 @@ public class ReadOnlySetPropertyWrapper<R> extends AbstractReadableSetProperty<R
          * @see SetPropertyChangeListener#setPropertyChanged(SetPropertyChange)
          */
         @Override
-        public void setPropertyChanged(SetPropertyChange<? extends R> event) {
-            doNotifyListeners(event);
+        public void setPropertyChanged(SetPropertyChange<? extends R> e) {
+            doNotifyListeners(e);
         }
     }
 }

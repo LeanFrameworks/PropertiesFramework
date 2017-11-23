@@ -25,16 +25,17 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -49,7 +50,7 @@ public class JComponentToolTipTextPropertyTest {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
@@ -57,8 +58,8 @@ public class JComponentToolTipTextPropertyTest {
         assertEquals(null, component.getToolTipText());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(toolTipProperty, "Tooltip", null);
-        verify(listenerMock).valueChanged(any(JComponentToolTipTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(toolTipProperty, "Tooltip", null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -67,7 +68,7 @@ public class JComponentToolTipTextPropertyTest {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
@@ -75,8 +76,8 @@ public class JComponentToolTipTextPropertyTest {
         assertEquals("Another tooltip", component.getToolTipText());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(toolTipProperty, "Tooltip", "Another tooltip");
-        verify(listenerMock).valueChanged(any(JComponentToolTipTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(toolTipProperty, "Tooltip", "Another tooltip")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -85,7 +86,7 @@ public class JComponentToolTipTextPropertyTest {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
@@ -93,8 +94,8 @@ public class JComponentToolTipTextPropertyTest {
         assertEquals(null, toolTipProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(toolTipProperty, "Tooltip", null);
-        verify(listenerMock).valueChanged(any(JComponentToolTipTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(toolTipProperty, "Tooltip", null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -103,7 +104,7 @@ public class JComponentToolTipTextPropertyTest {
         JComponent component = new JLabel();
         component.setToolTipText("Tooltip");
         ReadableWritableProperty<String> toolTipProperty = new JComponentToolTipTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         toolTipProperty.addChangeListener(listenerMock);
 
         assertEquals("Tooltip", toolTipProperty.getValue());
@@ -111,7 +112,7 @@ public class JComponentToolTipTextPropertyTest {
         assertEquals("Another tooltip", toolTipProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(toolTipProperty, "Tooltip", "Another tooltip");
-        verify(listenerMock).valueChanged(any(JComponentToolTipTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(toolTipProperty, "Tooltip", "Another tooltip")));
+        verify(listenerMock).propertyChanged(any());
     }
 }

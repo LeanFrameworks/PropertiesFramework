@@ -25,13 +25,15 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -45,7 +47,7 @@ public class JComboBoxSelectedIndexPropertyTest {
 
     private JComboBoxSelectedIndexProperty property;
 
-    private ValueChangeListener<Integer> listenerMock;
+    private PropertyChangeListener<Integer> listenerMock;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -62,7 +64,7 @@ public class JComboBoxSelectedIndexPropertyTest {
 
         // Create property
         property = new JComboBoxSelectedIndexProperty(comboBox);
-        listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
     }
 
@@ -80,8 +82,8 @@ public class JComboBoxSelectedIndexPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listenerMock).valueChanged(property, 0, 1);
-        verify(listenerMock).valueChanged(property, 1, 2);
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, 2)));
         verifyNoMoreInteractions(listenerMock);
     }
 }

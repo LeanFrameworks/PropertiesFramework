@@ -42,7 +42,7 @@ public class ConstantTransformer<O> implements Transformer<Object, O> {
     private final ReadableWritableProperty<O> outputProperty;
 
     /**
-     * Default constructor using null as the output constant.
+     * Constructor using null as the output constant.
      *
      * @see #getOutputProperty()
      */

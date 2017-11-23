@@ -25,9 +25,10 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
-import com.github.leanframeworks.propertiesframework.base.property.PrintStreamValueChangeAdapter;
+import com.github.leanframeworks.propertiesframework.base.property.PrintStreamPropertyChangeAdapter;
 import org.hamcrest.Description;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,9 +43,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.argThat;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -59,7 +59,7 @@ public class JTableSelectedRowIndicesPropertyTest {
 
     private ReadableWritableProperty<List<Integer>> property;
 
-    private ValueChangeListener<List<Integer>> listenerMock;
+    private PropertyChangeListener<List<Integer>> listenerMock;
 
     private static <T> boolean haveEqualElements(Collection<T> first, Collection<T> second) {
         boolean match = false;
@@ -107,9 +107,9 @@ public class JTableSelectedRowIndicesPropertyTest {
 
         // Create property
         property = new JTableSelectedRowIndicesProperty(table);
-        listenerMock = (ValueChangeListener<List<Integer>>) mock(ValueChangeListener.class);
+        listenerMock = (PropertyChangeListener<List<Integer>>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
-        property.addChangeListener(new PrintStreamValueChangeAdapter<>("SELECTION"));
+        property.addChangeListener(new PrintStreamPropertyChangeAdapter<>("SELECTION"));
     }
 
     @Test
@@ -133,9 +133,9 @@ public class JTableSelectedRowIndicesPropertyTest {
         verifyPropertyValue();
 
         // Check fired events
-        verify(listenerMock).valueChanged(eq(property), //
-                argThat(new CollectionMatcher<>(Collections.emptyList())), //
-                argThat(new CollectionMatcher<>(Arrays.asList(0, 1))));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property,
+                Collections.emptyList(),
+                Arrays.asList(0, 1))));
 //        verify(listenerMock).valueChanged(property, 2, 3);
 //        verify(listenerMock).valueChanged(property, 3, 2);
 //        verify(listenerMock).valueChanged(property, 2, 1);

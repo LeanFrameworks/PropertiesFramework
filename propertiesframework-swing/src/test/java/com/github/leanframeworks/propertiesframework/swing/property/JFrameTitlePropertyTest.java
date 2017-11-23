@@ -25,15 +25,16 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JFrame;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -52,7 +53,7 @@ public class JFrameTitlePropertyTest {
     public void testNullFromProperty() {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -60,8 +61,8 @@ public class JFrameTitlePropertyTest {
         assertEquals("", frame.getTitle());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, "");
-        verify(listenerMock).valueChanged(any(JFrameTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, "")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -69,7 +70,7 @@ public class JFrameTitlePropertyTest {
     public void testNonNullFromProperty() {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -77,8 +78,8 @@ public class JFrameTitlePropertyTest {
         assertEquals(TITLE2, frame.getTitle());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, TITLE2);
-        verify(listenerMock).valueChanged(any(JFrameTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, TITLE2)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -86,7 +87,7 @@ public class JFrameTitlePropertyTest {
     public void testNullFromComponent() {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -94,8 +95,8 @@ public class JFrameTitlePropertyTest {
         assertEquals("", titleProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, "");
-        verify(listenerMock).valueChanged(any(JFrameTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, "")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -103,7 +104,7 @@ public class JFrameTitlePropertyTest {
     public void testNonNullFromComponent() {
         JFrame frame = new JFrame(TITLE1);
         ReadableWritableProperty<String> titleProperty = new JFrameTitleProperty(frame);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         titleProperty.addChangeListener(listenerMock);
 
         assertEquals(TITLE1, titleProperty.getValue());
@@ -111,15 +112,15 @@ public class JFrameTitlePropertyTest {
         assertEquals(TITLE2, titleProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(titleProperty, TITLE1, TITLE2);
-        verify(listenerMock).valueChanged(any(JFrameTitleProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(titleProperty, TITLE1, TITLE2)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @Test
     public void testDispose() {
         JFrame frame = new JFrame(TITLE1);
         JFrameTitleProperty property = new JFrameTitleProperty(frame);
-        ValueChangeListener<String> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         frame.setTitle(TITLE2);
@@ -133,8 +134,8 @@ public class JFrameTitlePropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, TITLE1, TITLE2);
-        verify(listener).valueChanged(property, TITLE2, TITLE1);
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, TITLE1, TITLE2)));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, TITLE2, TITLE1)));
         verifyNoMoreInteractions(listener);
     }
 }

@@ -42,7 +42,7 @@ import javax.swing.JDialog;
 public class JDialogTitleProperty extends AbstractComponentProperty<JDialog, String> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JDialogTitleProperty(JDialog dialog) {
         super(dialog, "title");

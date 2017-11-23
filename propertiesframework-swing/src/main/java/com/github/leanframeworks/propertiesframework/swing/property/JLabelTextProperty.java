@@ -41,7 +41,7 @@ import javax.swing.JLabel;
 public class JLabelTextProperty extends AbstractComponentProperty<JLabel, String> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JLabelTextProperty(JLabel label) {
         super(label, "text");

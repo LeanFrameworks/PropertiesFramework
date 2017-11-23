@@ -26,7 +26,7 @@
 package com.github.leanframeworks.propertiesframework.api.property;
 
 /**
- * Interface to be implemented by readable property that can notify {@link ValueChangeListener}s.
+ * Interface to be implemented by readable property that can notify {@link PropertyChangeListener}s.
  *
  * @param <R> Type of data that can be read from this property.
  */
@@ -39,14 +39,14 @@ public interface ReadableProperty<R> {
      *
      * @param listener Value change listener to be added.
      */
-    void addChangeListener(ValueChangeListener<? super R> listener);
+    void addChangeListener(PropertyChangeListener<? super R> listener);
 
     /**
      * Removes the value change listener.
      *
      * @param listener Value change listener to be removed..
      */
-    void removeChangeListener(ValueChangeListener<? super R> listener);
+    void removeChangeListener(PropertyChangeListener<? super R> listener);
 
     /**
      * Gets the value of the property.

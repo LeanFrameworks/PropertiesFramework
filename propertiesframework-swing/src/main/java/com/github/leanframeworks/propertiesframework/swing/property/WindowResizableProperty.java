@@ -48,7 +48,7 @@ import java.awt.Window;
 public class WindowResizableProperty extends AbstractComponentProperty<Window, Boolean> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public WindowResizableProperty(Window window) {
         super(window, "resizable");

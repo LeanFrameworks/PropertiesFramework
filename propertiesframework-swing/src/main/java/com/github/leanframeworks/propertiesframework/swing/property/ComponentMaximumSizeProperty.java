@@ -46,7 +46,7 @@ import java.awt.Dimension;
 public class ComponentMaximumSizeProperty extends AbstractComponentProperty<Component, Dimension> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(Component, String)
+     * {@inheritDoc}
      */
     public ComponentMaximumSizeProperty(Component component) {
         super(component, "maximumSize");

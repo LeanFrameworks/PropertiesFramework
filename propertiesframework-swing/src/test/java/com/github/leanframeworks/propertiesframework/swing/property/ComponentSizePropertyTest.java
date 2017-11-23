@@ -25,8 +25,9 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JFrame;
@@ -36,6 +37,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -57,7 +59,7 @@ public class ComponentSizePropertyTest {
         contentPane.add(component);
 
         ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
-        ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Dimension> listenerMock = (PropertyChangeListener<Dimension>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
@@ -72,8 +74,8 @@ public class ComponentSizePropertyTest {
         assertEquals(new Dimension(11, 12), component.getSize());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(11, 12));
-        verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, new Dimension(0, 0), new Dimension(11, 12))));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -86,7 +88,7 @@ public class ComponentSizePropertyTest {
         contentPane.add(component);
 
         ReadableWritableProperty<Dimension> property = new ComponentSizeProperty(component);
-        ValueChangeListener<Dimension> listenerMock = (ValueChangeListener<Dimension>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Dimension> listenerMock = (PropertyChangeListener<Dimension>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(new Dimension(0, 0), property.getValue());
@@ -95,8 +97,8 @@ public class ComponentSizePropertyTest {
         assertEquals(new Dimension(13, 14), property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
-        verify(listenerMock).valueChanged(any(ComponentSizeProperty.class), any(Dimension.class), any(Dimension.class));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, new Dimension(0, 0), new Dimension(13, 14))));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @Test
@@ -108,7 +110,7 @@ public class ComponentSizePropertyTest {
         contentPane.add(component);
 
         ComponentSizeProperty property = new ComponentSizeProperty(component);
-        ValueChangeListener<Dimension> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<Dimension> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         setSize(component, new Dimension(13, 14));
@@ -122,8 +124,8 @@ public class ComponentSizePropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, new Dimension(0, 0), new Dimension(13, 14));
-        verify(listener).valueChanged(property, new Dimension(13, 14), new Dimension(15, 16));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, new Dimension(0, 0), new Dimension(13, 14))));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, new Dimension(13, 14), new Dimension(15, 16))));
         verifyNoMoreInteractions(listener);
     }
 

@@ -25,20 +25,21 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.awt.event.ActionEvent;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -85,7 +86,7 @@ public class ActionPropertyTest {
     public void testNonNullFromProperty() {
         Action action = new TestAction();
         ReadableWritableProperty<String> property = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(null, property.getValue());
@@ -97,9 +98,9 @@ public class ActionPropertyTest {
         assertEquals(DESCRIPTION2, action.getValue(Action.LONG_DESCRIPTION));
 
         // Check exactly two events fired
-        verify(listenerMock).valueChanged(property, null, DESCRIPTION1);
-        verify(listenerMock).valueChanged(property, DESCRIPTION1, DESCRIPTION2);
-        verify(listenerMock, times(2)).valueChanged(any(ActionProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, null, DESCRIPTION1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, DESCRIPTION1, DESCRIPTION2)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -107,7 +108,7 @@ public class ActionPropertyTest {
     public void testNonNullFromAction() {
         Action action = new TestAction();
         ReadableWritableProperty<String> property = new ActionProperty<>(action, Action.LONG_DESCRIPTION);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals(null, property.getValue());
@@ -118,16 +119,16 @@ public class ActionPropertyTest {
         assertEquals(DESCRIPTION2, property.getValue());
 
         // Check exactly two events fired
-        verify(listenerMock).valueChanged(property, null, DESCRIPTION1);
-        verify(listenerMock).valueChanged(property, DESCRIPTION1, DESCRIPTION2);
-        verify(listenerMock, times(2)).valueChanged(any(ActionProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, null, DESCRIPTION1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, DESCRIPTION1, DESCRIPTION2)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
     public void testDispose() {
         Action action = new TestAction();
         ActionProperty<String> property = new ActionProperty<>(action, Action.NAME);
-        ValueChangeListener<String> listener = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listener = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         property.setValue("First");
@@ -138,7 +139,7 @@ public class ActionPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, null, "First");
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, null, "First")));
         verifyNoMoreInteractions(listener);
     }
 

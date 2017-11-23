@@ -25,17 +25,18 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JTextField;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -51,7 +52,7 @@ public class JTextComponentTextPropertyTest {
     public void testNonNullFromPropertyWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals("", component.getDocument().getText(0, component.getDocument().getLength()));
@@ -61,8 +62,8 @@ public class JTextComponentTextPropertyTest {
         assertEquals("new text", component.getText());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, "", "new text");
-        verify(listenerMock).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, "", "new text")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -70,7 +71,7 @@ public class JTextComponentTextPropertyTest {
     public void testNonNullFromComponentWithoutInitialText() throws BadLocationException {
         JTextComponent component = new JTextField();
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals("", component.getDocument().getText(0, component.getDocument().getLength()));
@@ -80,8 +81,8 @@ public class JTextComponentTextPropertyTest {
         assertEquals("new text", property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, "", "new text");
-        verify(listenerMock).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, "", "new text")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -89,7 +90,7 @@ public class JTextComponentTextPropertyTest {
     public void testNonNullFromPropertyWithInitialText() throws BadLocationException {
         JTextComponent component = new JTextField("initial text");
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals("initial text", component.getDocument().getText(0, component.getDocument().getLength()));
@@ -99,8 +100,8 @@ public class JTextComponentTextPropertyTest {
         assertEquals("new text", component.getText());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, "initial text", "new text");
-        verify(listenerMock).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, "initial text", "new text")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -108,7 +109,7 @@ public class JTextComponentTextPropertyTest {
     public void testNonNullFromComponentWithInitialText() throws BadLocationException {
         JTextComponent component = new JTextField("initial text");
         ReadableWritableProperty<String> property = new JTextComponentTextProperty(component);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertEquals("initial text", component.getDocument().getText(0, component.getDocument().getLength()));
@@ -118,15 +119,15 @@ public class JTextComponentTextPropertyTest {
         assertEquals("new text", property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, "", "new text");
-        verify(listenerMock, times(2)).valueChanged(any(JTextComponentTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, "", "new text")));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
     public void testDispose() {
         JTextComponent component = new JTextField("initial text");
         JTextComponentTextProperty property = new JTextComponentTextProperty(component);
-        ValueChangeListener<String> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         component.setText("new text");
@@ -141,10 +142,10 @@ public class JTextComponentTextPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, "initial text", "");
-        verify(listener).valueChanged(property, "", "new text");
-        verify(listener).valueChanged(property, "new text", "");
-        verify(listener).valueChanged(property, "", "another one");
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, "initial text", "")));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, "", "new text")));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, "new text", "")));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, "", "another one")));
         verifyNoMoreInteractions(listener);
     }
 }

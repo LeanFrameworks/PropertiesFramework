@@ -25,11 +25,13 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Test;
 
 import javax.swing.JButton;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -43,7 +45,7 @@ public class ButtonPressedPropertyTest {
     public void testDispose() {
         JButton button = new JButton();
         ButtonPressedProperty property = new ButtonPressedProperty(button);
-        ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         button.getModel().setPressed(true);
@@ -56,8 +58,8 @@ public class ButtonPressedPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, false, true);
-        verify(listener).valueChanged(property, true, false);
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, false, true)));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, true, false)));
         verifyNoMoreInteractions(listener);
     }
 }

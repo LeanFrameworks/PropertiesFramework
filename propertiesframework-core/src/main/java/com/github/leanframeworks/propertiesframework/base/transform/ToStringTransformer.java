@@ -43,7 +43,7 @@ public class ToStringTransformer implements Transformer<Object, String> {
     private final String nullToString;
 
     /**
-     * Default constructor.
+     * Constructor.
      * <p>
      * If null is passed to the {@link #transform(Object)} method, null will be returned.
      */

@@ -35,7 +35,7 @@ import javax.swing.JButton;
 public class JButtonPressedProperty extends ButtonPressedProperty {
 
     /**
-     * @see ButtonPressedProperty#ButtonPressedProperty(javax.swing.AbstractButton)
+     * {@inheritDoc}
      */
     public JButtonPressedProperty(JButton button) {
         super(button);

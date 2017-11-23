@@ -45,7 +45,7 @@ public class NegateBooleanTransformer implements Transformer<Boolean, Boolean> {
     private final Boolean nullNegation;
 
     /**
-     * Default constructor considering null to be the result returned for the negation of null input.
+     * Constructor considering null to be the result returned for the negation of null input.
      */
     public NegateBooleanTransformer() {
         this(DEFAULT_NULL_NEGATION);

@@ -56,8 +56,8 @@ public class SimpleListPropertyTest {
         ListPropertyChangeListener<Integer> listener = mock(ListPropertyChangeListener.class);
         property.addChangeListener(listener);
 
-        assertTrue(haveEqualElements(property, Collections.<Integer>emptyList()));
-        assertTrue(haveEqualElements(property.asUnmodifiableList(), Collections.<Integer>emptyList()));
+        assertTrue(haveEqualElements(property, Collections.emptyList()));
+        assertTrue(haveEqualElements(property.asUnmodifiableList(), Collections.emptyList()));
 
         verifyZeroInteractions(listener);
     }

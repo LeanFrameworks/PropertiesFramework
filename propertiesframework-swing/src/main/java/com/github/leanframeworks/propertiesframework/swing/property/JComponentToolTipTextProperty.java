@@ -41,7 +41,7 @@ import javax.swing.JComponent;
 public class JComponentToolTipTextProperty extends AbstractComponentProperty<JComponent, String> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JComponentToolTipTextProperty(JComponent component) {
         super(component, JComponent.TOOL_TIP_TEXT_KEY);

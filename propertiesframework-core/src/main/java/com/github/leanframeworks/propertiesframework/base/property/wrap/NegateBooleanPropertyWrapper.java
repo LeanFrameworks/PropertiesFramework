@@ -25,6 +25,7 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
 import com.github.leanframeworks.propertiesframework.api.transform.Transformer;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
@@ -70,14 +71,12 @@ public class NegateBooleanPropertyWrapper extends AbstractReadablePropertyWrappe
     }
 
     /**
-     * @see AbstractReadablePropertyWrapper#wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     * @see AbstractReadablePropertyWrapper#wrappedPropertyChanged(PropertyChange)
      */
     @Override
-    protected void wrappedPropertyValueChanged(ReadableProperty<? extends Boolean> property,
-                                               Boolean oldValue,
-                                               Boolean newValue) {
-        Boolean transformedOldValue = transformer.transform(oldValue);
-        Boolean transformedNewValue = transformer.transform(newValue);
+    protected void wrappedPropertyChanged(PropertyChange<? extends Boolean> e) {
+        Boolean transformedOldValue = transformer.transform(e.getOldValue());
+        Boolean transformedNewValue = transformer.transform(e.getNewValue());
         maybeNotifyListeners(transformedOldValue, transformedNewValue);
     }
 

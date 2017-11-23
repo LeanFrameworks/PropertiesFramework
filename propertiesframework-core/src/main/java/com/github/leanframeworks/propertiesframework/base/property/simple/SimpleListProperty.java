@@ -65,6 +65,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      *
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public SimpleListProperty(ListPropertyChangeListener<T>... listeners) {
         super(listeners);
     }
@@ -87,6 +88,7 @@ public class SimpleListProperty<T> extends AbstractReadableWritableListProperty<
      * @param items     Initial items.
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public SimpleListProperty(List<T> items, ListPropertyChangeListener<T>... listeners) {
         super(); // Without listeners
 

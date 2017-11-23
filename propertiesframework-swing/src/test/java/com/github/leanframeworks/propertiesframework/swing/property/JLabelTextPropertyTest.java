@@ -25,15 +25,16 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JLabel;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -47,7 +48,7 @@ public class JLabelTextPropertyTest {
     public void testNullFromProperty() {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
@@ -55,8 +56,8 @@ public class JLabelTextPropertyTest {
         assertEquals(null, label.getText());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(textProperty, "Text", null);
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(textProperty, "Text", null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -64,7 +65,7 @@ public class JLabelTextPropertyTest {
     public void testNonNullFromProperty() {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
@@ -72,8 +73,8 @@ public class JLabelTextPropertyTest {
         assertEquals("Another text", label.getText());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(textProperty, "Text", "Another text");
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(textProperty, "Text", "Another text")));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -81,7 +82,7 @@ public class JLabelTextPropertyTest {
     public void testNullFromComponent() {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
@@ -89,8 +90,8 @@ public class JLabelTextPropertyTest {
         assertEquals(null, textProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(textProperty, "Text", null);
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(textProperty, "Text", null)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -98,7 +99,7 @@ public class JLabelTextPropertyTest {
     public void testNonNullFromComponent() {
         JLabel label = new JLabel("Text");
         ReadableWritableProperty<String> textProperty = new JLabelTextProperty(label);
-        ValueChangeListener<String> listenerMock = (ValueChangeListener<String>) mock(ValueChangeListener.class);
+        PropertyChangeListener<String> listenerMock = (PropertyChangeListener<String>) mock(PropertyChangeListener.class);
         textProperty.addChangeListener(listenerMock);
 
         assertEquals("Text", textProperty.getValue());
@@ -106,7 +107,7 @@ public class JLabelTextPropertyTest {
         assertEquals("Another text", textProperty.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(textProperty, "Text", "Another text");
-        verify(listenerMock).valueChanged(any(JLabelTextProperty.class), anyString(), anyString());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(textProperty, "Text", "Another text")));
+        verify(listenerMock).propertyChanged(any());
     }
 }

@@ -25,12 +25,13 @@
 
 package com.github.leanframeworks.propertiesframework.base.property.simple;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Test;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -65,23 +66,23 @@ public class SimplePropertytTest {
     @Test
     public void testValueChangeEvent() {
         SimpleProperty<Integer> property = new SimpleProperty<>();
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
 
         property.addChangeListener(listenerMock);
         property.setValue(3);
         property.setValue(4);
 
         // Check exactly two events fired
-        verify(listenerMock).valueChanged(property, null, 3);
-        verify(listenerMock).valueChanged(property, 3, 4);
-        verify(listenerMock, times(2)).valueChanged(any(SimpleProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange(property, null, 3)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange(property, 3, 4)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testInhibitAndValueChangeEvent() {
         SimpleProperty<Integer> property = new SimpleProperty<>(null);
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         property.setInhibited(true);
@@ -90,15 +91,15 @@ public class SimplePropertytTest {
         property.setInhibited(false);
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, null, 4);
-        verify(listenerMock).valueChanged(any(SimpleProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange(property, null, 4)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void testInhibitAndNoValueChangeEvent() {
         SimpleProperty<Integer> property = new SimpleProperty<>(null);
-        ValueChangeListener<Integer> listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Integer> listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         property.setInhibited(true);
@@ -108,6 +109,6 @@ public class SimplePropertytTest {
         property.setInhibited(false);
 
         // Check no event fired
-        verify(listenerMock, never()).valueChanged(any(SimpleProperty.class), anyInt(), anyInt());
+        verify(listenerMock, never()).propertyChanged(any());
     }
 }

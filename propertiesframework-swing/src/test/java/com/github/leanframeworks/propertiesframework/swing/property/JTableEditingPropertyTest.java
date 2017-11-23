@@ -25,17 +25,18 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -50,7 +51,7 @@ public class JTableEditingPropertyTest {
 
     private JTableEditingProperty property;
 
-    private ValueChangeListener<Boolean> listenerMock;
+    private PropertyChangeListener<Boolean> listenerMock;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -76,7 +77,7 @@ public class JTableEditingPropertyTest {
 
         // Create property
         property = new JTableEditingProperty(table);
-        listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        listenerMock = (PropertyChangeListener<Boolean>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
     }
 
@@ -90,9 +91,9 @@ public class JTableEditingPropertyTest {
         assertFalse(property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, false, true);
-        verify(listenerMock).valueChanged(property, true, false);
-        verify(listenerMock, times(2)).valueChanged(any(JTableEditingProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, false, true)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, true, false)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -110,8 +111,8 @@ public class JTableEditingPropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listenerMock).valueChanged(property, false, true);
-        verify(listenerMock).valueChanged(property, true, false);
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, false, true)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, true, false)));
         verifyNoMoreInteractions(listenerMock);
     }
 }

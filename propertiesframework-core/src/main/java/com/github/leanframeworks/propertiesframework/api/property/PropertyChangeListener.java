@@ -26,23 +26,17 @@
 package com.github.leanframeworks.propertiesframework.api.property;
 
 /**
- * Interface to be implemented by listeners to changes of {@link ReadableProperty}.
- * <p>
- * If you are using JavaFX, you should better use JavaFX's property binding mechanism. The binding mechanism provided by
- * the PropertiesFramework is very simple and mostly meant for Swing and other frameworks that can benefit from it.
- * JavaFX has a much more furnished API to achieve similar goals and much more.
+ * Interface to be implemented by listener to changes in a {@link ReadableProperty}.
  *
- * @param <R> Type of data that can be read from the changed readable property.
- * @see ReadableProperty
+ * @param <R> Type of value in the property.
  */
-public interface ValueChangeListener<R> {
+@FunctionalInterface
+public interface PropertyChangeListener<R> {
 
     /**
-     * Triggered whenever the readable property value changes.
+     * Called whenever the value of the property has changed.
      *
-     * @param property Readable property that changed.
-     * @param oldValue Previous property value.
-     * @param newValue New property value.
+     * @param e Details of the change.
      */
-    void valueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue);
+    void propertyChanged(PropertyChange<? extends R> e);
 }

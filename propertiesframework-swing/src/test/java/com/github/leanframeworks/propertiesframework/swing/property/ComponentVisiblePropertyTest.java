@@ -25,7 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Test;
 
 import javax.swing.JButton;
@@ -35,6 +36,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -55,7 +57,7 @@ public class ComponentVisiblePropertyTest {
         frame.setVisible(true);
 
         ComponentVisibleProperty property = new ComponentVisibleProperty(component);
-        ValueChangeListener<Boolean> listener = mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listener = mock(PropertyChangeListener.class);
         property.addChangeListener(listener);
 
         setVisible(component, false);
@@ -69,8 +71,8 @@ public class ComponentVisiblePropertyTest {
         property.dispose();
         property.dispose();
 
-        verify(listener).valueChanged(property, true, false);
-        verify(listener).valueChanged(property, false, true);
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, true, false)));
+        verify(listener).propertyChanged(matches(new PropertyChange<>(property, false, true)));
         verifyNoMoreInteractions(listener);
 
         frame.dispose();

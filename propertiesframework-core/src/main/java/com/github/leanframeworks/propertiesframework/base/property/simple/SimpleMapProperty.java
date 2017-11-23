@@ -72,6 +72,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      *
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public SimpleMapProperty(MapPropertyChangeListener<K, V>... listeners) {
         super(listeners);
     }
@@ -94,6 +95,7 @@ public class SimpleMapProperty<K, V> extends AbstractReadableWritableMapProperty
      * @param entries   Initial entries.
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public SimpleMapProperty(Map<K, V> entries, MapPropertyChangeListener<K, V>... listeners) {
         super(); // Without listeners
 

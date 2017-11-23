@@ -49,7 +49,7 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
     private final List<SetPropertyChangeListener<? super R>> listeners = new ArrayList<>();
 
     /**
-     * Default constructor adding no listener.
+     * Constructor adding no listener.
      */
     public AbstractReadableSetProperty() {
         // Nothing to be done
@@ -60,6 +60,7 @@ public abstract class AbstractReadableSetProperty<R> implements ReadableSetPrope
      *
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public AbstractReadableSetProperty(SetPropertyChangeListener<? super R>... listeners) {
         for (SetPropertyChangeListener<? super R> listener : listeners) {
             addChangeListener(listener);

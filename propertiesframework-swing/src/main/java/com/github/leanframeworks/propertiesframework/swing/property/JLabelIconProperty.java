@@ -42,7 +42,7 @@ import javax.swing.JLabel;
 public class JLabelIconProperty extends AbstractComponentProperty<JLabel, Icon> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public JLabelIconProperty(JLabel label) {
         super(label, "icon");

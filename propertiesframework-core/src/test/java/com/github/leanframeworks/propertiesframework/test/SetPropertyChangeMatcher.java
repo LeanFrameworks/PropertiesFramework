@@ -23,20 +23,40 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.github.leanframeworks.propertiesframework.api.property;
+package com.github.leanframeworks.propertiesframework.test;
 
-/**
- * Interface to be implemented by listener to changes in a {@link ReadableProperty}.
- *
- * @param <R> Type of value in the property.
- */
-@FunctionalInterface
-public interface PropertyChangeListener2<R> {
+import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
+import org.hamcrest.Description;
+import org.mockito.ArgumentMatcher;
 
-    /**
-     * Called whenever the value of the property has changed.
-     *
-     * @param event Details of the change.
-     */
-    void propertyChanged(PropertyChange<? extends R> event);
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
+
+public class SetPropertyChangeMatcher<T> extends ArgumentMatcher<SetPropertyChange<T>> {
+
+    private final SetPropertyChange<T> refEvent;
+
+    public SetPropertyChangeMatcher(SetPropertyChange<T> refEvent) {
+        super();
+        this.refEvent = refEvent;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean matches(Object actualEvent) {
+        boolean match = false;
+
+        if (actualEvent instanceof SetPropertyChange<?>) {
+            match = ValueUtils.areEqual(refEvent.getSource(), ((SetPropertyChange) actualEvent).getSource()) &&
+                    haveEqualElements(refEvent.getOldValues(), ((SetPropertyChange) actualEvent).getOldValues()) &&
+                    haveEqualElements(refEvent.getNewValues(), ((SetPropertyChange) actualEvent).getNewValues());
+        }
+
+        return match;
+    }
+
+    @Override
+    public void describeTo(Description description) {
+        // Do nothing
+    }
 }

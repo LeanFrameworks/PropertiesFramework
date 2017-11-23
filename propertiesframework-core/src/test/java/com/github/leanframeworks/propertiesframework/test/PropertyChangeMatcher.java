@@ -25,20 +25,29 @@
 
 package com.github.leanframeworks.propertiesframework.test;
 
-import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
-import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
 import org.hamcrest.Description;
 import org.mockito.ArgumentMatcher;
 
+import java.util.Collection;
+
+import static com.github.leanframeworks.propertiesframework.base.utils.ValueUtils.areEqual;
 import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
 
-public class ListValueChangeEventMatcher<T> extends ArgumentMatcher<ListPropertyChange<T>> {
+public class PropertyChangeMatcher<T> extends ArgumentMatcher<PropertyChange<T>> {
 
-    private final ListPropertyChange<T> refEvent;
+    private final PropertyChange<T> refEvent;
 
-    public ListValueChangeEventMatcher(ListPropertyChange<T> refEvent) {
+    private final boolean sameOrderIfCollection;
+
+    public PropertyChangeMatcher(PropertyChange<T> refEvent) {
+        this(refEvent, true);
+    }
+
+    public PropertyChangeMatcher(PropertyChange<T> refEvent, boolean sameOrderIfCollection) {
         super();
         this.refEvent = refEvent;
+        this.sameOrderIfCollection = sameOrderIfCollection;
     }
 
     @SuppressWarnings("unchecked")
@@ -46,14 +55,22 @@ public class ListValueChangeEventMatcher<T> extends ArgumentMatcher<ListProperty
     public boolean matches(Object actualEvent) {
         boolean match = false;
 
-        if (actualEvent instanceof ListPropertyChange<?>) {
-            match = ValueUtils.areEqual(refEvent.getSource(), ((ListPropertyChange) actualEvent).getSource()) &&
-                    (refEvent.getStartIndex() == ((ListPropertyChange) actualEvent).getStartIndex()) &&
-                    haveEqualElements(refEvent.getOldValues(), ((ListPropertyChange) actualEvent).getOldValues()) &&
-                    haveEqualElements(refEvent.getNewValues(), ((ListPropertyChange) actualEvent).getNewValues());
+        if (actualEvent instanceof PropertyChange<?>) {
+            match = areEqual(refEvent.getSource(), ((PropertyChange<?>) actualEvent).getSource()) &&
+                    areValuesOrCollectionsEqual(refEvent.getOldValue(), ((PropertyChange<?>) actualEvent).getOldValue()) &&
+                    areValuesOrCollectionsEqual(refEvent.getNewValue(), ((PropertyChange<?>) actualEvent).getNewValue());
         }
 
         return match;
+    }
+
+    private boolean areValuesOrCollectionsEqual(Object value1, Object value2) {
+        return areEqual(value1, value2) ||
+                ((value1 instanceof Collection<?>) &&
+                        (value2 instanceof Collection<?>) &&
+                        value1.getClass().equals(value2.getClass()) &&
+                        haveEqualElements((Collection<?>) value1, (Collection<?>) value2, sameOrderIfCollection)
+                );
     }
 
     @Override

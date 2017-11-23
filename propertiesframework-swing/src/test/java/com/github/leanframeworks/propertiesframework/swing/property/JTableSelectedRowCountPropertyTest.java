@@ -25,7 +25,8 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,9 +35,9 @@ import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,7 +54,7 @@ public class JTableSelectedRowCountPropertyTest {
 
     private JTableSelectedRowCountProperty property;
 
-    private ValueChangeListener<Integer> listenerMock;
+    private PropertyChangeListener<Integer> listenerMock;
 
     @SuppressWarnings("unchecked")
     @Before
@@ -75,7 +76,7 @@ public class JTableSelectedRowCountPropertyTest {
 
         // Create property
         property = new JTableSelectedRowCountProperty(table);
-        listenerMock = (ValueChangeListener<Integer>) mock(ValueChangeListener.class);
+        listenerMock = (PropertyChangeListener<Integer>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
     }
 
@@ -100,12 +101,12 @@ public class JTableSelectedRowCountPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 3);
-        verify(listenerMock).valueChanged(property, 3, 2);
-        verify(listenerMock).valueChanged(property, 2, 1);
-        verify(listenerMock).valueChanged(property, 1, 0);
-        verify(listenerMock, times(5)).valueChanged(any(JTableSelectedRowCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 3)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 3, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 1)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 1, 0)));
+        verify(listenerMock, times(5)).propertyChanged(any());
     }
 
     @Test
@@ -121,9 +122,9 @@ public class JTableSelectedRowCountPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 0);
-        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 0)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -139,9 +140,9 @@ public class JTableSelectedRowCountPropertyTest {
         assertEquals(Integer.valueOf(table.getSelectedRowCount()), property.getValue());
 
         // Check fired events
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 0);
-        verify(listenerMock, times(2)).valueChanged(any(JTableSelectedRowCountProperty.class), anyInt(), anyInt());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 0)));
+        verify(listenerMock, times(2)).propertyChanged(any());
     }
 
     @Test
@@ -154,8 +155,8 @@ public class JTableSelectedRowCountPropertyTest {
         selectionModel.clearSelection();
         selectionModel.addSelectionInterval(0, 1);
 
-        verify(listenerMock).valueChanged(property, 0, 2);
-        verify(listenerMock).valueChanged(property, 2, 3);
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 0, 2)));
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, 2, 3)));
         verifyNoMoreInteractions(listenerMock);
     }
 }

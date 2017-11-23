@@ -1,4 +1,6 @@
-# Version 1.0.0
+# Version 1.0.0 (to be released)
+
+* TODO See TODO.md file
 
 * Made better use of generics (with `extends` and `super`)
 * Simplified `ReadableWritable*Property` interfaces, now using the same type for read and write
@@ -14,11 +16,15 @@
 * Replaced the `SetValueChangeListener` interface by the `SetPropertyChangeListener` functional interface
 * Replaced the `ListValueChangeListener` interface by the `ListPropertyChangeListener` functional interface
 * Replaced the `MapValueChangeListener` interface by the `MapPropertyChangeListener` functional interface
-* TODO Functional interface for Set/List/MapValueChangeListener
+* Replaced the `ValueChangeListener` interface by the `PropertyChangeListener` functional interface
+* Renamed `PrintStreamValueChangeAdapter` to `PrintStreamPropertyChangeAdapter`
+* Added JSliderValueProperty, JSliderMinimumValueProperty and JSliderMaximumValueProperty
 
 ## Migration from version 0.0.1
 
-TODO
+Compilation issues are only related to the changes mentioned above; fixing them is quite straightforward.
+
+There is no incompatible change in terms of behavior (beyond the compilation).
 
 # Version 0.0.1
 

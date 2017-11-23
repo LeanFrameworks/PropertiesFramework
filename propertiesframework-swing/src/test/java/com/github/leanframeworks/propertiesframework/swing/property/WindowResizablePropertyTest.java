@@ -25,16 +25,17 @@
 
 package com.github.leanframeworks.propertiesframework.swing.property;
 
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableWritableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import org.junit.Test;
 
 import javax.swing.JFrame;
 
+import static com.github.leanframeworks.propertiesframework.test.TestUtils.matches;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -49,7 +50,7 @@ public class WindowResizablePropertyTest {
         JFrame window = new JFrame();
 
         ReadableWritableProperty<Boolean> property = new WindowResizableProperty(window);
-        ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listenerMock = (PropertyChangeListener<Boolean>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
@@ -58,8 +59,8 @@ public class WindowResizablePropertyTest {
         assertFalse(window.isResizable());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, true, false);
-        verify(listenerMock).valueChanged(any(WindowResizableProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, true, false)));
+        verify(listenerMock).propertyChanged(any());
     }
 
     @SuppressWarnings("unchecked")
@@ -68,7 +69,7 @@ public class WindowResizablePropertyTest {
         JFrame window = new JFrame();
 
         ReadableWritableProperty<Boolean> property = new WindowResizableProperty(window);
-        ValueChangeListener<Boolean> listenerMock = (ValueChangeListener<Boolean>) mock(ValueChangeListener.class);
+        PropertyChangeListener<Boolean> listenerMock = (PropertyChangeListener<Boolean>) mock(PropertyChangeListener.class);
         property.addChangeListener(listenerMock);
 
         assertTrue(property.getValue());
@@ -77,7 +78,7 @@ public class WindowResizablePropertyTest {
         assertFalse(property.getValue());
 
         // Check exactly one event fired
-        verify(listenerMock).valueChanged(property, true, false);
-        verify(listenerMock).valueChanged(any(WindowResizableProperty.class), anyBoolean(), anyBoolean());
+        verify(listenerMock).propertyChanged(matches(new PropertyChange<>(property, true, false)));
+        verify(listenerMock).propertyChanged(any());
     }
 }

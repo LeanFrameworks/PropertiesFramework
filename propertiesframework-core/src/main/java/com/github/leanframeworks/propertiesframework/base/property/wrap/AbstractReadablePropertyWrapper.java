@@ -26,8 +26,9 @@
 package com.github.leanframeworks.propertiesframework.base.property.wrap;
 
 import com.github.leanframeworks.propertiesframework.api.common.Disposable;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.PropertyChangeListener;
 import com.github.leanframeworks.propertiesframework.api.property.ReadableProperty;
-import com.github.leanframeworks.propertiesframework.api.property.ValueChangeListener;
 import com.github.leanframeworks.propertiesframework.base.property.AbstractReadableProperty;
 
 /**
@@ -38,9 +39,9 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
     /**
      * Listener to the wrapped property changes.
      *
-     * @see #wrappedPropertyValueChanged(ReadableProperty, Object, Object)
+     * @see #wrappedPropertyChanged(PropertyChange)
      */
-    protected final ValueChangeListener<? super R> wrappedPropertyAdapter;
+    protected final PropertyChangeListener<? super R> wrappedPropertyAdapter;
 
     /**
      * Wrapped property.
@@ -57,7 +58,7 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
     public AbstractReadablePropertyWrapper(ReadableProperty<? extends R> wrappedProperty) {
         super();
         this.wrappedProperty = wrappedProperty;
-        this.wrappedPropertyAdapter = new ValueChangeAdapter();
+        this.wrappedPropertyAdapter = new PropertyChangeAdapter();
         this.wrappedProperty.addChangeListener(wrappedPropertyAdapter);
     }
 
@@ -82,23 +83,21 @@ public abstract class AbstractReadablePropertyWrapper<R> extends AbstractReadabl
      * The concrete implementations should then process this change, for instance, by transforming the values, filtering
      * the changes before notifying the listeners, etc.
      *
-     * @param property Wrapper property value.
-     * @param oldValue Old value.
-     * @param newValue New value.
+     * @param e Property change event.
      */
-    protected abstract void wrappedPropertyValueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue);
+    protected abstract void wrappedPropertyChanged(PropertyChange<? extends R> e);
 
     /**
      * Listener to changes of the value of the wrapped property.
      */
-    private class ValueChangeAdapter implements ValueChangeListener<R> {
+    private class PropertyChangeAdapter implements PropertyChangeListener<R> {
 
         /**
-         * @see ValueChangeListener#valueChanged(ReadableProperty, Object, Object)
+         * {@inheritDoc}
          */
         @Override
-        public void valueChanged(ReadableProperty<? extends R> property, R oldValue, R newValue) {
-            wrappedPropertyValueChanged(property, oldValue, newValue);
+        public void propertyChanged(PropertyChange<? extends R> e) {
+            wrappedPropertyChanged(e);
         }
     }
 }

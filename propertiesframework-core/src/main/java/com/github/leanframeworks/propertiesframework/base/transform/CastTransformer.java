@@ -56,7 +56,7 @@ public class CastTransformer<I, O> implements Transformer<I, O>, Serializable {
     private final CastErrorBehavior castErrorBehavior;
 
     /**
-     * Default constructor
+     * Constructor
      */
     public CastTransformer() {
         this(CastErrorBehavior.IGNORE);

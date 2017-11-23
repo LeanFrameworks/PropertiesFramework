@@ -39,7 +39,6 @@ import java.awt.event.ComponentListener;
  * It is possible to control the size of the component by setting the value of this property or by calling the {@link
  * Component#setSize(Dimension)} method of that component.
  * <p>
- * <p>
  * However, note that the layout manager of the parent container may also modify the size of the component.
  * <p>
  * Note that changing the width or height attribute of the {@link Dimension} object directly will have no effect on this

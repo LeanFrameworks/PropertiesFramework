@@ -50,6 +50,7 @@ public abstract class AbstractReadableWritableListProperty<T> extends AbstractRe
      *
      * @see AbstractReadableWritableListProperty#AbstractReadableWritableListProperty(ListPropertyChangeListener[])
      */
+    @SafeVarargs
     public AbstractReadableWritableListProperty(ListPropertyChangeListener<? super T>... listeners) {
         super(listeners);
     }

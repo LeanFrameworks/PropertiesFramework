@@ -45,7 +45,7 @@ import java.awt.Component;
 public class ComponentEnabledProperty extends AbstractComponentProperty<Component, Boolean> {
 
     /**
-     * @see AbstractComponentProperty#AbstractComponentProperty(java.awt.Component, String)
+     * {@inheritDoc}
      */
     public ComponentEnabledProperty(Component component) {
         super(component, "enabled");

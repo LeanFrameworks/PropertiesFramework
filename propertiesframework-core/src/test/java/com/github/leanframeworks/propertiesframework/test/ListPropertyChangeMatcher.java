@@ -25,18 +25,18 @@
 
 package com.github.leanframeworks.propertiesframework.test;
 
-import com.github.leanframeworks.propertiesframework.api.property.SetPropertyChange;
+import com.github.leanframeworks.propertiesframework.api.property.ListPropertyChange;
 import com.github.leanframeworks.propertiesframework.base.utils.ValueUtils;
 import org.hamcrest.Description;
 import org.mockito.ArgumentMatcher;
 
 import static com.github.leanframeworks.propertiesframework.test.TestUtils.haveEqualElements;
 
-public class SetValueChangeEventMatcher<T> extends ArgumentMatcher<SetPropertyChange<T>> {
+public class ListPropertyChangeMatcher<T> extends ArgumentMatcher<ListPropertyChange<T>> {
 
-    private final SetPropertyChange<T> refEvent;
+    private final ListPropertyChange<T> refEvent;
 
-    public SetValueChangeEventMatcher(SetPropertyChange<T> refEvent) {
+    public ListPropertyChangeMatcher(ListPropertyChange<T> refEvent) {
         super();
         this.refEvent = refEvent;
     }
@@ -46,10 +46,11 @@ public class SetValueChangeEventMatcher<T> extends ArgumentMatcher<SetPropertyCh
     public boolean matches(Object actualEvent) {
         boolean match = false;
 
-        if (actualEvent instanceof SetPropertyChange<?>) {
-            match = ValueUtils.areEqual(refEvent.getSource(), ((SetPropertyChange) actualEvent).getSource()) &&
-                    haveEqualElements(refEvent.getOldValues(), ((SetPropertyChange) actualEvent).getOldValues()) &&
-                    haveEqualElements(refEvent.getNewValues(), ((SetPropertyChange) actualEvent).getNewValues());
+        if (actualEvent instanceof ListPropertyChange<?>) {
+            match = ValueUtils.areEqual(refEvent.getSource(), ((ListPropertyChange) actualEvent).getSource()) &&
+                    (refEvent.getStartIndex() == ((ListPropertyChange) actualEvent).getStartIndex()) &&
+                    haveEqualElements(refEvent.getOldValues(), ((ListPropertyChange) actualEvent).getOldValues()) &&
+                    haveEqualElements(refEvent.getNewValues(), ((ListPropertyChange) actualEvent).getNewValues());
         }
 
         return match;

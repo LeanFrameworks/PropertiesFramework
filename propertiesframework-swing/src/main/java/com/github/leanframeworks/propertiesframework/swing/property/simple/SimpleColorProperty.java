@@ -37,14 +37,14 @@ import java.awt.Color;
 public class SimpleColorProperty extends SimpleProperty<Color> {
 
     /**
-     * @see SimpleProperty#SimpleProperty()
+     * {@inheritDoc}
      */
     public SimpleColorProperty() {
         super();
     }
 
     /**
-     * @see SimpleProperty#SimpleProperty(Object)
+     * {@inheritDoc}
      */
     public SimpleColorProperty(Color value) {
         super(value);

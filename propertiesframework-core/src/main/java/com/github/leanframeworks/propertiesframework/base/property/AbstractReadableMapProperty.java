@@ -51,7 +51,7 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
             ArrayList<>();
 
     /**
-     * Default constructor adding no listener.
+     * Constructor adding no listener.
      */
     public AbstractReadableMapProperty() {
         // Nothing to be done
@@ -62,6 +62,7 @@ public abstract class AbstractReadableMapProperty<K, R> implements ReadableMapPr
      *
      * @param listeners Listeners to be added.
      */
+    @SafeVarargs
     public AbstractReadableMapProperty(MapPropertyChangeListener<? super K, ? super R>... listeners) {
         for (MapPropertyChangeListener<? super K, ? super R> listener : listeners) {
             addChangeListener(listener);

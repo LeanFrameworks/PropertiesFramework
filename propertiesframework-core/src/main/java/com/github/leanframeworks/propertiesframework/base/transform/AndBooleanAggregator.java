@@ -65,7 +65,7 @@ public class AndBooleanAggregator implements Aggregator<Boolean, Boolean> {
     private final Boolean nullElementValid;
 
     /**
-     * Default constructor using default values for empty and null collections, and null elements.
+     * Constructor using default values for empty and null collections, and null elements.
      *
      * @see #DEFAULT_EMPTY_COLLECTION_VALUE
      * @see #DEFAULT_NULL_ELEMENT_VALUE
