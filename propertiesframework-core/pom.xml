@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.github.leanframeworks</groupId>
         <artifactId>propertiesframework-parent</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>propertiesframework-core</artifactId>
