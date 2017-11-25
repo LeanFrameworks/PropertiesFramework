@@ -1,5 +1,6 @@
-# Version 1.0.0 (to be released)
+# Version 1.0.0
 
+* Moved to Java 8
 * Made better use of generics (with `extends` and `super`)
 * Simplified `ReadableWritable*Property` interfaces, now using the same type for read and write
 * Removed deprecated `Transformer`, `Aggregator` and `CollectionElementTransformer` from `base` module
@@ -20,9 +21,10 @@
 
 ## Migration from version 0.0.1
 
-Compilation issues are only related to the changes mentioned above; fixing them is quite straightforward.
+Compilation issues are only related to the changes mentioned above; fixing them is quite straightforward. There is no
+functionality modified or removed. Fixing compilation issues is a one-to-one mapping from the old APIs to the new APIs.
 
-There is no incompatible change in terms of behavior (beyond the compilation).
+So there is no incompatible change in terms of behavior (beyond the compilation). 
 
 # Version 0.0.1
 
