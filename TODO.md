@@ -1,9 +1,3 @@
-# Next release
-
-* TODO Check all usages of "? super" and "? extends" wildcards
-* TODO Check where they can be used
-* TODO Check each new entry in CHANGES.md
-
 # Known issues
 
 * Inconsistent behavior of dispose() methods: test setting value before/after dispose() (from property, from component),

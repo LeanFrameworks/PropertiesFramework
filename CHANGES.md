@@ -1,7 +1,5 @@
 # Version 1.0.0 (to be released)
 
-* TODO See TODO.md file
-
 * Made better use of generics (with `extends` and `super`)
 * Simplified `ReadableWritable*Property` interfaces, now using the same type for read and write
 * Removed deprecated `Transformer`, `Aggregator` and `CollectionElementTransformer` from `base` module
