@@ -16,7 +16,7 @@ later be migrated to use this project as its foundation.
 # Roadmap
 
 The main changes expected in the upcoming releases are the following:
-* Version 1.1.0: Add property injection mechanism to help implementing a more composable, scalable MVC/MVP pattern
+* Version 1.1.0: Add property injection mechanism to help implement a more composable, scalable MVC/MVP pattern
 * Version 2.0.0: Harmonize Dispose and DeepDispose interfaces
 
 

@@ -43,11 +43,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- License -->
+
+        <project.organization.name>LeanFrameworks</project.organization.name>
+        <project.inceptionYear>2017</project.inceptionYear>
+
         <!-- Maven plugins versions -->
 
         <dependsmavenplugin.version>1.4.0</dependsmavenplugin.version>
         <failsafeplugin.version>2.14.1</failsafeplugin.version>
         <java.compiler.version>1.8</java.compiler.version>
+        <licensemavenplugin.version>1.14</licensemavenplugin.version>
         <mavenbundleplugin.version>3.3.0</mavenbundleplugin.version>
         <mavencompilerplugin.version>3.6.1</mavencompilerplugin.version>
         <mavengpgplugin.version>1.6</mavengpgplugin.version>
@@ -146,6 +152,35 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${licensemavenplugin.version}</version>
+                <configuration>
+                    <verbose>true</verbose>
+                    <addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
+                    <addSvnKeyWords>false</addSvnKeyWords>
+                    <emptyLineAfterHeader>true</emptyLineAfterHeader>
+                    <canUpdateDescription>true</canUpdateDescription>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <licenseName>bsd_2</licenseName>
+                            <roots>
+                                <root>src/main/java</root>
+                                <root>src/test</root>
+                            </roots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
