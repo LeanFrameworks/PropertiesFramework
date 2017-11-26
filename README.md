@@ -16,7 +16,7 @@ later be migrated to use this project as its foundation.
 # Roadmap
 
 The main changes expected in the upcoming releases are the following:
-* Version 1.1.0: Add of a property injection mechanism to help implementing a more composable, scalable MVC/MVP pattern
+* Version 1.1.0: Add property injection mechanism to help implementing a more composable, scalable MVC/MVP pattern
 * Version 2.0.0: Harmonize Dispose and DeepDispose interfaces
 
 
@@ -25,8 +25,8 @@ The main changes expected in the upcoming releases are the following:
 * Wiki: https://github.com/leanframeworks/PropertiesFramework/wiki
 * Source code: https://github.com/leanframeworks/PropertiesFramework/
 * Snapshot artifacts in Sonatype OSS Maven Repository: https://oss.sonatype.org/content/groups/public/com/github/leanframeworks/
-* Released artifacts in Maven Central: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.leanframeworks.propertiesframework%22
+* Released artifacts in Maven Central: http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.leanframeworks%22
 
 # License
 
-The PropertiesFramework is provided under the [Simplified BSD License (2-clause)](https://raw.githubusercontent.com/padrig64/ValidationFramework/master/LICENSE.md).
+The PropertiesFramework is provided under the [Simplified BSD License (2-clause)](https://raw.githubusercontent.com/leanframeworks/PropertiesFramework/master/LICENSE.md).
