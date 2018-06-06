@@ -1,3 +1,5 @@
+# Version 1.0.1 (to be released)
+
 # Version 1.0.0
 
 * Moved to Java 8

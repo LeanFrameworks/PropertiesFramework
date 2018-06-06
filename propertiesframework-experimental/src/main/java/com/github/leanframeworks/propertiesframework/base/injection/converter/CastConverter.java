@@ -29,30 +29,23 @@
 
 package com.github.leanframeworks.propertiesframework.base.injection.converter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CompositeConverter implements Converter {
-
-    private final List<Converter> converters = new ArrayList<>();
-
-    public void addConverter(Converter converter) {
-        converters.add(converter);
-    }
-
-    public void removeConverter(Converter converter) {
-        converters.remove(converter);
-    }
+/**
+ * Converter that will try to cast the specified value to the specified class.
+ * <p>
+ * If the value cannot be cast, the converter will return null.
+ *
+ * @see AssignmentConverter
+ */
+public class CastConverter implements Converter {
 
     @Override
     public <T> T convert(Object from, Class<T> to) {
-        T result = null;
+        T result;
 
-        for (Converter converter : converters) {
-            result = converter.convert(from, to);
-            if (result != null) {
-                break;
-            }
+        try {
+            result = (T) from;
+        } catch (ClassCastException e) {
+            result = null;
         }
 
         return result;

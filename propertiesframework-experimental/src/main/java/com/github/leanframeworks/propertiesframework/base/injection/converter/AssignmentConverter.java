@@ -29,34 +29,23 @@
 
 package com.github.leanframeworks.propertiesframework.base.injection.converter;
 
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-public abstract class AbstractConverter implements Converter {
-
-    /**
-     * Key: ExposedXXX annotation
-     * Value: Classes/interfaces of field needed to be exposed with this annotation (AND)
-     */
-    protected final Map<Class<? extends Annotation>, Set<Class<?>>> supportedExposures = new HashMap<>();
-
-    /**
-     * Key: Class of exposed field
-     * Value: Possible classes of field that can receive the converted value (OR)
-     */
-    protected final Map<Class<?>, Set<Class<?>>> supportedConversions = new HashMap<>();
+/**
+ * Converter that is equivalent to a simple assignment.
+ * <p>
+ * It will return the specified value if it can be assigned to the specified class.
+ *
+ * @see CastConverter
+ */
+public class AssignmentConverter implements Converter {
 
     @Override
-    public boolean canExpose(Class<?> from, Class<? extends Annotation> as) {
-        Set<Class<?>> expectedTypes = supportedExposures.get(as);
-        return (expectedTypes != null) && expectedTypes.stream().allMatch(t -> t.isAssignableFrom(from));
-    }
+    public <T> T convert(Object from, Class<T> to) {
+        T result = null;
 
-    @Override
-    public boolean canConvert(Class<?> from, Class<?> to) {
-        Set<Class<?>> tos = supportedConversions.get(from);
-        return (tos != null) && tos.contains(to);
+        if (to.isAssignableFrom(from.getClass())) {
+            result = (T) from;
+        }
+
+        return result;
     }
 }

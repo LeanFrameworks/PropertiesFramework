@@ -189,6 +189,7 @@ import static java.util.stream.Stream.of;
  * <p>
  * TODO Detect when writable property inject multiple times? optional?
  * TODO Bind instead of injecting? (reduces the need for PostInject methods)
+ * TODO Be able to expose a property as multiple types but using a single ID
  * TODO Support self-inject of self-exposed fields?
  * TODO Support for re-exposed of injected field (under another name or other constraints)?
  * TODO Support any type for Expose/Require? (suffixes for Require no longer needed)
@@ -477,15 +478,8 @@ public class Injector {
     }
 
     private void ensureExposedIsOfCompatibleType(ExposedField exposed) {
-        Object value = exposed.getValue();
-
-        if (value == null) {
+        if (exposed.getValue() == null) {
             throw new DiscoveryException(exposed.getLogString() + ", is null and therefore cannot be exposed");
-        } else if (!converters.canExpose(value.getClass(), exposed.getAnnotation().annotationType())) {
-            throw new DiscoveryException(exposed.getLogString() +
-                    ", is initialized with value '" + value +
-                    "' of class '" + value.getClass().getCanonicalName() +
-                    "' which is incompatible with the annotation (no converter for this class exist)");
         }
     }
 
@@ -753,11 +747,13 @@ public class Injector {
         if (exposed == null) {
             LOGGER.debug("No field is exposed with ID '{}' yet", requiredId);
             value = null;
-        } else if (converters.canConvert(exposed.getValue().getClass(), requiredClass)) {
-            value = converters.convert(exposed.getValue(), requiredClass);
         } else {
-            // TODO Better message
-            throw new InjectionException("No appropriate converter registered");
+            value = converters.convert(exposed.getValue(), requiredClass);
+
+            if (value == null) {
+                // TODO Better message
+                throw new InjectionException("No appropriate converter registered");
+            }
         }
 
         return value;

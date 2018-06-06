@@ -44,5 +44,5 @@ public @interface Expose {
 
     String value();
 
-    AccessType as() default AccessType.AS_DECLARED;
+    Class<?> as();
 }

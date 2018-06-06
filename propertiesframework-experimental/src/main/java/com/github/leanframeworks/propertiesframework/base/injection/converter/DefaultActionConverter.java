@@ -6,13 +6,13 @@
  * %%
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice,
  *    this list of conditions and the following disclaimer.
  * 2. Redistributions in binary form must reproduce the above copyright notice,
  *    this list of conditions and the following disclaimer in the documentation
  *    and/or other materials provided with the distribution.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -30,18 +30,8 @@
 package com.github.leanframeworks.propertiesframework.base.injection.converter;
 
 import com.github.leanframeworks.propertiesframework.base.action.RunnableWrapper;
-import com.github.leanframeworks.propertiesframework.base.injection.annotation.ExposeA;
 
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toSet;
-
-public class DefaultActionConverter extends AbstractConverter {
-
-    public DefaultActionConverter() {
-        supportedExposures.put(ExposeA.class, Stream.of(Runnable.class).collect(toSet()));
-        supportedConversions.put(Runnable.class, Stream.of(Runnable.class).collect(toSet()));
-    }
+public class DefaultActionConverter implements Converter {
 
     @Override
     public <T> T convert(Object from, Class<T> to) {
