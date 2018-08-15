@@ -7,3 +7,12 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3 # Give xvf some time to start
+
+addons:
+  sonarcloud:
+    organization: "leanframeworks"
+    token:
+      secure: "HRumPMbP7EsGRzlX8NYMyzlNNJm18M0ETLLgKr5LSWG+tEZsLuAgq2ckwkRLdhZ74Rd3+ztTrNNg5vIDOg1w7DQ79USwSTF8ENmNHNHksaFX+MmCzvwqqKKUQTQop0F++PYd8Eck22CdHnAfwJ7emjIOJ4Cl6iDLJzjsS6EWH2Bhofm39q6m0nwpYtyoQzhCj9nn6jXKgL/tP+5oJwsB6tKsguYmTHZzprl4Ge2NDlXQwh78imQ46jqSUsG+VlQEOw2HFWHq7o3dzjVyi+x9sFcic2UfY+v/LcjmvcNHER2AMamlEK9RUgRz0BSqc3QPVB21eZEnifHOlb3Q2EqNDxsk9y/WG1GKzOEqAev/ueUr35Q/C13zmAlO1HnErd60ypKJJKYjL5ogTAuJp1DutQNAdxZFhNuuoP7ObgDRWhE5lCgcpHU1qhZDilgwLxMbeQTDKXsDmAed+MMvVmi8X9nx4ubeL9z8ZIPZYEndNqLTXrIxaLnwQdKPlPQu+GKyzuJeyjnITh+mJfmZi94jG8RKDR9W4RCnt/xpg/Y/8D/E3T3GDshfTOTFpCJnWCQaky/WV/1hsx9/uEKhOoGlItdz9g1SN9ik/2AgWQzMeDjUiLvGB5Uvnmz+PMNhsYTpf3JhLs/PumUXf9LS14Djh8jgoj2by+GEnTmHkrmul2w="
+
+script:
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
