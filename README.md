@@ -1,6 +1,8 @@
 [![Latest Release](https://img.shields.io/github/release/LeanFrameworks/PropertiesFramework.svg)](https://github.com/LeanFrameworks/PropertiesFramework/releases/latest)
 [![License](https://img.shields.io/badge/license-2--clause%20BSD-blue.svg)](https://raw.githubusercontent.com/LeanFrameworks/PropertiesFramework/master/LICENSE.md)
 [![Build Status](https://travis-ci.org/LeanFrameworks/PropertiesFramework.svg?branch=master)](https://travis-ci.org/LeanFrameworks/PropertiesFramework)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.github.leanframeworks:propertiesframework-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.github.leanframeworks:propertiesframework-parent)
+
 
 # PropertiesFramework
 
