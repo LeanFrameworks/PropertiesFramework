@@ -1,6 +1,6 @@
-[![GitHub version](http://github-release-version.herokuapp.com/github/LeanFrameworks/PropertiesFramework/release.svg?style=flat)](https://github.com/LeanFrameworks/PropertiesFramework/releases/latest)
+[![License](https://img.shields.io/badge/license-2--clause%20BSD-blue.svg)](https://raw.githubusercontent.com/LeanFrameworks/PropertiesFramework/master/LICENSE.md)
 [![Build Status](https://travis-ci.org/LeanFrameworks/PropertiesFramework.svg?branch=master)](https://travis-ci.org/LeanFrameworks/PropertiesFramework)
-[![GitHub license](https://img.shields.io/badge/license-BSD-blue.svg)](https://raw.githubusercontent.com/LeanFrameworks/PropertiesFramework/master/LICENSE.md)
+[![Latest Release](https://img.shields.io/github/release/LeanFrameworks/PropertiesFramework.svg)](https://github.com/LeanFrameworks/PropertiesFramework/releases/latest)
 
 # PropertiesFramework
 
